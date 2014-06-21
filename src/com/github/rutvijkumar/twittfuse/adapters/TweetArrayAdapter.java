@@ -58,6 +58,9 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		TextView timeStamp; // @+id/tweetTimeStampTxt
 		TextView tweetBody; // @+id/tweetBodyTxt
 		ImageView  reTweetImage;//@+id/retweetedTweet
+		TextView retweetCountTv;
+		TextView favCountTv;
+		
 		
 	}
 //retweetedTweet
@@ -90,6 +93,10 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 					.findViewById(R.id.profileImg);
 
 			viewHolder.reTweetImage =(ImageView)convertView.findViewById(R.id.retweetedTweet);
+			
+			viewHolder.retweetCountTv=(TextView)convertView.findViewById(R.id.retweetCountTv);
+			viewHolder.favCountTv=(TextView)convertView.findViewById(R.id.favCountTv);
+			
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -98,6 +105,9 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		
 		User user=null;
 		Tweet displayTweet=null;
+		long favouritesCount = tweet.getFavouritesCount();
+		long reTweetCount=tweet.getReTweetCount();
+		
 		if(tweet.getReTweeted()!=null) {
 			//Tweet is reTweeted
 			viewHolder.reTweetedByUserName.setText(tweet.getUser().getName()+" retweeted");
@@ -106,12 +116,9 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 			viewRetweetInfo(View.VISIBLE, viewHolder.reTweetImage, 16, 16);
 			viewRetweetInfo(View.VISIBLE, viewHolder.reTweetedByUserName, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			
-		
-			
 		}else {
 			viewRetweetInfo(View.INVISIBLE, viewHolder.reTweetImage, 0, 0);
 			viewRetweetInfo(View.INVISIBLE, viewHolder.reTweetedByUserName, 0, 0);
-			
 			displayTweet=tweet;
 			
 		}
@@ -129,8 +136,13 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		viewHolder.screenName.setText("@"+user.getScreenName());
 		viewHolder.tweetBody.setText(displayTweet.getBody());
 		viewHolder.timeStamp.setText(Util.getDuration(tweet.getCreatedAt()));
+		if(reTweetCount> 0) {
+			viewHolder.retweetCountTv.setText(String.valueOf(reTweetCount));
+		}
+		if(favouritesCount > 0) {
+			viewHolder.favCountTv.setText(String.valueOf(favouritesCount));
+		}
 		
-
 		return convertView;
 	}
 	

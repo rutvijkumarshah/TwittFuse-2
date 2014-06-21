@@ -99,24 +99,43 @@
             android:layout_below="@+id/tweetBodyTxt"
             android:layout_marginRight="48dp"
             android:src="@drawable/reply_icon" />
-
+        
         <ImageView
             android:id="@+id/retweetIv"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_below="@+id/tweetBodyTxt"
-            android:layout_marginRight="48dp"
+            
             android:layout_toRightOf="@+id/replyIv"
             android:src="@drawable/retweet_icon" />
+		
+		<TextView
+            android:id="@+id/retweetCountTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tweetBodyTxt"
+            android:layout_toRightOf="@+id/retweetIv"
+            android:layout_marginRight="48dp"
+            android:text="" />
 
+        
         <ImageView
             android:id="@+id/favIv"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_below="@+id/tweetBodyTxt"
-            android:layout_marginRight="48dp"
-            android:layout_toRightOf="@+id/retweetIv"
+            android:layout_toRightOf="@+id/retweetCountTv"
             android:src="@drawable/fav_icon" />
+        
+        
+		<TextView
+            android:id="@+id/favCountTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tweetBodyTxt"
+            android:layout_toRightOf="@+id/favIv"
+            android:layout_marginRight="48dp"
+            android:text="" />
     </RelativeLayout>
 
 </RelativeLayout>
