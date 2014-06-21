@@ -87,6 +87,7 @@
             android:id="@+id/tweetBodyTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:autoLink="all"
             android:layout_below="@+id/tweetBodyHeader"
             android:layout_marginBottom="8dp"
             android:text="afasdf fdf s adsdfasddfsdfsdaf d safsadfsdafsdfsdafsdafdsf" />
@@ -105,8 +106,8 @@
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_below="@+id/tweetBodyTxt"
-            
             android:layout_toRightOf="@+id/replyIv"
+            android:layout_marginRight="16dp"
             android:src="@drawable/retweet_icon" />
 		
 		<TextView
@@ -125,6 +126,7 @@
             android:layout_height="16dp"
             android:layout_below="@+id/tweetBodyTxt"
             android:layout_toRightOf="@+id/retweetCountTv"
+            android:layout_marginRight="16dp"
             android:src="@drawable/fav_icon" />
         
         

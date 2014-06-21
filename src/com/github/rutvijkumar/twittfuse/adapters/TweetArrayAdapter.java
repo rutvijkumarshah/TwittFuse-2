@@ -29,6 +29,7 @@ import org.scribe.builder.api.GoogleApi;
 import android.content.Context;
 import android.net.Uri;
 import android.text.Layout;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,13 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 	private  static final int RETWEET_IMG_WIDTH=16;
 	private  static final int RETWEET_IMG_HEIGHT=16;
 	
+	private Context context;
+	
+	public float getDP(int dp) {
+		float dimension = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
+		return dimension;
+	}
+	
 	// View lookup cache
 	private static class ViewHolder {
 		TextView reTweetedByUserName;// @+id/retweetedTweetUserName
@@ -66,6 +74,7 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 //retweetedTweet
 	public TweetArrayAdapter(Context context, ArrayList<Tweet> tweets) {
 		super(context, R.layout.tweet_litem, tweets);
+		this.context=context;
 	}
 
 	@Override
@@ -113,7 +122,7 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 			viewHolder.reTweetedByUserName.setText(tweet.getUser().getName()+" retweeted");
 			displayTweet=tweet.getReTweeted();
 			//retweetedTweet
-			viewRetweetInfo(View.VISIBLE, viewHolder.reTweetImage, 16, 16);
+			viewRetweetInfo(View.VISIBLE, viewHolder.reTweetImage,getDP(16) , getDP(16));
 			viewRetweetInfo(View.VISIBLE, viewHolder.reTweetedByUserName, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			
 		}else {
@@ -146,13 +155,12 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		return convertView;
 	}
 	
-	private void viewRetweetInfo( int visibility,View view,int width,int height) {
+	private void viewRetweetInfo( int visibility,View view,float width,float height) {
 		LayoutParams layoutParams = view.getLayoutParams();
-		layoutParams.height=height;
-		layoutParams.width=width;
+		layoutParams.height=(int)height;
+		layoutParams.width=(int)width;
 		view.setVisibility(visibility);
 		view.setLayoutParams(layoutParams);
-			
 		
 	}
 

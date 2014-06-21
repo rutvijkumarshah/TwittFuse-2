@@ -27,11 +27,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import android.util.TypedValue;
+
 import com.github.rutvijkumar.twittfuse.models.Tweet;
 
 public class Util {
 
 	private static final String TWITTER = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+
+	
 
 	public static long getMaxSinceId(ArrayList<Tweet> tweets) {
 		long maxSinceId = 1L;

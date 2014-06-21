@@ -6,7 +6,6 @@ import org.json.JSONArray;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.ListView;
 
 import com.github.rutvijkumar.twittfuse.R;
 import com.github.rutvijkumar.twittfuse.TwitterApplication;
@@ -15,6 +14,8 @@ import com.github.rutvijkumar.twittfuse.api.TwitterClient;
 import com.github.rutvijkumar.twittfuse.helpers.EndlessScrollListener;
 import com.github.rutvijkumar.twittfuse.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
+
+import eu.erikw.PullToRefreshListView.OnRefreshListener;
 
 /***
  * Users Home Time Line Activity
@@ -29,15 +30,15 @@ public class TimeLineActivity extends Activity {
 	private TwitterClient client;
 	private ArrayList<Tweet> tweets=new ArrayList<Tweet>();
 	private TweetArrayAdapter adapter;
-	private ListView tweetsListView;
+	private eu.erikw.PullToRefreshListView tweetsListView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_time_line);
 		client=TwitterApplication.getRestClient();
-		populateTimeLine();
-		tweetsListView=(ListView)findViewById(R.id.lvTweets);
+		//populateTimeLine();
+		tweetsListView=(eu.erikw.PullToRefreshListView)findViewById(R.id.lvTweets);
 		adapter=new TweetArrayAdapter(this, tweets);
 		tweetsListView.setAdapter(adapter);
 		tweetsListView.setOnScrollListener(new EndlessScrollListener() {
@@ -47,6 +48,13 @@ public class TimeLineActivity extends Activity {
 	        	}
 	        
 	        });
+		tweetsListView.setOnRefreshListener(new OnRefreshListener() {
+	            @Override
+	            public void onRefresh() {
+	                populateTimeLine();
+	            }
+	        });
+		populateTimeLine();
 	}
 	
 	private void populateTimeLine() {
@@ -55,10 +63,17 @@ public class TimeLineActivity extends Activity {
 	public void populateTimeLine(int totalItemsCount) {
 		if(totalItemsCount >0) {
 			Tweet oldestTweet = (Tweet) tweetsListView.getItemAtPosition(totalItemsCount-1);
-			client.getHomeTimeline(new ResponseHandler(),oldestTweet.getUid()-1);
+			if(oldestTweet!=null) {
+				client.getHomeTimeline(new ResponseHandler(),oldestTweet.getUid()-1);
+			}
+			
 		}else {
+			adapter.clear();
+			adapter.notifyDataSetInvalidated();
 			client.getHomeTimeline(new ResponseHandler());
 		}
+		tweetsListView.onRefreshComplete();
+
 	}
 	
 	/***

@@ -80,8 +80,9 @@ public class Tweet {
 			if(jsonObject.has("retweet_count")) {
 				tweet.reTweetCount = jsonObject.getLong("retweet_count");
 			}
-			if(jsonObject.has("favourites_count")) {
-				tweet.favouritesCount = jsonObject.getLong("favourites_count");
+			if(jsonObject.has("favorite_count")) {
+				tweet.favouritesCount = jsonObject.getLong("favorite_count");
+				
 			}
 			if(jsonObject.has("retweeted_status")) {
 				tweet.reTweeted=Tweet.fromJSON(jsonObject.getJSONObject("retweeted_status"));
