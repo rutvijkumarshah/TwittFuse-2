@@ -24,11 +24,15 @@ package com.github.rutvijkumar.twittfuse.adapters;
 
 import java.util.ArrayList;
 
+import org.scribe.builder.api.GoogleApi;
+
 import android.content.Context;
 import android.net.Uri;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,10 +41,14 @@ import com.activeandroid.util.Log;
 import com.github.rutvijkumar.twittfuse.R;
 import com.github.rutvijkumar.twittfuse.Util;
 import com.github.rutvijkumar.twittfuse.models.Tweet;
+import com.github.rutvijkumar.twittfuse.models.User;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 
+	private  static final int RETWEET_IMG_WIDTH=16;
+	private  static final int RETWEET_IMG_HEIGHT=16;
+	
 	// View lookup cache
 	private static class ViewHolder {
 		TextView reTweetedByUserName;// @+id/retweetedTweetUserName
@@ -49,9 +57,10 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		ImageView userProfilePic;// @+id/profileImg
 		TextView timeStamp; // @+id/tweetTimeStampTxt
 		TextView tweetBody; // @+id/tweetBodyTxt
-
+		ImageView  reTweetImage;//@+id/retweetedTweet
+		
 	}
-
+//retweetedTweet
 	public TweetArrayAdapter(Context context, ArrayList<Tweet> tweets) {
 		super(context, R.layout.tweet_litem, tweets);
 	}
@@ -80,25 +89,59 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 			viewHolder.userProfilePic = (ImageView) convertView
 					.findViewById(R.id.profileImg);
 
+			viewHolder.reTweetImage =(ImageView)convertView.findViewById(R.id.retweetedTweet);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 		// Populate the data into the template view using the data object
+		
+		User user=null;
+		Tweet displayTweet=null;
+		if(tweet.getReTweeted()!=null) {
+			//Tweet is reTweeted
+			viewHolder.reTweetedByUserName.setText(tweet.getUser().getName()+" retweeted");
+			displayTweet=tweet.getReTweeted();
+			//retweetedTweet
+			viewRetweetInfo(View.VISIBLE, viewHolder.reTweetImage, 16, 16);
+			viewRetweetInfo(View.VISIBLE, viewHolder.reTweetedByUserName, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			
+		
+			
+		}else {
+			viewRetweetInfo(View.INVISIBLE, viewHolder.reTweetImage, 0, 0);
+			viewRetweetInfo(View.INVISIBLE, viewHolder.reTweetedByUserName, 0, 0);
+			
+			displayTweet=tweet;
+			
+		}
+		user=displayTweet.getUser();
+		
+		
 		viewHolder.userProfilePic
 				.setImageResource(android.R.color.transparent);
 		ImageLoader imageLoader = ImageLoader.getInstance();
-		imageLoader.displayImage(tweet.getUser().getProfileImageUrl(),
+		imageLoader.displayImage(user.getProfileImageUrl(),
 				viewHolder.userProfilePic);
 
-		viewHolder.reTweetedByUserName.setText("");
-		viewHolder.name.setText(tweet.getUser().getName());
-		viewHolder.screenName.setText(tweet.getUser().getScreenName());
-		viewHolder.tweetBody.setText(tweet.getBody());
+		
+		viewHolder.name.setText(user.getName());
+		viewHolder.screenName.setText("@"+user.getScreenName());
+		viewHolder.tweetBody.setText(displayTweet.getBody());
 		viewHolder.timeStamp.setText(Util.getDuration(tweet.getCreatedAt()));
-		Log.d(tweet.getUser().getProfileImageUrl());
+		
 
 		return convertView;
+	}
+	
+	private void viewRetweetInfo( int visibility,View view,int width,int height) {
+		LayoutParams layoutParams = view.getLayoutParams();
+		layoutParams.height=height;
+		layoutParams.width=width;
+		view.setVisibility(visibility);
+		view.setLayoutParams(layoutParams);
+			
+		
 	}
 
 }

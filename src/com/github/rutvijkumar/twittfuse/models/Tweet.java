@@ -29,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.activeandroid.util.Log;
 import com.github.rutvijkumar.twittfuse.Util;
 
 public class Tweet {
@@ -36,10 +37,18 @@ public class Tweet {
 	private String body;
 	private long uid;
 	private Date createdAt;
-	private User user;
-	private Boolean isRetweeted;
 	private long reTweetCount;
 	private long favouritesCount;
+
+	private User user;
+	private Tweet reTweeted;
+
+
+	public Tweet getReTweeted() {
+		return reTweeted;
+	}
+
+	
 
 	public static ArrayList<Tweet> fromJSONArray(JSONArray jsonArray) {
 		final int size = jsonArray.length();
@@ -63,19 +72,22 @@ public class Tweet {
 	public static Tweet fromJSON(JSONObject jsonObject) {
 		Tweet tweet = new Tweet();
 		try {
+			
 			tweet.body = jsonObject.getString("text");
 			tweet.uid = jsonObject.getLong("id");
 			tweet.createdAt = Util.getTwitterDate(jsonObject.getString("created_at"));
-			if(jsonObject.has("retweeted")) {
-				tweet.isRetweeted = jsonObject.getBoolean("retweeted");
-			}
+			
 			if(jsonObject.has("retweet_count")) {
 				tweet.reTweetCount = jsonObject.getLong("retweet_count");
 			}
 			if(jsonObject.has("favourites_count")) {
 				tweet.favouritesCount = jsonObject.getLong("favourites_count");
 			}
+			if(jsonObject.has("retweeted_status")) {
+				tweet.reTweeted=Tweet.fromJSON(jsonObject.getJSONObject("retweeted_status"));
+			}
 			tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
+		
 		} catch (JSONException e) {
 			e.printStackTrace();	
 		}
@@ -98,9 +110,6 @@ public class Tweet {
 		return user;
 	}
 
-	public Boolean getIsRetweeted() {
-		return isRetweeted;
-	}
 
 	public long getReTweetCount() {
 		return reTweetCount;
