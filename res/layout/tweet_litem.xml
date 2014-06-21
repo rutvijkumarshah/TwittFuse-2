@@ -8,20 +8,27 @@
         android:id="@+id/profileImgLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginTop="24dp" >
-
+        
         
         <ImageView
-            android:layout_below="@+id/reTweetedTweetImg"
+            android:id="@+id/retweetedTweet"
+            android:layout_width="16dp"
+            android:layout_height="16dp" 
+            android:layout_alignRight="@+id/profileImg"
+            android:src="@drawable/retweet_icon"
+            />
+        
+        <ImageView
+            android:layout_alignParentLeft="true"
+        	android:layout_marginLeft="8dp"
+        	android:layout_marginRight="8dp"
+            android:layout_below="@+id/retweetedTweet"
             android:id="@+id/profileImg"
-            android:layout_width="32dp"
+            android:layout_width="64dp"
             android:src="@drawable/profile_img"
-            android:layout_height="32dp" />
+            android:layout_height="64dp" />
     </RelativeLayout>
 
     <!--  Profile Image  Layout  ends -->
@@ -34,11 +41,19 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent" >
 		
+        <TextView 
+               android:id="@+id/retweetedTweetUserName"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Rutvijkumar Shah retweeted" 
+        />
         <!-- Tweet Header (RT Info ???,TweetUser Info ) -->
         <LinearLayout
+            android:layout_below="@+id/retweetedTweetUserName"
             android:id="@+id/tweetBodyHeader"
             android:layout_width="wrap_content"
             android:layout_height="24dp" >
+            
            <TextView 
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
