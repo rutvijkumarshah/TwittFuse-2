@@ -23,16 +23,19 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 package com.github.rutvijkumar.twittfuse.models;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.github.rutvijkumar.twittfuse.Util;
+
 public class Tweet {
 
 	private String body;
 	private long uid;
-	private String createdAt;
+	private Date createdAt;
 	private User user;
 	private Boolean isRetweeted;
 	private long reTweetCount;
@@ -62,13 +65,19 @@ public class Tweet {
 		try {
 			tweet.body = jsonObject.getString("text");
 			tweet.uid = jsonObject.getLong("id");
-			tweet.createdAt = jsonObject.getString("created_at");
-			tweet.isRetweeted = jsonObject.getBoolean("retweeted");
-			tweet.reTweetCount = jsonObject.getLong("retweet_count");
-			tweet.favouritesCount = jsonObject.getLong("favourites_count");
+			tweet.createdAt = Util.getTwitterDate(jsonObject.getString("created_at"));
+			if(jsonObject.has("retweeted")) {
+				tweet.isRetweeted = jsonObject.getBoolean("retweeted");
+			}
+			if(jsonObject.has("retweet_count")) {
+				tweet.reTweetCount = jsonObject.getLong("retweet_count");
+			}
+			if(jsonObject.has("favourites_count")) {
+				tweet.favouritesCount = jsonObject.getLong("favourites_count");
+			}
 			tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
 		} catch (JSONException e) {
-
+			e.printStackTrace();	
 		}
 		return tweet;
 	}
@@ -81,7 +90,7 @@ public class Tweet {
 		return uid;
 	}
 
-	public String getCreatedAt() {
+	public Date getCreatedAt() {
 		return createdAt;
 	}
 

@@ -32,6 +32,22 @@ public class User {
 	private String profileImageUrl;
 	private String screenName;
 
+	public String getName() {
+		return name;
+	}
+
+	public long getUid() {
+		return uid;
+	}
+
+	public String getProfileImageUrl() {
+		return profileImageUrl;
+	}
+
+	public String getScreenName() {
+		return screenName;
+	}
+
 	public static User fromJson(JSONObject jsonObject) {
 		User user=new User();
 		
@@ -41,6 +57,7 @@ public class User {
 			user.profileImageUrl=jsonObject.getString("profile_image_url");
 			user.screenName=jsonObject.getString("screen_name");
 		} catch (JSONException e) {
+			e.printStackTrace();
 		}
 		return user;
 	}

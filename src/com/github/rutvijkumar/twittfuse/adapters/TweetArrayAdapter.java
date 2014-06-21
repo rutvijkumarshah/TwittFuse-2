@@ -18,28 +18,87 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-***/
+ ***/
 
 package com.github.rutvijkumar.twittfuse.adapters;
 
-import java.util.List;
-
-import com.github.rutvijkumar.twittfuse.models.Tweet;
+import java.util.ArrayList;
 
 import android.content.Context;
+import android.net.Uri;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.activeandroid.util.Log;
+import com.github.rutvijkumar.twittfuse.R;
+import com.github.rutvijkumar.twittfuse.Util;
+import com.github.rutvijkumar.twittfuse.models.Tweet;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 
-	public TweetArrayAdapter(Context context, List<Tweet> objects) {
-		super(context, 0, objects);
-		
+	// View lookup cache
+	private static class ViewHolder {
+		TextView reTweetedByUserName;// @+id/retweetedTweetUserName
+		TextView name;// @+id/tweetUserName
+		TextView screenName; // @+id/tweetUserScreenName
+		ImageView userProfilePic;// @+id/profileImg
+		TextView timeStamp; // @+id/tweetTimeStampTxt
+		TextView tweetBody; // @+id/tweetBodyTxt
+
 	}
+
+	public TweetArrayAdapter(Context context, ArrayList<Tweet> tweets) {
+		super(context, R.layout.tweet_litem, tweets);
+	}
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
-		return super.getView(position, convertView, parent);
+		// Get the data item for this position
+		Tweet tweet = getItem(position);
+		// Check if an existing view is being reused, otherwise inflate the view
+		ViewHolder viewHolder; // view lookup cache stored in tag
+		if (convertView == null) {
+			viewHolder = new ViewHolder();
+			LayoutInflater inflater = LayoutInflater.from(getContext());
+			convertView = inflater.inflate(R.layout.tweet_litem, parent, false);
+
+			viewHolder.reTweetedByUserName = (TextView) convertView
+					.findViewById(R.id.retweetedTweetUserName);
+			viewHolder.name = (TextView) convertView
+					.findViewById(R.id.tweetUserName);
+			viewHolder.screenName = (TextView) convertView
+					.findViewById(R.id.tweetUserScreenName);
+			viewHolder.timeStamp = (TextView) convertView
+					.findViewById(R.id.tweetTimeStampTxt);
+			viewHolder.tweetBody = (TextView) convertView
+					.findViewById(R.id.tweetBodyTxt);
+			viewHolder.userProfilePic = (ImageView) convertView
+					.findViewById(R.id.profileImg);
+
+			convertView.setTag(viewHolder);
+		} else {
+			viewHolder = (ViewHolder) convertView.getTag();
+		}
+		// Populate the data into the template view using the data object
+		viewHolder.userProfilePic
+				.setImageResource(android.R.color.transparent);
+		ImageLoader imageLoader = ImageLoader.getInstance();
+		imageLoader.displayImage(tweet.getUser().getProfileImageUrl(),
+				viewHolder.userProfilePic);
+
+		viewHolder.reTweetedByUserName.setText("");
+		viewHolder.name.setText(tweet.getUser().getName());
+		viewHolder.screenName.setText(tweet.getUser().getScreenName());
+		viewHolder.tweetBody.setText(tweet.getBody());
+		viewHolder.timeStamp.setText(Util.getDuration(tweet.getCreatedAt()));
+		Log.d(tweet.getUser().getProfileImageUrl());
+
+		return convertView;
 	}
+
 }
