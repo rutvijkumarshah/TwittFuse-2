@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!--  Profile Image  Layout  Starts -->
+    <RelativeLayout
+        android:id="@+id/profileImgLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="24dp" >
+
+        
+        <ImageView
+            android:layout_below="@+id/reTweetedTweetImg"
+            android:id="@+id/profileImg"
+            android:layout_width="32dp"
+            android:src="@drawable/profile_img"
+            android:layout_height="32dp" />
+    </RelativeLayout>
+
+    <!--  Profile Image  Layout  ends -->
+    
+    <!--  Tweet Body  Layout  Starts -->
+    <RelativeLayout
+        android:layout_alignTop="@+id/profileImgLayout"
+        android:layout_toRightOf="@+id/profileImgLayout"
+        android:id="@+id/tweetBodyLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" >
+		
+        <!-- Tweet Header (RT Info ???,TweetUser Info ) -->
+        <LinearLayout
+            android:id="@+id/tweetBodyHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp" >
+           <TextView 
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Meteor" 
+           />
+           <TextView 
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="/@meteor" 
+           />
+        </LinearLayout>
+
+        <!-- Tweet Body -->
+        <TextView 
+               android:layout_below="@+id/tweetBodyHeader"
+               android:id="@+id/tweetBodyTxt"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="afasdf fdf s adsdfasddfsdfsdaf d safsadfsdafsdfsdafsdafdsf"
+               android:layout_marginBottom="8dp"
+           />
+        <!-- Tweet Footer (RT Info,TweetUser Info, Tweetbody ) -->
+        
+            <ImageView
+                android:id="@+id/replyIv"
+                android:layout_below="@+id/tweetBodyTxt"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginRight="48dp"
+                android:src="@drawable/fav_icon"
+            />
+
+            <ImageView
+                android:id="@+id/retweetIv"
+                
+                android:layout_toRightOf="@+id/replyIv"
+               	android:layout_below="@+id/tweetBodyTxt"
+            	
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                
+                android:layout_marginRight="48dp"
+                android:src="@drawable/retweet_icon"
+             />
+
+            <ImageView
+                android:layout_below="@+id/tweetBodyTxt"
+      			android:layout_toRightOf="@+id/retweetIv"
+                android:id="@+id/favIv"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginRight="48dp"
+                android:src="@drawable/fav_icon" />
+        
+    </RelativeLayout>
+	<!--  Tweet Body  Layout  ends -->
+	
+	<!--  TimeStamp  Layout  start--> 
+
+        <TextView
+            android:id="@+id/tweetTimeStampTxt"
+            android:layout_width="16dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="3h"
+         />
+
+    <!--  TimeStamp  Layout  ends -->
+</RelativeLayout>
