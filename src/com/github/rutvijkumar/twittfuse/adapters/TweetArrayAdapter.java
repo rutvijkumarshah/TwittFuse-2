@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import org.scribe.builder.api.GoogleApi;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.text.Layout;
 import android.util.TypedValue;
@@ -145,11 +146,18 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		viewHolder.screenName.setText("@"+user.getScreenName());
 		viewHolder.tweetBody.setText(displayTweet.getBody());
 		viewHolder.timeStamp.setText(Util.getDuration(tweet.getCreatedAt()));
-		if(reTweetCount> 0) {
-			viewHolder.retweetCountTv.setText(String.valueOf(reTweetCount));
+		viewHolder.retweetCountTv.setText(String.valueOf(reTweetCount));
+		if(reTweetCount == 0) {
+			viewHolder.retweetCountTv.setVisibility(View.INVISIBLE);
+		}else {
+			viewHolder.retweetCountTv.setVisibility(View.VISIBLE);
 		}
-		if(favouritesCount > 0) {
-			viewHolder.favCountTv.setText(String.valueOf(favouritesCount));
+		
+		viewHolder.favCountTv.setText(String.valueOf(favouritesCount));
+		if(favouritesCount == 0) {
+			viewHolder.favCountTv.setVisibility(View.INVISIBLE);
+		}else {
+			viewHolder.favCountTv.setVisibility(View.VISIBLE);
 		}
 		
 		return convertView;
