@@ -7,6 +7,7 @@ import org.json.JSONArray;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.Window;
 
 import com.github.rutvijkumar.twittfuse.R;
 import com.github.rutvijkumar.twittfuse.TwitterApplication;
@@ -34,12 +35,7 @@ public class TimeLineActivity extends Activity {
 	private TweetArrayAdapter adapter;
 	private eu.erikw.PullToRefreshListView tweetsListView;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_time_line);
-		client=TwitterApplication.getRestClient();
-		//populateTimeLine();
+	private void setupIintialViews() {
 		tweetsListView=(eu.erikw.PullToRefreshListView)findViewById(R.id.lvTweets);
 		adapter=new TweetArrayAdapter(this, tweets);
 		tweetsListView.setAdapter(adapter);
@@ -56,14 +52,23 @@ public class TimeLineActivity extends Activity {
 	                populateTimeLine();
 	            }
 	        });
+	}
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		setContentView(R.layout.activity_time_line);
+		client=TwitterApplication.getRestClient();
+		setupIintialViews();//Setting up listeners,paginations,adapters
 		populateTimeLine();
 	}
 	
 	private void populateTimeLine() {
 		populateTimeLine(-1);
 	}
-	public void populateTimeLine(int totalItemsCount) {
-		
+	
+	private void populateTimeLine(int totalItemsCount) {
+		Util.showProgressBar(this);
 		if(Util.isNetworkAvailable(this) ) {
 			
 			if(totalItemsCount >0) {
@@ -81,12 +86,14 @@ public class TimeLineActivity extends Activity {
 				client.getHomeTimeline(new ResponseHandler());
 			}
 		}else {
+			Util.showNetworkUnavailable(this);
 			//When Network is not available load all tweets from DB
 			adapter.clear();
 			adapter.notifyDataSetInvalidated();
 			List<Tweet> dbTweeets = Tweet.findAll();
 			adapter.addAll(dbTweeets);
 			tweetsListView.onRefreshComplete();
+			Util.hideProgressBar(this);
 		}
 		
 		
@@ -104,7 +111,7 @@ public class TimeLineActivity extends Activity {
 		
 		@Override
 		public void onFailure(Throwable e, String s) {
-			
+			Util.hideProgressBar(TimeLineActivity.this);
 		}
 		
 		@Override
@@ -115,7 +122,7 @@ public class TimeLineActivity extends Activity {
 				adapter.add(tweet);
 			}
 			tweetsListView.onRefreshComplete();
+			Util.hideProgressBar(TimeLineActivity.this);
 		}
-	}
-	
+	}	
 }

@@ -31,7 +31,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.github.rutvijkumar.twittfuse.models.Tweet;
 
@@ -39,6 +42,34 @@ public class Util {
 
 	private static final String TWITTER = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
 
+	public static void hideProgressBar(Activity activity) {
+		setProgressBarVisibility(activity, false); 
+    }
+	public static void showProgressBar(Activity activity) {
+     setProgressBarVisibility(activity, true);   
+    }
+	
+	private String getCountString(long count) {
+		StringBuilder countStr=new StringBuilder();
+		float val=0.0f;
+		if(count > 999) {
+			val=count/1000.00f;
+		}
+		return countStr.toString();
+	}
+	public static void showNetworkUnavailable(Activity activity) {
+		 LayoutInflater inflater = activity.getLayoutInflater();
+		    View view = inflater.inflate(R.layout.network_not_available,
+		                                   (ViewGroup) activity.findViewById(R.id.nwunavailable));
+		    Toast toast=new Toast(activity);
+		    toast.setView(view);
+		    toast.setDuration(Toast.LENGTH_LONG);
+		    toast.show();
+
+	}
+	private static void setProgressBarVisibility(Activity activity,boolean show) {
+		activity.setProgressBarIndeterminate(show);
+	}
 	public static Boolean isNetworkAvailable(Activity activity) {
 		ConnectivityManager connectivityManager 
         = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
