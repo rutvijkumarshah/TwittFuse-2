@@ -24,23 +24,43 @@ package com.github.rutvijkumar.twittfuse.models;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.activeandroid.util.Log;
+import android.util.Log;
+
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Delete;
+import com.activeandroid.query.Select;
 import com.github.rutvijkumar.twittfuse.Util;
 
-public class Tweet {
+@Table(name = "tweets")
+public class Tweet extends Model{
 
+	@Column(name = "body")
 	private String body;
+	
+    @Column(name = "uid", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
 	private long uid;
+    
+    @Column(name = "createdAt",index=true)
 	private Date createdAt;
+	
+	@Column(name = "reTweetCount")
 	private long reTweetCount;
+	
+	@Column(name = "favouritesCount")
 	private long favouritesCount;
 
+	@Column(name = "user")
 	private User user;
+	
+	@Column(name = "retweeted")
 	private Tweet reTweeted;
 
 
@@ -118,6 +138,29 @@ public class Tweet {
 
 	public long getFavouritesCount() {
 		return favouritesCount;
+	}
+	
+
+	/***
+	 * convieient method to save Tweet Object 
+	 * 
+	 */
+	public long persist() {
+		if(reTweeted!=null) {
+			reTweeted.persist();
+		}
+		user.save();
+		return this.save();
+	}
+	
+	public static List<Tweet> findAll() {
+        return new Select()
+          .from(Tweet.class)
+          .execute();
+    }
+
+	public static void deleteAll(){
+		new Delete().from(Tweet.class).execute();
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.github.rutvijkumar.twittfuse.activities;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 
@@ -9,6 +10,7 @@ import android.os.Bundle;
 
 import com.github.rutvijkumar.twittfuse.R;
 import com.github.rutvijkumar.twittfuse.TwitterApplication;
+import com.github.rutvijkumar.twittfuse.Util;
 import com.github.rutvijkumar.twittfuse.adapters.TweetArrayAdapter;
 import com.github.rutvijkumar.twittfuse.api.TwitterClient;
 import com.github.rutvijkumar.twittfuse.helpers.EndlessScrollListener;
@@ -61,19 +63,33 @@ public class TimeLineActivity extends Activity {
 		populateTimeLine(-1);
 	}
 	public void populateTimeLine(int totalItemsCount) {
-		if(totalItemsCount >0) {
-			Tweet oldestTweet = (Tweet) tweetsListView.getItemAtPosition(totalItemsCount-1);
-			if(oldestTweet!=null) {
-				client.getHomeTimeline(new ResponseHandler(),oldestTweet.getUid()-1);
-			}
+		
+		if(Util.isNetworkAvailable(this) ) {
 			
+			if(totalItemsCount >0) {
+				Tweet oldestTweet = (Tweet) tweetsListView.getItemAtPosition(totalItemsCount-1);
+				if(oldestTweet!=null) {
+					//When getting older tweets
+					client.getHomeTimeline(new ResponseHandler(),oldestTweet.getUid()-1);
+				}
+				
+			}else {
+				//When refresh to Pull or Getting Tweets first time after launch of app
+				Tweet.deleteAll();
+				adapter.clear();
+				adapter.notifyDataSetInvalidated();
+				client.getHomeTimeline(new ResponseHandler());
+			}
 		}else {
+			//When Network is not available load all tweets from DB
 			adapter.clear();
 			adapter.notifyDataSetInvalidated();
-			client.getHomeTimeline(new ResponseHandler());
+			List<Tweet> dbTweeets = Tweet.findAll();
+			adapter.addAll(dbTweeets);
+			tweetsListView.onRefreshComplete();
 		}
-		tweetsListView.onRefreshComplete();
-
+		
+		
 	}
 	
 	/***
@@ -85,6 +101,7 @@ public class TimeLineActivity extends Activity {
 		ResponseHandler(){
 			
 		}
+		
 		@Override
 		public void onFailure(Throwable e, String s) {
 			
@@ -92,7 +109,12 @@ public class TimeLineActivity extends Activity {
 		
 		@Override
 		public void onSuccess(JSONArray jsArray) {
-			adapter.addAll(Tweet.fromJSONArray(jsArray));
+			ArrayList<Tweet> tweets =Tweet.fromJSONArray(jsArray);
+			for (Tweet tweet : tweets) {
+				tweet.persist();
+				adapter.add(tweet);
+			}
+			tweetsListView.onRefreshComplete();
 		}
 	}
 	

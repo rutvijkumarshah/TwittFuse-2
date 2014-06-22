@@ -25,11 +25,23 @@ package com.github.rutvijkumar.twittfuse.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class User {
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 
+@Table(name = "users")
+public class User extends Model{
+
+	@Column(name = "name")
 	private String name;
+	
+	@Column(name = "uid")
 	private long uid;
+	
+	@Column(name = "profileImageUrl")
 	private String profileImageUrl;
+	
+	@Column(name = "screenName")
 	private String screenName;
 
 	public String getName() {
