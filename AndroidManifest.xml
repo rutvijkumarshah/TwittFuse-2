@@ -48,6 +48,10 @@
             android:name="com.github.rutvijkumar.twittfuse.activities.TimeLineActivity"
             android:label="@string/title_activity_time_line" >
         </activity>
+        <activity
+            android:name="com.github.rutvijkumar.twittfuse.TweetDetails"
+            android:label="@string/title_activity_tweet_details" >
+        </activity>
     </application>
 
 </manifest>
