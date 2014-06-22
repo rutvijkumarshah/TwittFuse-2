@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -17,4 +17,16 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <style name="tfTheme" parent="@android:style/Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/tfActionBar</item>
+    </style>
+    <style name="tfActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">#4099ff</item>
+        <item name="android:titleTextStyle">@style/tfActionBar.TitleTextStyle</item>
+    	<item name="android:actionMenuTextColor">@android:color/white</item>
+    </style>
+    <style name="tfActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+    <item name="android:textColor">@android:color/white</item>
+  </style>
+    
 </resources>
