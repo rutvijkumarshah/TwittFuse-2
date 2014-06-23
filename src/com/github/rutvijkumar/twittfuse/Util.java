@@ -26,23 +26,46 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.github.rutvijkumar.twittfuse.fragments.ComposeDialog;
 import com.github.rutvijkumar.twittfuse.models.Tweet;
+import com.twitter.Extractor;
 
 public class Util {
 
 	private static final String TWITTER = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
 	
+	public static ComposeDialog newInstance(Activity activity) {
+		ComposeDialog dlg = new ComposeDialog();
+		dlg.setActivity(activity);
+		Bundle args = new Bundle();
+		dlg.setArguments(args);
+		return dlg;
+	}
+	
+	public static ComposeDialog newInstance(Activity activity,String replyTo,String replyToTweetId) {
+		ComposeDialog dlg = new ComposeDialog();
+		dlg.setActivity(activity);
+		dlg.setReplyTo(replyTo, replyToTweetId);
+		Bundle args = new Bundle();
+		dlg.setArguments(args);
+		return dlg;
+	}
 	public static void showSoftKeyboard(View view,Activity activity){
 	    if(view.requestFocus()){
 	        InputMethodManager imm =(InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -105,6 +128,25 @@ public class Util {
 		return maxSinceId;
 	}
 
+	public static  void onReply(FragmentActivity activity,HashSet<String> replyScreeName,String replyToTweetId) {
+		FragmentManager fm = activity.getSupportFragmentManager();
+		ComposeDialog reply = Util
+				.newInstance(activity);
+		reply.setReplyTo(replyScreeName, replyToTweetId);
+		Bundle args = new Bundle();
+		reply.setArguments(args);
+		reply.show(fm, "");
+		
+	}
+	public static  void onCompose(FragmentActivity activity) {
+		FragmentManager fm = activity.getSupportFragmentManager();
+		ComposeDialog compose = Util
+				.newInstance(activity);
+		Bundle args = new Bundle();
+		compose.setArguments(args);
+		compose.show(fm, "");
+		
+	}
 	public static String fromNow(Date date) {
 		String fromNow = null;
 		Date today = new Date();
@@ -161,4 +203,9 @@ public class Util {
 		return fromNow(createdAt);
 	}
 	
+	public static List<String> testExtract(String tweetBody) {
+		Extractor extractor =new Extractor();
+		List<String> screennames = extractor.extractMentionedScreennames(tweetBody);
+		return screennames;
+	}
 }

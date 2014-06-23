@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:minHeight="1000dp"
+    android:minWidth="1000dp"
+    >
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+ >
+
+    <ImageView
+        android:id="@+id/currentUserProfilePic"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/profile_img" />
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="8dp"
+        android:textSize="10sp"
+        android:layout_toRightOf="@+id/currentUserProfilePic"
+        android:text="Rutvijkumar Shah"
+         />
+
+    <TextView
+        android:id="@+id/userscreenname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/username"
+        android:layout_below="@+id/username"
+        android:textSize="10sp"
+        android:text="\@rutvijashah"
+        android:layout_alignBottom="@+id/currentUserProfilePic"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <Button
+        android:id="@+id/tweetIt"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="36dp"
+        android:padding="0dp"
+        android:layout_height="wrap_content"
+        android:text="TWEET"
+        android:textSize="10sp"
+        android:background="@color/TwitterBlue"
+        android:textColor="@android:color/white"
+        android:layout_alignBottom="@+id/currentUserProfilePic"
+       />
+
+    <TextView
+        android:id="@+id/remainingChars"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tweetIt"
+        android:layout_toLeftOf="@+id/tweetIt"
+        android:text="140"
+        android:maxLength="140"
+        android:layout_marginRight="16dp"
+        android:textSize="10sp"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/tweetTextara"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+    	android:singleLine="false"
+    	android:lines="5"
+        android:layout_below="@+id/currentUserProfilePic"
+        android:ems="10"
+       >
+        <requestFocus />
+    </EditText>
+
+</RelativeLayout>
+</LinearLayout>

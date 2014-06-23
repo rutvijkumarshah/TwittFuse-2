@@ -24,6 +24,7 @@ package com.github.rutvijkumar.twittfuse.adapters;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.TypedValue;
@@ -35,13 +36,16 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.rutvijkumar.twittfuse.R;
+import com.github.rutvijkumar.twittfuse.TwitterUtil;
 import com.github.rutvijkumar.twittfuse.Util;
 import com.github.rutvijkumar.twittfuse.activities.TimeLineActivity;
 import com.github.rutvijkumar.twittfuse.activities.TweetDetailsActivity;
+import com.github.rutvijkumar.twittfuse.api.TwitterClient;
 import com.github.rutvijkumar.twittfuse.models.Tweet;
 import com.github.rutvijkumar.twittfuse.models.User;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -53,6 +57,8 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 	
 	private Context context;
 	
+	private TwitterUtil twUtil;
+	private TwitterClient client;
 	public float getDP(int dp) {
 		float dimension = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
 		return dimension;
@@ -69,13 +75,16 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		ImageView  reTweetImage;//@+id/retweetedTweet
 		TextView retweetCountTv;
 		TextView favCountTv;
-		
+		ImageButton favImage;
+		ImageButton rtImage;
 		
 	}
 //retweetedTweet
 	public TweetArrayAdapter(Context context, ArrayList<Tweet> tweets) {
 		super(context, R.layout.tweet_litem, tweets);
 		this.context=context;
+		this.client=new TwitterClient(context);
+		this.twUtil=new TwitterUtil((Activity)context, client);
 	}
 
 	@Override
@@ -106,7 +115,8 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 			
 			viewHolder.retweetCountTv=(TextView)convertView.findViewById(R.id.retweetCountTv);
 			viewHolder.favCountTv=(TextView)convertView.findViewById(R.id.favCountTv);
-			
+			viewHolder.favImage=(ImageButton)convertView.findViewById(R.id.favIv);
+			viewHolder.rtImage=(ImageButton)convertView.findViewById(R.id.retweetIv);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -160,6 +170,7 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 			viewHolder.favCountTv.setVisibility(View.VISIBLE);
 		}
 	
+		
 		//pullToRefreshListView setOnItem click listerner is not working because of auto link
 		convertView.setOnClickListener(new OnClickListener() {
 			
@@ -173,6 +184,8 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 			}
 		});
 		
+		twUtil.setFavView(tweet.isFavorited(), viewHolder.favImage);
+		twUtil.setRTView(tweet.isRetweeted(), viewHolder.rtImage);
 		return convertView;
 	}
 	

@@ -2,14 +2,15 @@ package com.github.rutvijkumar.twittfuse.activities;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.HashSet;
+import java.util.List;
 
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.rutvijkumar.twittfuse.R;
+import com.github.rutvijkumar.twittfuse.TwitterUtil;
 import com.github.rutvijkumar.twittfuse.Util;
 import com.github.rutvijkumar.twittfuse.api.TwitterClient;
 import com.github.rutvijkumar.twittfuse.models.Tweet;
@@ -30,7 +32,7 @@ import com.github.rutvijkumar.twittfuse.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class TweetDetailsActivity extends Activity {
+public class TweetDetailsActivity extends FragmentActivity {
 
 	ImageView profileImage;
 	TextView name;
@@ -44,7 +46,7 @@ public class TweetDetailsActivity extends Activity {
 
 	ImageButton replyAction;
 	ImageButton rtAction;
-	ImageView favAction;
+	ImageButton favAction;
 	ImageButton shareAction;
 
 	EditText replyEditText;
@@ -53,6 +55,8 @@ public class TweetDetailsActivity extends Activity {
 
 	private Tweet tweet;
 	private TwitterClient client;
+	private TwitterUtil twUtil;
+	
 	static final DateFormat df = new SimpleDateFormat("h:mm a . dd MMM yy");
 
 	private static final int CHARS_LIMIT = 140;
@@ -120,26 +124,30 @@ public class TweetDetailsActivity extends Activity {
 		favCount.setText(String.valueOf(tweet.getFavouritesCount()));
 
 		replyEditText.setHint("Reply to " + user.getName());// Localize Reply to
-		
-		setFavView(tweet.isFavorited());
-		setRTView(tweet.isRetweeted());
+		twUtil=new TwitterUtil(this, client);
+		twUtil.setFavView(tweet.isFavorited(),favAction);
+		twUtil.setRTView(tweet.isRetweeted(),rtAction);
 	}
 
 	public void doAction(View view) {
 		final String action_code=view.getTag().toString();
 		if("FAV".equals(action_code)) {
 			tweet.setFavorited(!tweet.isFavorited());
-			markFavorite();
+			twUtil.markFavorite(tweet, favAction);
 		}
 		else if("SHARE".equals(action_code)) {
 			startShareIntent();
 		}
 		else if("RT".equals(action_code)) {
-			confirmRetweet();
+			twUtil.confirmRetweet(tweet,rtAction);
+		}else if ("REPLY".equals(action_code)) {
+			twUtil.postReply(tweet);
 		}
 		
 		
 	}
+	
+	
 	private void setupListnersForUI() {
 
 		tweetIt.setOnClickListener(new OnClickListener() {
@@ -196,78 +204,8 @@ public class TweetDetailsActivity extends Activity {
 		});
 	}
 
-	 private void setFavView(boolean isFav) {
-		if(isFav) {
-			favAction.setImageResource(R.drawable.ic_action_fav_selected);
-		}else {
-			favAction.setImageResource(R.drawable.ic_action_fav_dark);
-		}
-	}
 	
-	 private void setRTView(boolean isRetweeted) {
-			if(isRetweeted) {
-				rtAction.setImageResource(R.drawable.ic_rt_action_selected);
-			}else {
-				rtAction.setImageResource(R.drawable.ic_rt_action_dark);
-			}
-	 }
-		 
-	private  void markFavorite() {
-		setFavView(tweet.isFavorited());
 
-		client.markTweetFavorite(tweet.isFavorited(),
-				String.valueOf(tweet.getUid()), new JsonHttpResponseHandler() {
-					@Override
-					public void onSuccess(JSONObject body) {
-						boolean isFav=tweet.isFavorited();
-						tweet.setFavorited(isFav);
-						tweet.save();
-					}
-
-					
-
-					public void onFailure(Throwable e, JSONObject error) {
-						Log.d("DEBUG", error.toString());
-						Log.e("ERROR", "Exception while marking fav", e);
-					}
-				});
-	}
-	private void doReTweet() {
-		setRTView(true);
-		client.postRT(String.valueOf(tweet.getUid()), new JsonHttpResponseHandler() {
-			@Override
-			public void onSuccess(JSONObject body) {
-				tweet.setRetweeted(true);
-				tweet.save();
-			}
-
-			public void onFailure(Throwable e, JSONObject error) {
-				Log.d("DEBUG", error.toString());
-				Log.e("ERROR", "Exception while doing RT", e);
-			}
-		});
-		
-	}
-	private void confirmRetweet() {
-		if(!tweet.isRetweeted()){
-			
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		    builder.setTitle("Retweet this to your followers?");
-		    builder.setPositiveButton("Retweet", new DialogInterface.OnClickListener()
-		    {
-		        @Override
-		        public void onClick(DialogInterface dialog, int whichButton)
-		        {
-		        	doReTweet();
-		        	
-		        }
-				
-		    });
-		    builder.setNegativeButton("Cancel", null);
-		    builder.create().show();
-
-		}
-     }
 	private void postTweet(String status) {
 		client.postTweet(status, String.valueOf(tweet.getUid()),  new JsonHttpResponseHandler() {
 			@Override

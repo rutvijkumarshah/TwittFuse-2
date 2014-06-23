@@ -5,8 +5,12 @@ import java.util.List;
 
 import org.json.JSONArray;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.Window;
 
 import com.github.rutvijkumar.twittfuse.R;
@@ -14,6 +18,7 @@ import com.github.rutvijkumar.twittfuse.TwitterApplication;
 import com.github.rutvijkumar.twittfuse.Util;
 import com.github.rutvijkumar.twittfuse.adapters.TweetArrayAdapter;
 import com.github.rutvijkumar.twittfuse.api.TwitterClient;
+import com.github.rutvijkumar.twittfuse.fragments.ComposeDialog;
 import com.github.rutvijkumar.twittfuse.helpers.EndlessScrollListener;
 import com.github.rutvijkumar.twittfuse.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -28,7 +33,7 @@ import eu.erikw.PullToRefreshListView.OnRefreshListener;
  * @author Rutvijkumar Shah
  *
  */
-public class TimeLineActivity extends Activity {
+public class TimeLineActivity extends FragmentActivity {
 
 	private TwitterClient client;
 	private ArrayList<Tweet> tweets=new ArrayList<Tweet>();
@@ -127,5 +132,25 @@ public class TimeLineActivity extends Activity {
 			tweetsListView.onRefreshComplete();
 			Util.hideProgressBar(TimeLineActivity.this);
 		}
-	}	
+	}
+	
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.action_compose) {
+			Util.onCompose(this);
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.tweets_menus, menu);
+		MenuItem composeItem = menu.findItem(R.id.action_compose);
+		
+		return true;
+	}
 }
