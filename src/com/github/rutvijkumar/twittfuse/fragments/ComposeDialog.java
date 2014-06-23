@@ -22,9 +22,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.github.rutvijkumar.twittfuse.fragments;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 import org.json.JSONObject;
 
@@ -46,6 +44,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.rutvijkumar.twittfuse.R;
 import com.github.rutvijkumar.twittfuse.Util;
@@ -177,8 +176,7 @@ public class ComposeDialog extends DialogFragment {
 		client.postTweet(tweetBody,replyToTweetId, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(JSONObject arg0) {
-				// TODO Auto-generated method stub
-				super.onSuccess(arg0);
+				onSuccessfullPost();
 			}
 			@Override
 			public void onFailure(Throwable e, JSONObject error) {
@@ -187,13 +185,18 @@ public class ComposeDialog extends DialogFragment {
 			}
 		});
 	}
+	
+	private void onSuccessfullPost() {
+		Toast.makeText(activity, "Tweet successfully posted", Toast.LENGTH_LONG).show();
+		dismiss();
+	
+	}
 	public void postTweet(String tweetBody) {
 		 
 		client.postTweet(tweetBody, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(JSONObject arg0) {
-				// TODO Auto-generated method stub
-				super.onSuccess(arg0);
+				onSuccessfullPost();
 			}
 			@Override
 			public void onFailure(Throwable e, JSONObject error) {

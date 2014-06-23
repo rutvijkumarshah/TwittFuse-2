@@ -24,26 +24,25 @@ package com.github.rutvijkumar.twittfuse.adapters;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.rutvijkumar.twittfuse.R;
 import com.github.rutvijkumar.twittfuse.TwitterUtil;
 import com.github.rutvijkumar.twittfuse.Util;
-import com.github.rutvijkumar.twittfuse.activities.TimeLineActivity;
 import com.github.rutvijkumar.twittfuse.activities.TweetDetailsActivity;
 import com.github.rutvijkumar.twittfuse.api.TwitterClient;
 import com.github.rutvijkumar.twittfuse.models.Tweet;
@@ -77,6 +76,7 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		TextView favCountTv;
 		ImageButton favImage;
 		ImageButton rtImage;
+		ImageButton replyImage;
 		
 	}
 //retweetedTweet
@@ -84,7 +84,7 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		super(context, R.layout.tweet_litem, tweets);
 		this.context=context;
 		this.client=new TwitterClient(context);
-		this.twUtil=new TwitterUtil((Activity)context, client);
+		this.twUtil=new TwitterUtil((FragmentActivity)context, client);
 	}
 
 	@Override
@@ -115,8 +115,11 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 			
 			viewHolder.retweetCountTv=(TextView)convertView.findViewById(R.id.retweetCountTv);
 			viewHolder.favCountTv=(TextView)convertView.findViewById(R.id.favCountTv);
+			
 			viewHolder.favImage=(ImageButton)convertView.findViewById(R.id.favIv);
 			viewHolder.rtImage=(ImageButton)convertView.findViewById(R.id.retweetIv);
+			viewHolder.replyImage=(ImageButton)convertView.findViewById(R.id.replyIv);
+			
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -157,6 +160,12 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		viewHolder.tweetBody.setText(displayTweet.getBody());
 		viewHolder.timeStamp.setText(Util.getDuration(tweet.getCreatedAt()));
 		viewHolder.retweetCountTv.setText(String.valueOf(reTweetCount));
+	
+		viewHolder.favImage.setTag(tweet);
+		viewHolder.rtImage.setTag(tweet);
+		viewHolder.replyImage.setTag(tweet);
+		
+		
 		if(reTweetCount == 0) {
 			viewHolder.retweetCountTv.setVisibility(View.INVISIBLE);
 		}else {
@@ -186,6 +195,44 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		
 		twUtil.setFavView(tweet.isFavorited(), viewHolder.favImage);
 		twUtil.setRTView(tweet.isRetweeted(), viewHolder.rtImage);
+	
+		
+		final ImageButton favImage=viewHolder.favImage;
+		viewHolder.favImage.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Tweet tw=(Tweet)v.getTag();
+				//FLIP FAV
+				tweet.setFavorited(!tw.isFavorited());
+				twUtil.markFavorite(tw, favImage);
+			}
+		});
+		
+		final ImageButton reTweetImage=viewHolder.rtImage;
+		viewHolder.rtImage.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Tweet tw=(Tweet)v.getTag();
+				twUtil.confirmRetweet(tw, reTweetImage);
+				
+			}
+		});
+		
+		
+		viewHolder.replyImage.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Tweet tw=(Tweet)v.getTag();
+				twUtil.postReply(tw);
+				
+			}
+		});
+		
 		return convertView;
 	}
 	
