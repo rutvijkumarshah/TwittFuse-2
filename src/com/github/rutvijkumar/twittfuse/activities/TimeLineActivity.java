@@ -52,6 +52,9 @@ public class TimeLineActivity extends Activity {
 	                populateTimeLine();
 	            }
 	        });
+		
+		
+
 	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

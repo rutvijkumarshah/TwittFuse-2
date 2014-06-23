@@ -6,7 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_photos">Flickr Photos</string>
     <string name="login_label">Sign in Twitter</string>
-    <string name="title_activity_time_line">Time Line</string>
-    <string name="title_activity_tweet_details">TweetDetails</string>
+    <string name="title_activity_time_line">Tweets</string>
+    <string name="title_activity_tweet_details">Tweet</string>
 
 </resources>

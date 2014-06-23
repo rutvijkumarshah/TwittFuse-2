@@ -1,6 +1,7 @@
 /***
 
 The MIT License (MIT)
+
 Copyright © 2014 Rutvijkumar Shah
  
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
@@ -22,6 +23,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.github.rutvijkumar.twittfuse.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,7 +40,12 @@ import com.activeandroid.query.Select;
 import com.github.rutvijkumar.twittfuse.Util;
 
 @Table(name = "tweets")
-public class Tweet extends Model{
+public class Tweet extends Model implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Column(name = "body")
 	private String body;

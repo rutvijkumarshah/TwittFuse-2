@@ -24,24 +24,24 @@ package com.github.rutvijkumar.twittfuse.adapters;
 
 import java.util.ArrayList;
 
-import org.scribe.builder.api.GoogleApi;
-
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.net.Uri;
-import android.text.Layout;
+import android.content.Intent;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.activeandroid.util.Log;
 import com.github.rutvijkumar.twittfuse.R;
 import com.github.rutvijkumar.twittfuse.Util;
+import com.github.rutvijkumar.twittfuse.activities.TimeLineActivity;
+import com.github.rutvijkumar.twittfuse.activities.TweetDetailsActivity;
 import com.github.rutvijkumar.twittfuse.models.Tweet;
 import com.github.rutvijkumar.twittfuse.models.User;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -81,7 +81,7 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// Get the data item for this position
-		Tweet tweet = getItem(position);
+		final Tweet tweet = getItem(position);
 		// Check if an existing view is being reused, otherwise inflate the view
 		ViewHolder viewHolder; // view lookup cache stored in tag
 		if (convertView == null) {
@@ -159,9 +159,24 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		}else {
 			viewHolder.favCountTv.setVisibility(View.VISIBLE);
 		}
+	
+		//pullToRefreshListView setOnItem click listerner is not working because of auto link
+		convertView.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent detailsIntent = new Intent(getContext(), TweetDetailsActivity.class);
+				detailsIntent.putExtra("tweet", tweet);
+				getContext().startActivity(detailsIntent);
+				
+			}
+		});
 		
 		return convertView;
 	}
+	
+	
 	
 	private void viewRetweetInfo( int visibility,View view,float width,float height) {
 		LayoutParams layoutParams = view.getLayoutParams();
@@ -171,5 +186,4 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		view.setLayoutParams(layoutParams);
 		
 	}
-
 }

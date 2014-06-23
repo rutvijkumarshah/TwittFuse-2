@@ -49,7 +49,7 @@
             android:label="@string/title_activity_time_line" >
         </activity>
         <activity
-            android:name="com.github.rutvijkumar.twittfuse.TweetDetails"
+            android:name="com.github.rutvijkumar.twittfuse.activities.TweetDetailsActivity"
             android:label="@string/title_activity_tweet_details" >
         </activity>
     </application>

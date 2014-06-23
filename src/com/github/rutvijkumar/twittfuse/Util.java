@@ -34,6 +34,7 @@ import android.net.NetworkInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.github.rutvijkumar.twittfuse.models.Tweet;
@@ -42,6 +43,17 @@ public class Util {
 
 	private static final String TWITTER = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
 
+	public static void showSoftKeyboard(View view,Activity activity){
+	    if(view.requestFocus()){
+	        InputMethodManager imm =(InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+	        imm.showSoftInput(view,InputMethodManager.SHOW_IMPLICIT);
+	    }
+	}
+	public static void hideSoftKeyboard(View view,Activity activity){
+		  InputMethodManager imm =(InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+		  imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+	}
+	
 	public static void hideProgressBar(Activity activity) {
 		setProgressBarVisibility(activity, false); 
     }
