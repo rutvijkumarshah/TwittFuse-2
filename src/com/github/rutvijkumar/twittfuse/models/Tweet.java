@@ -40,7 +40,7 @@ import com.activeandroid.query.Select;
 import com.github.rutvijkumar.twittfuse.Util;
 
 @Table(name = "tweets")
-public class Tweet extends Model implements Serializable{
+public class Tweet extends Model implements Serializable {
 
 	/**
 	 * 
@@ -49,31 +49,44 @@ public class Tweet extends Model implements Serializable{
 
 	@Column(name = "body")
 	private String body;
-	
-    @Column(name = "uid", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+
+	@Column(name = "uid", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
 	private long uid;
-    
-    @Column(name = "createdAt",index=true)
+
+	@Column(name = "createdAt", index = true)
 	private Date createdAt;
-	
+
 	@Column(name = "reTweetCount")
 	private long reTweetCount;
-	
+
 	@Column(name = "favouritesCount")
 	private long favouritesCount;
 
 	@Column(name = "user")
 	private User user;
-	
+
 	@Column(name = "retweeted")
 	private Tweet reTweeted;
 
+	@Column(name = "favorited_flag")
+	private boolean favorited;
+
+	@Column(name = "retweeted_flag")
+	private boolean retweeted;
+
+	
+
+	public boolean isFavorited() {
+		return favorited;
+	}
+
+	public boolean isRetweeted() {
+		return retweeted;
+	}
 
 	public Tweet getReTweeted() {
 		return reTweeted;
 	}
-
-	
 
 	public static ArrayList<Tweet> fromJSONArray(JSONArray jsonArray) {
 		final int size = jsonArray.length();
@@ -97,25 +110,28 @@ public class Tweet extends Model implements Serializable{
 	public static Tweet fromJSON(JSONObject jsonObject) {
 		Tweet tweet = new Tweet();
 		try {
-			
+
 			tweet.body = jsonObject.getString("text");
 			tweet.uid = jsonObject.getLong("id");
-			tweet.createdAt = Util.getTwitterDate(jsonObject.getString("created_at"));
-			
-			if(jsonObject.has("retweet_count")) {
+			tweet.createdAt = Util.getTwitterDate(jsonObject
+					.getString("created_at"));
+
+			if (jsonObject.has("retweet_count")) {
 				tweet.reTweetCount = jsonObject.getLong("retweet_count");
 			}
-			if(jsonObject.has("favorite_count")) {
+			if (jsonObject.has("favorite_count")) {
 				tweet.favouritesCount = jsonObject.getLong("favorite_count");
-				
+
 			}
-			if(jsonObject.has("retweeted_status")) {
-				tweet.reTweeted=Tweet.fromJSON(jsonObject.getJSONObject("retweeted_status"));
+			if (jsonObject.has("retweeted_status")) {
+				tweet.reTweeted = Tweet.fromJSON(jsonObject
+						.getJSONObject("retweeted_status"));
 			}
 			tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
-		
+			tweet.favorited = jsonObject.getBoolean("favorited");
+			tweet.retweeted = jsonObject.getBoolean("retweeted");
 		} catch (JSONException e) {
-			e.printStackTrace();	
+			e.printStackTrace();
 		}
 		return tweet;
 	}
@@ -136,7 +152,6 @@ public class Tweet extends Model implements Serializable{
 		return user;
 	}
 
-
 	public long getReTweetCount() {
 		return reTweetCount;
 	}
@@ -144,27 +159,24 @@ public class Tweet extends Model implements Serializable{
 	public long getFavouritesCount() {
 		return favouritesCount;
 	}
-	
 
 	/***
-	 * convieient method to save Tweet Object 
+	 * convieient method to save Tweet Object
 	 * 
 	 */
 	public long persist() {
-		if(reTweeted!=null) {
+		if (reTweeted != null) {
 			reTweeted.persist();
 		}
 		user.save();
 		return this.save();
 	}
-	
-	public static List<Tweet> findAll() {
-        return new Select()
-          .from(Tweet.class)
-          .execute();
-    }
 
-	public static void deleteAll(){
+	public static List<Tweet> findAll() {
+		return new Select().from(Tweet.class).execute();
+	}
+
+	public static void deleteAll() {
 		new Delete().from(Tweet.class).execute();
 	}
 

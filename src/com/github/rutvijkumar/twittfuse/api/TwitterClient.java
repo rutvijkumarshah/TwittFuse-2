@@ -1,5 +1,6 @@
 package com.github.rutvijkumar.twittfuse.api;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 
 import org.scribe.builder.api.Api;
@@ -25,47 +26,78 @@ import com.loopj.android.http.RequestParams;
  * 
  */
 public class TwitterClient extends OAuthBaseClient {
-    public static final Class<? extends Api> REST_API_CLASS = TwitterApi.class; // Change this
-    public static final String REST_URL = "https://api.twitter.com/1.1"; // Change this, base API URL
-    public static final String REST_CONSUMER_KEY = "YP3F2Wp4cpeF5xZQcOnnQ522x";       // Change this
-    public static final String REST_CONSUMER_SECRET = "xrCSdAk1dcoYlAiwCZEhEuXRNqsXYBVmIlr7s8FId6Sb24Jfnb"; // Change this
-    public static final String REST_CALLBACK_URL = "oauth://cptwittfuse"; // Change this (here and in manifest)
-    private static final int MAX_RECORD_COUNT=20;
-    
-    public TwitterClient(Context context) {
-        super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
-    }
-    
-    public void getHomeTimeline(AsyncHttpResponseHandler handler) {
-    	getHomeTimeline(handler,-1);
-    }
-    
-    public void getHomeTimeline(AsyncHttpResponseHandler handler,long maxId) {
-    	String apiUrl= getApiUrl("statuses/home_timeline.json");
-    	RequestParams params=new RequestParams();
-    	if(maxId >0) {
-    		params.put("max_id",String.valueOf(maxId));
-    	}
-    	params.put("count", String.valueOf(MAX_RECORD_COUNT));
-    	client.get(apiUrl, params,handler);
-    }
-//    
-//    // CHANGE THIS
-//    // DEFINE METHODS for different API endpoints here
-//    public void getInterestingnessList(AsyncHttpResponseHandler handler) {
-//        String apiUrl = getApiUrl("?nojsoncallback=1&method=flickr.interestingness.getList");
-//        // Can specify query string params directly or through RequestParams.
-//        RequestParams params = new RequestParams();
-//        params.put("format", "json");
-//        client.get(apiUrl, params, handler);
-//    }
-    
-    /* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
-     * 	  i.e getApiUrl("statuses/home_timeline.json");
-     * 2. Define the parameters to pass to the request (query or body)
-     *    i.e RequestParams params = new RequestParams("foo", "bar");
-     * 3. Define the request method and make a call to the client
-     *    i.e client.get(apiUrl, params, handler);
-     *    i.e client.post(apiUrl, params, handler);
-     */
+	public static final Class<? extends Api> REST_API_CLASS = TwitterApi.class; // Change
+																				// this
+	public static final String REST_URL = "https://api.twitter.com/1.1"; // Change
+																			// this,
+																			// base
+																			// API
+																			// URL
+	public static final String REST_CONSUMER_KEY = "YP3F2Wp4cpeF5xZQcOnnQ522x"; // Change
+																				// this
+	public static final String REST_CONSUMER_SECRET = "xrCSdAk1dcoYlAiwCZEhEuXRNqsXYBVmIlr7s8FId6Sb24Jfnb"; // Change
+																											// this
+	public static final String REST_CALLBACK_URL = "oauth://cptwittfuse"; // Change
+																			// this
+																			// (here
+																			// and
+																			// in
+																			// manifest)
+	private static final int MAX_RECORD_COUNT = 20;
+
+	public TwitterClient(Context context) {
+		super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY,
+				REST_CONSUMER_SECRET, REST_CALLBACK_URL);
+	}
+
+	public void getHomeTimeline(AsyncHttpResponseHandler handler) {
+		getHomeTimeline(handler, -1);
+	}
+
+	public void getHomeTimeline(AsyncHttpResponseHandler handler, long maxId) {
+		String apiUrl = getApiUrl("statuses/home_timeline.json");
+		RequestParams params = new RequestParams();
+		if (maxId > 0) {
+			params.put("max_id", String.valueOf(maxId));
+		}
+		params.put("count", String.valueOf(MAX_RECORD_COUNT));
+		client.get(apiUrl, params, handler);
+	}
+
+	public void markTweetFavorite(boolean isFav, String tweetId,
+			AsyncHttpResponseHandler handler) {
+		String apiUrl;
+		if (!isFav) {
+			apiUrl = getApiUrl("favorites/create.json");
+		} else {
+			apiUrl = getApiUrl("favorites/destroy.json");
+		}
+		RequestParams params = new RequestParams();
+		params.put("id", tweetId);
+		getClient().post(apiUrl, params, handler);
+
+	}
+
+	public void RTTweet(String tweetId, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/retweet/" + tweetId + ".json");
+		getClient().post(apiUrl, null, handler);
+	}
+
+	public void postTweet(String content, 
+			AsyncHttpResponseHandler handler) {
+		postTweet(content, null, handler);
+	}
+	
+	public void postTweet(String content, String inReplyTo,
+			AsyncHttpResponseHandler handler) {
+		String apiUrl;
+		RequestParams params = new RequestParams();
+		apiUrl = getApiUrl("statuses/update.json");
+		params.put("status", content);
+		if (inReplyTo != null) {
+			params.put("in_reply_to_status_id", content);
+		}
+		getClient().post(apiUrl, params, handler);
+	}
+	
 }

@@ -42,7 +42,7 @@ import com.github.rutvijkumar.twittfuse.models.Tweet;
 public class Util {
 
 	private static final String TWITTER = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
-
+	
 	public static void showSoftKeyboard(View view,Activity activity){
 	    if(view.requestFocus()){
 	        InputMethodManager imm =(InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -160,4 +160,5 @@ public class Util {
 	public static String getDuration(Date createdAt) {
 		return fromNow(createdAt);
 	}
+	
 }

@@ -170,18 +170,27 @@
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/sep_details"
         android:layout_marginBottom="8dp" >
 
+        <!-- Dummy element to avoid et_reply getting focus on start -->
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
+
         <EditText
             android:id="@+id/et_reply"
-            android:layout_width="wrap_content"
+            android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_weight="4.0" >
-
-            <requestFocus />
+            android:layout_weight="4.0"
+            android:inputType="textCapSentences|textMultiLine"
+            android:maxLength="140"
+            android:maxLines="4" >
         </EditText>
 
         <TextView
