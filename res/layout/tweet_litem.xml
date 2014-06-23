@@ -88,6 +88,8 @@
             android:id="@+id/tweetBodyTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:autoLink="all"
+            android:linksClickable="true"
             android:layout_below="@+id/tweetBodyHeader"
             android:layout_marginBottom="8dp"
             android:text="afasdf fdf s adsdfasddfsdfsdaf d safsadfsdafsdfsdafsdafdsf" />
