@@ -6,21 +6,22 @@ import java.text.SimpleDateFormat;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.MotionEvent;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.View.OnTouchListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.activeandroid.util.Log;
 import com.github.rutvijkumar.twittfuse.R;
 import com.github.rutvijkumar.twittfuse.Util;
 import com.github.rutvijkumar.twittfuse.api.TwitterClient;
@@ -52,6 +53,7 @@ public class TweetDetailsActivity extends Activity {
 
 	private Tweet tweet;
 	private TwitterClient client;
+	static final DateFormat df = new SimpleDateFormat("h:mm a . dd MMM yy");
 
 	private static final int CHARS_LIMIT = 140;
 
@@ -86,7 +88,23 @@ public class TweetDetailsActivity extends Activity {
 		setupListnersForUI();
 	}
 
-	
+
+	private void startShareIntent() {
+		String userScreenName=tweet.getUser().getScreenName();
+		String userInfo=tweet.getUser().getName()+" (@"+userScreenName+")";
+		
+		String twtUrl = "https://twitter.com/"+userScreenName+"/status/"+tweet.getUid();
+		
+		String content=userInfo+" tweeted at "+df.format(tweet.getCreatedAt())+" : \n "+tweet.getBody()+"\n ("+twtUrl+")";
+		Intent shareIntent = new Intent();
+	    shareIntent.setAction(Intent.ACTION_SEND);
+	    shareIntent.putExtra(Intent.EXTRA_TEXT, content);
+	    shareIntent.setType("text/plain");
+	    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Tweeet from "+userInfo);
+		
+		
+	    startActivity(Intent.createChooser(shareIntent, "Share Tweet"));		
+	}	
 
 	private void populateValues() {
 
@@ -96,29 +114,41 @@ public class TweetDetailsActivity extends Activity {
 
 		name.setText(user.getName());
 		screenName.setText("@" + user.getScreenName());
-
 		tweetbody.setText(tweet.getBody());
-		DateFormat df = new SimpleDateFormat("h:mm a . dd MMM yy");
-
 		timestamp.setText(df.format(tweet.getCreatedAt()));
 		rtCount.setText(String.valueOf(tweet.getReTweetCount()));
 		favCount.setText(String.valueOf(tweet.getFavouritesCount()));
 
 		replyEditText.setHint("Reply to " + user.getName());// Localize Reply to
-
+		
+		setFavView(tweet.isFavorited());
+		setRTView(tweet.isRetweeted());
 	}
 
 	public void doAction(View view) {
 		final String action_code=view.getTag().toString();
 		if("FAV".equals(action_code)) {
+			tweet.setFavorited(!tweet.isFavorited());
 			markFavorite();
+		}
+		else if("SHARE".equals(action_code)) {
+			startShareIntent();
+		}
+		else if("RT".equals(action_code)) {
+			confirmRetweet();
 		}
 		
 		
 	}
 	private void setupListnersForUI() {
 
-	
+		tweetIt.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				postTweet(replyEditText.getEditableText().toString());
+			}
+		});
 		replyEditText.addTextChangedListener(new TextWatcher() {
 
 			@Override
@@ -166,27 +196,91 @@ public class TweetDetailsActivity extends Activity {
 		});
 	}
 
+	 private void setFavView(boolean isFav) {
+		if(isFav) {
+			favAction.setImageResource(R.drawable.ic_action_fav_selected);
+		}else {
+			favAction.setImageResource(R.drawable.ic_action_fav_dark);
+		}
+	}
+	
+	 private void setRTView(boolean isRetweeted) {
+			if(isRetweeted) {
+				rtAction.setImageResource(R.drawable.ic_rt_action_selected);
+			}else {
+				rtAction.setImageResource(R.drawable.ic_rt_action_dark);
+			}
+	 }
+		 
 	private  void markFavorite() {
+		setFavView(tweet.isFavorited());
 
 		client.markTweetFavorite(tweet.isFavorited(),
 				String.valueOf(tweet.getUid()), new JsonHttpResponseHandler() {
 					@Override
 					public void onSuccess(JSONObject body) {
-						// finishActivity();
-						if (!tweet.isFavorited()) {
-							tweet.setFavorited(true);
-
-						} else {
-							tweet.setFavorited(false);
-
-						}
+						boolean isFav=tweet.isFavorited();
+						tweet.setFavorited(isFav);
 						tweet.save();
-						super.onSuccess(body);
 					}
+
+					
 
 					public void onFailure(Throwable e, JSONObject error) {
-
+						Log.d("DEBUG", error.toString());
+						Log.e("ERROR", "Exception while marking fav", e);
 					}
 				});
+	}
+	private void doReTweet() {
+		setRTView(true);
+		client.postRT(String.valueOf(tweet.getUid()), new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONObject body) {
+				tweet.setRetweeted(true);
+				tweet.save();
+			}
+
+			public void onFailure(Throwable e, JSONObject error) {
+				Log.d("DEBUG", error.toString());
+				Log.e("ERROR", "Exception while doing RT", e);
+			}
+		});
+		
+	}
+	private void confirmRetweet() {
+		if(!tweet.isRetweeted()){
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		    builder.setTitle("Retweet this to your followers?");
+		    builder.setPositiveButton("Retweet", new DialogInterface.OnClickListener()
+		    {
+		        @Override
+		        public void onClick(DialogInterface dialog, int whichButton)
+		        {
+		        	doReTweet();
+		        	
+		        }
+				
+		    });
+		    builder.setNegativeButton("Cancel", null);
+		    builder.create().show();
+
+		}
+     }
+	private void postTweet(String status) {
+		client.postTweet(status, String.valueOf(tweet.getUid()),  new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONObject body) {
+				Toast.makeText(TweetDetailsActivity.this, "Reply posted successfully", Toast.LENGTH_LONG).show();
+				TweetDetailsActivity.this.setResult(RESULT_OK);
+		        TweetDetailsActivity.this.finish();
+			}
+
+			public void onFailure(Throwable e, JSONObject error) {
+				Log.d("DEBUG", error.toString());
+				Log.e("ERROR", "Exception while posting tweet", e);
+			}
+		});
 	}
 }

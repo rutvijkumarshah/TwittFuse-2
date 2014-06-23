@@ -1,15 +1,11 @@
 package com.github.rutvijkumar.twittfuse.api;
 
-import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
-
 import org.scribe.builder.api.Api;
 import org.scribe.builder.api.TwitterApi;
 
 import android.content.Context;
 
 import com.codepath.oauth.OAuthBaseClient;
-import com.github.rutvijkumar.twittfuse.models.Tweet;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -67,7 +63,7 @@ public class TwitterClient extends OAuthBaseClient {
 	public void markTweetFavorite(boolean isFav, String tweetId,
 			AsyncHttpResponseHandler handler) {
 		String apiUrl;
-		if (!isFav) {
+		if (isFav) {
 			apiUrl = getApiUrl("favorites/create.json");
 		} else {
 			apiUrl = getApiUrl("favorites/destroy.json");
@@ -78,7 +74,7 @@ public class TwitterClient extends OAuthBaseClient {
 
 	}
 
-	public void RTTweet(String tweetId, AsyncHttpResponseHandler handler) {
+	public void postRT(String tweetId, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/retweet/" + tweetId + ".json");
 		getClient().post(apiUrl, null, handler);
 	}
@@ -95,7 +91,7 @@ public class TwitterClient extends OAuthBaseClient {
 		apiUrl = getApiUrl("statuses/update.json");
 		params.put("status", content);
 		if (inReplyTo != null) {
-			params.put("in_reply_to_status_id", content);
+			params.put("in_reply_to_status_id", inReplyTo);
 		}
 		getClient().post(apiUrl, params, handler);
 	}
