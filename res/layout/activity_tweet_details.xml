@@ -101,7 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/timestampDevider"
             android:layout_toRightOf="@+id/tv_FVcount"
-            android:text="FAVOURITES"
+            android:text="FAVORITES"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <View
@@ -120,29 +120,41 @@
             android:layout_below="@+id/countersDevider"
             android:orientation="horizontal" >
 
-            <ImageView
+            <ImageButton
+                android:background="@null"
                 android:id="@+id/im_reply"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
+                android:tag="REPLY"
+                android:onClick="doAction"
                 android:src="@drawable/ic_reply_action_dark" />
 
-            <ImageView
+            <ImageButton
+                android:background="@null"
                 android:id="@+id/im_retweet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
+                android:tag="RT"
+                android:onClick="doAction"
                 android:src="@drawable/ic_rt_action_dark" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/im_fav"
+                android:background="@null"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
+                android:tag="FAV"
+                android:onClick="doAction"
                 android:src="@drawable/ic_action_fav_dark" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/im_share"
+                android:tag="SHARE"
+                android:onClick="doAction"
+                android:background="@null"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"

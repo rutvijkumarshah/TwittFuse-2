@@ -71,6 +71,14 @@ public class Tweet extends Model implements Serializable {
 	@Column(name = "favorited_flag")
 	private boolean favorited;
 
+	public void setFavorited(boolean favorited) {
+		this.favorited = favorited;
+	}
+
+	public void setRetweeted(boolean retweeted) {
+		this.retweeted = retweeted;
+	}
+
 	@Column(name = "retweeted_flag")
 	private boolean retweeted;
 
