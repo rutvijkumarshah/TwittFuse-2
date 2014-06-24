@@ -35,7 +35,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twitter.Extractor;
 
-public class TweetDetailsActivity extends FragmentActivity {
+public class TweetDetailsActivity extends FragmentActivity implements OnNewTweetListener{
 
 	ImageView profileImage;
 	TextView name;
@@ -159,13 +159,13 @@ public class TweetDetailsActivity extends FragmentActivity {
 		final String action_code=view.getTag().toString();
 		if("FAV".equals(action_code)) {
 			tweet.setFavorited(!tweet.isFavorited());
-			twUtil.markFavorite(tweet, favAction);
+			twUtil.markFavorite(tweet, favAction,favCount);
 		}
 		else if("SHARE".equals(action_code)) {
 			startShareIntent();
 		}
 		else if("RT".equals(action_code)) {
-			twUtil.confirmRetweet(tweet,rtAction);
+			twUtil.confirmRetweet(tweet,rtAction,rtCount);
 		}else if ("REPLY".equals(action_code)) {
 			twUtil.postReply(tweet);
 		}
@@ -184,33 +184,7 @@ public class TweetDetailsActivity extends FragmentActivity {
 			}
 		});
 		
-//		replyEditText.addTextChangedListener(new TextWatcher() {
-//
-//			@Override
-//			public void onTextChanged(CharSequence s, int start, int before,
-//					int count) {
-//				String typedTweetText = replyEditText.getEditableText()
-//						.toString().trim();
-//				String remainingCharacters = String
-//						.valueOf((CHARS_LIMIT - typedTweetText.length()));
-//				charLimit.setText(remainingCharacters);
-//			}
-//
-//			@Override
-//			public void beforeTextChanged(CharSequence s, int start, int count,
-//					int after) {
-//				// TODO Auto-generated method stub
-//
-//			}
-//
-//			@Override
-//			public void afterTextChanged(Editable s) {
-//				// TODO Auto-generated method stub
-//
-//			}
-//		});
-		
-		
+
 		replyEditText.addTextChangedListener(new TextWatcher() {
 			
 			@Override
@@ -286,5 +260,11 @@ public class TweetDetailsActivity extends FragmentActivity {
 				Log.e("ERROR", "Exception while posting tweet", e);
 			}
 		});
+	}
+
+	@Override
+	public void onNewTweet(Tweet tweet) {
+		// TODO Auto-generated method stub
+		
 	}
 }

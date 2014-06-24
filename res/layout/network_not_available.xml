@@ -12,6 +12,6 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="27dp"
         android:layout_marginTop="28dp"
-        android:src="@drawable/fav_icon" />
+        android:src="@drawable/ic_nw_disconned" />
 
 </RelativeLayout>

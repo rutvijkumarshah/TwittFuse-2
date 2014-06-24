@@ -24,13 +24,17 @@ package com.github.rutvijkumar.twittfuse;
 
 import java.util.HashSet;
 import java.util.List;
+
 import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.ImageButton;
+import android.widget.TextView;
+
 import com.github.rutvijkumar.twittfuse.api.TwitterClient;
 import com.github.rutvijkumar.twittfuse.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -46,16 +50,24 @@ public class TwitterUtil {
 		this.client = client;
 	}
 
-	public void markFavorite(final Tweet tweet, ImageButton favAction) {
-		setFavView(tweet.isFavorited(), favAction);
-
+	public void markFavorite(final Tweet tweet, final ImageButton favAction,final TextView countView) {
 		client.markTweetFavorite(tweet.isFavorited(),
 				String.valueOf(tweet.getUid()), new JsonHttpResponseHandler() {
 					@Override
 					public void onSuccess(JSONObject body) {
 						boolean isFav = tweet.isFavorited();
-						tweet.setFavorited(isFav);
+						long newFavCount=tweet.getFavouritesCount();
 						tweet.save();
+						if(isFav) {
+							newFavCount++;
+						}else {
+							newFavCount--;
+						}
+						tweet.setFavouritesCount(newFavCount);
+						tweet.save();
+						
+						countView.setText(String.valueOf(tweet.getFavouritesCount()));
+						setFavView(tweet.isFavorited(), favAction);
 					}
 
 					public void onFailure(Throwable e, JSONObject error) {
@@ -81,14 +93,19 @@ public class TwitterUtil {
 		}
 	}
 
-	private void doReTweet(final Tweet tweet, ImageButton rtAction) {
-		setRTView(true, rtAction);
+	private void doReTweet(final Tweet tweet, final ImageButton rtAction,final TextView rtCount) {
+		
 		client.postRT(String.valueOf(tweet.getUid()),
 				new JsonHttpResponseHandler() {
 					@Override
 					public void onSuccess(JSONObject body) {
+						final long newRTCount=tweet.getReTweetCount()+1;
+						
 						tweet.setRetweeted(true);
+						tweet.setReTweetCount(tweet.getReTweetCount()+1);
 						tweet.save();
+						setRTView(true, rtAction);
+						rtCount.setText(String.valueOf(newRTCount));
 					}
 
 					public void onFailure(Throwable e, JSONObject error) {
@@ -99,7 +116,7 @@ public class TwitterUtil {
 
 	}
 
-	public void confirmRetweet(final Tweet tweet, final ImageButton rtAction) {
+	public void confirmRetweet(final Tweet tweet, final ImageButton rtAction, final TextView rtCount) {
 		if (!tweet.isRetweeted()) {
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -109,7 +126,7 @@ public class TwitterUtil {
 						@Override
 						public void onClick(DialogInterface dialog,
 								int whichButton) {
-							doReTweet(tweet, rtAction);
+							doReTweet(tweet, rtAction,rtCount);
 
 						}
 

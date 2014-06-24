@@ -36,6 +36,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,6 +99,7 @@ public class Util {
 		                                   (ViewGroup) activity.findViewById(R.id.nwunavailable));
 		    Toast toast=new Toast(activity);
 		    toast.setView(view);
+		    toast.setGravity(Gravity.CENTER, 0, 0);
 		    toast.setDuration(Toast.LENGTH_LONG);
 		    toast.show();
 

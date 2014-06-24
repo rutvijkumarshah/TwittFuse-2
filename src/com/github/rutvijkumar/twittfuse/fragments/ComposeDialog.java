@@ -22,6 +22,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.github.rutvijkumar.twittfuse.fragments;
 
+import java.util.Date;
 import java.util.HashSet;
 
 import org.json.JSONObject;
@@ -48,7 +49,9 @@ import android.widget.Toast;
 
 import com.github.rutvijkumar.twittfuse.R;
 import com.github.rutvijkumar.twittfuse.Util;
+import com.github.rutvijkumar.twittfuse.activities.OnNewTweetListener;
 import com.github.rutvijkumar.twittfuse.api.TwitterClient;
+import com.github.rutvijkumar.twittfuse.models.Tweet;
 import com.github.rutvijkumar.twittfuse.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -176,7 +179,7 @@ public class ComposeDialog extends DialogFragment {
 		client.postTweet(tweetBody,replyToTweetId, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(JSONObject arg0) {
-				onSuccessfullPost();
+				onSuccessfullPost(Tweet.fromJSON(arg0));
 			}
 			@Override
 			public void onFailure(Throwable e, JSONObject error) {
@@ -186,7 +189,9 @@ public class ComposeDialog extends DialogFragment {
 		});
 	}
 	
-	private void onSuccessfullPost() {
+	private void onSuccessfullPost(Tweet tweet) {
+		OnNewTweetListener listner=(OnNewTweetListener)getActivity();
+		listner.onNewTweet(tweet);
 		Toast.makeText(activity, "Tweet successfully posted", Toast.LENGTH_LONG).show();
 		dismiss();
 	
@@ -196,7 +201,7 @@ public class ComposeDialog extends DialogFragment {
 		client.postTweet(tweetBody, new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(JSONObject arg0) {
-				onSuccessfullPost();
+				onSuccessfullPost(Tweet.fromJSON(arg0));
 			}
 			@Override
 			public void onFailure(Throwable e, JSONObject error) {

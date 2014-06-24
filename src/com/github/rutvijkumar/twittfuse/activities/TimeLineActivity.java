@@ -33,13 +33,20 @@ import eu.erikw.PullToRefreshListView.OnRefreshListener;
  * @author Rutvijkumar Shah
  *
  */
-public class TimeLineActivity extends FragmentActivity {
+public class TimeLineActivity extends FragmentActivity implements OnNewTweetListener{
 
 	private TwitterClient client;
 	private ArrayList<Tweet> tweets=new ArrayList<Tweet>();
 	private TweetArrayAdapter adapter;
 	private eu.erikw.PullToRefreshListView tweetsListView;
 
+	@Override
+	public void onNewTweet(Tweet tweet) {
+		adapter.insert(tweet, 0);
+		adapter.notifyDataSetChanged();
+		tweetsListView.setSelection(0);
+	}
+	
 	private void setupIintialViews() {
 		tweetsListView=(eu.erikw.PullToRefreshListView)findViewById(R.id.lvTweets);
 		adapter=new TweetArrayAdapter(this, tweets);

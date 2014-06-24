@@ -59,6 +59,27 @@ public class Tweet extends Model implements Serializable {
 	@Column(name = "reTweetCount")
 	private long reTweetCount;
 
+
+	public void setBody(String body) {
+		this.body = body;
+	}
+
+	public void setUid(long uid) {
+		this.uid = uid;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void setReTweeted(Tweet reTweeted) {
+		this.reTweeted = reTweeted;
+	}
+
 	@Column(name = "favouritesCount")
 	private long favouritesCount;
 
@@ -164,6 +185,13 @@ public class Tweet extends Model implements Serializable {
 		return reTweetCount;
 	}
 
+	public void setReTweetCount(long reTweetCount) {
+		this.reTweetCount = reTweetCount;
+	}
+
+	public void setFavouritesCount(long favouritesCount) {
+		this.favouritesCount = favouritesCount;
+	}
 	public long getFavouritesCount() {
 		return favouritesCount;
 	}

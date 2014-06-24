@@ -198,6 +198,7 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 	
 		
 		final ImageButton favImage=viewHolder.favImage;
+		final TextView    fCount=viewHolder.favCountTv;
 		viewHolder.favImage.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -205,18 +206,19 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 				Tweet tw=(Tweet)v.getTag();
 				//FLIP FAV
 				tweet.setFavorited(!tw.isFavorited());
-				twUtil.markFavorite(tw, favImage);
+				twUtil.markFavorite(tw, favImage,fCount);
 			}
 		});
 		
 		final ImageButton reTweetImage=viewHolder.rtImage;
+		final TextView    rtCountView=viewHolder.retweetCountTv;
 		viewHolder.rtImage.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Tweet tw=(Tweet)v.getTag();
-				twUtil.confirmRetweet(tw, reTweetImage);
+				twUtil.confirmRetweet(tw, reTweetImage,rtCountView);
 				
 			}
 		});
