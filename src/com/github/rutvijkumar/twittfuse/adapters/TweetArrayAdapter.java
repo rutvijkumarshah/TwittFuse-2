@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +37,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.rutvijkumar.twittfuse.R;
 import com.github.rutvijkumar.twittfuse.TwitterUtil;
@@ -58,6 +56,7 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 	
 	private TwitterUtil twUtil;
 	private TwitterClient client;
+	
 	public float getDP(int dp) {
 		float dimension = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
 		return dimension;
@@ -86,6 +85,8 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		this.client=new TwitterClient(context);
 		this.twUtil=new TwitterUtil((FragmentActivity)context, client);
 	}
+	
+	
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -153,7 +154,6 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		ImageLoader imageLoader = ImageLoader.getInstance();
 		imageLoader.displayImage(user.getProfileImageUrl(),
 				viewHolder.userProfilePic);
-
 		
 		viewHolder.name.setText(user.getName());
 		viewHolder.screenName.setText("@"+user.getScreenName());

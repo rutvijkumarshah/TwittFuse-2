@@ -25,6 +25,7 @@ package com.github.rutvijkumar.twittfuse;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.http.Header;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
@@ -56,6 +57,18 @@ public class TwitterUtil {
 		}
 		client.markTweetFavorite(tweet.isFavorited(),
 				String.valueOf(tweet.getUid()), new JsonHttpResponseHandler() {
+			
+			
+//					@Override
+//					public void onSuccess(int statusCode, Header[] headers,
+//							JSONObject response) {
+//						onSuccess(response);
+//					}
+//					@Override
+//					public void onFailure(int statusCode, Header[] headers,
+//							Throwable throwable, JSONObject errorResponse) {
+//						onFailure(throwable, errorResponse);
+//					}
 					@Override
 					public void onSuccess(JSONObject body) {
 						boolean isFav = tweet.isFavorited();
@@ -100,6 +113,17 @@ public class TwitterUtil {
 		
 		client.postRT(String.valueOf(tweet.getUid()),
 				new JsonHttpResponseHandler() {
+			
+//					@Override
+//					public void onSuccess(int statusCode, Header[] headers,
+//							JSONObject response) {
+//						onSuccess(response);
+//					}
+//					@Override
+//					public void onFailure(int statusCode, Header[] headers,
+//							Throwable throwable, JSONObject errorResponse) {
+//						onFailure(throwable, errorResponse);
+//					}
 					@Override
 					public void onSuccess(JSONObject body) {
 						final long newRTCount=tweet.getReTweetCount()+1;

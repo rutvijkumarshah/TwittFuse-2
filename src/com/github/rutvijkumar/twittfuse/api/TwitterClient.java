@@ -1,7 +1,12 @@
 package com.github.rutvijkumar.twittfuse.api;
 
+import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.Api;
 import org.scribe.builder.api.TwitterApi;
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Response;
+import org.scribe.model.Verb;
+import org.scribe.oauth.OAuthService;
 
 import android.content.Context;
 
@@ -74,6 +79,30 @@ public class TwitterClient extends OAuthBaseClient {
 
 	}
 
+	
+	public String[] postTweet(String tweetBody,String replyToTweetId) {
+		String apiUrl = getApiUrl("statuses/update.json");
+
+		   OAuthService service = new ServiceBuilder()
+           .provider(TwitterApi.class)
+           .apiKey(REST_CONSUMER_KEY)
+           .apiSecret(REST_CONSUMER_SECRET)
+           .build();
+		   
+		   
+		 OAuthRequest request = new OAuthRequest(Verb.POST, apiUrl);
+		    request.addBodyParameter("status", tweetBody);
+		    service.signRequest(getRequestToken(), request);
+		    Response response = request.send();
+		    
+		    
+		    String resonseObj[] =new String[2];
+		    resonseObj[0]=String.valueOf(response.getCode());
+		    resonseObj[1]=response.getBody();
+		    
+		    return resonseObj;
+	}
+	
 	public void getUserAccountDetails(AsyncHttpResponseHandler handler){
     	String apiUrl = getApiUrl("account/verify_credentials.json");
     	getClient().get(apiUrl, handler);

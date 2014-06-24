@@ -5,9 +5,12 @@ import java.util.List;
 
 import org.json.JSONArray;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,9 +21,9 @@ import com.github.rutvijkumar.twittfuse.TwitterApplication;
 import com.github.rutvijkumar.twittfuse.Util;
 import com.github.rutvijkumar.twittfuse.adapters.TweetArrayAdapter;
 import com.github.rutvijkumar.twittfuse.api.TwitterClient;
-import com.github.rutvijkumar.twittfuse.fragments.ComposeDialog;
 import com.github.rutvijkumar.twittfuse.helpers.EndlessScrollListener;
 import com.github.rutvijkumar.twittfuse.models.Tweet;
+import com.github.rutvijkumar.twittfuse.services.OfflineTweetAlarmReceiver;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import eu.erikw.PullToRefreshListView.OnRefreshListener;
@@ -39,7 +42,8 @@ public class TimeLineActivity extends FragmentActivity implements OnNewTweetList
 	private ArrayList<Tweet> tweets=new ArrayList<Tweet>();
 	private TweetArrayAdapter adapter;
 	private eu.erikw.PullToRefreshListView tweetsListView;
-
+	private boolean isAlarmScheduled=false;
+	
 	@Override
 	public void onNewTweet(Tweet tweet) {
 		adapter.insert(tweet, 0);
@@ -68,6 +72,7 @@ public class TimeLineActivity extends FragmentActivity implements OnNewTweetList
 		
 
 	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -76,7 +81,23 @@ public class TimeLineActivity extends FragmentActivity implements OnNewTweetList
 		client=TwitterApplication.getRestClient();
 		setupIintialViews();//Setting up listeners,paginations,adapters
 		populateTimeLine();
-	}
+		
+	  }
+
+	  public void scheduleAlarm() {
+	    // Construct an intent that will execute the AlarmReceiver
+	    Intent intent = new Intent(getApplicationContext(), OfflineTweetAlarmReceiver.class);
+	    
+	    // Create a PendingIntent to be triggered when the alarm goes off
+	    final PendingIntent pIntent = PendingIntent.getBroadcast(this, OfflineTweetAlarmReceiver.REQUEST_CODE,
+	        intent, PendingIntent.FLAG_UPDATE_CURRENT);
+	    
+	    // Setup periodic alarm every 5 seconds
+	    long firstMillis = System.currentTimeMillis(); // first run of alarm is immediate
+	    int intervalMillis = 5000; // 5 seconds
+	    AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+	    alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis, intervalMillis, pIntent);
+	  }
 	
 	private void populateTimeLine() {
 		populateTimeLine(-1);
@@ -91,6 +112,7 @@ public class TimeLineActivity extends FragmentActivity implements OnNewTweetList
 				if(oldestTweet!=null) {
 					//When getting older tweets
 					client.getHomeTimeline(new ResponseHandler(),oldestTweet.getUid()-1);
+					
 				}
 				
 			}else {
@@ -124,6 +146,19 @@ public class TimeLineActivity extends FragmentActivity implements OnNewTweetList
 			
 		}
 		
+//		@Override
+//		public void onSuccess(int statusCode, Header[] headers,
+//				JSONArray response) {
+//			onSuccess(response);
+//		}
+//		
+//		@Override
+//		public void onFailure(int statusCode, Header[] headers,
+//				String responseString, Throwable throwable) {
+//			// TODO Auto-generated method stub
+//			onFailure(throwable, responseString);
+//		}
+		
 		@Override
 		public void onFailure(Throwable e, String s) {
 			Util.hideProgressBar(TimeLineActivity.this);
@@ -138,6 +173,14 @@ public class TimeLineActivity extends FragmentActivity implements OnNewTweetList
 			}
 			tweetsListView.onRefreshComplete();
 			Util.hideProgressBar(TimeLineActivity.this);
+			
+			/****
+			 * Scheduling Alarm only after getting first fetch from network
+			 */
+			if(!isAlarmScheduled) {
+				scheduleAlarm();
+				isAlarmScheduled=false;
+			}
 		}
 	}
 	

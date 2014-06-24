@@ -36,6 +36,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,7 +51,7 @@ import com.twitter.Extractor;
 public class Util {
 
 	private static final String TWITTER = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
-	
+
 	public static ComposeDialog newInstance(Activity activity) {
 		ComposeDialog dlg = new ComposeDialog();
 		dlg.setActivity(activity);
@@ -58,8 +59,9 @@ public class Util {
 		dlg.setArguments(args);
 		return dlg;
 	}
-	
-	public static ComposeDialog newInstance(Activity activity,String replyTo,String replyToTweetId) {
+
+	public static ComposeDialog newInstance(Activity activity, String replyTo,
+			String replyToTweetId) {
 		ComposeDialog dlg = new ComposeDialog();
 		dlg.setActivity(activity);
 		dlg.setReplyTo(replyTo, replyToTweetId);
@@ -67,56 +69,65 @@ public class Util {
 		dlg.setArguments(args);
 		return dlg;
 	}
-	public static void showSoftKeyboard(View view,Activity activity){
-	    if(view.requestFocus()){
-	        InputMethodManager imm =(InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-	        imm.showSoftInput(view,InputMethodManager.SHOW_IMPLICIT);
-	    }
+
+	public static void showSoftKeyboard(View view, Activity activity) {
+		if (view.requestFocus()) {
+			InputMethodManager imm = (InputMethodManager) activity
+					.getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+		}
 	}
-	public static void hideSoftKeyboard(View view,Activity activity){
-		  InputMethodManager imm =(InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-		  imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+	public static void hideSoftKeyboard(View view, Activity activity) {
+		InputMethodManager imm = (InputMethodManager) activity
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 	}
-	
+
 	public static void hideProgressBar(Activity activity) {
-		setProgressBarVisibility(activity, false); 
-    }
+		setProgressBarVisibility(activity, false);
+	}
+
 	public static void showProgressBar(Activity activity) {
-     setProgressBarVisibility(activity, true);   
-    }
-	
+		setProgressBarVisibility(activity, true);
+	}
+
 	private String getCountString(long count) {
-		StringBuilder countStr=new StringBuilder();
-		float val=0.0f;
-		if(count > 999) {
-			val=count/1000.00f;
+		StringBuilder countStr = new StringBuilder();
+		float val = 0.0f;
+		if (count > 999) {
+			val = count / 1000.00f;
 		}
 		return countStr.toString();
 	}
+
 	public static void showNetworkUnavailable(Activity activity) {
-		 LayoutInflater inflater = activity.getLayoutInflater();
-		    View view = inflater.inflate(R.layout.network_not_available,
-		                                   (ViewGroup) activity.findViewById(R.id.nwunavailable));
-		    Toast toast=new Toast(activity);
-		    toast.setView(view);
-		    toast.setGravity(Gravity.CENTER, 0, 0);
-		    toast.setDuration(Toast.LENGTH_LONG);
-		    toast.show();
+		LayoutInflater inflater = activity.getLayoutInflater();
+		View view = inflater.inflate(R.layout.network_not_available,
+				(ViewGroup) activity.findViewById(R.id.nwunavailable));
+		Toast toast = new Toast(activity);
+		toast.setView(view);
+		toast.setGravity(Gravity.CENTER, 0, 0);
+		toast.setDuration(Toast.LENGTH_LONG);
+		toast.show();
 
 	}
-	private static void setProgressBarVisibility(Activity activity,boolean show) {
+
+	private static void setProgressBarVisibility(Activity activity, boolean show) {
 		activity.setProgressBarIndeterminate(show);
 	}
-	public static Boolean isNetworkAvailable(Activity activity) {
-		ConnectivityManager connectivityManager 
-        = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
-		
-		boolean isNetworkAvailable=true;
-	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-	    isNetworkAvailable=( activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting());
-	    return isNetworkAvailable;
+
+	public static Boolean isNetworkAvailable(Context activity) {
+		ConnectivityManager connectivityManager = (ConnectivityManager) activity
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+		boolean isNetworkAvailable = true;
+		NetworkInfo activeNetworkInfo = connectivityManager
+				.getActiveNetworkInfo();
+		isNetworkAvailable = (activeNetworkInfo != null && activeNetworkInfo
+				.isConnectedOrConnecting());
+		return isNetworkAvailable;
 	}
-	
 
 	public static long getMaxSinceId(ArrayList<Tweet> tweets) {
 		long maxSinceId = 1L;
@@ -130,25 +141,40 @@ public class Util {
 		return maxSinceId;
 	}
 
-	public static  void onReply(FragmentActivity activity,HashSet<String> replyScreeName,String replyToTweetId) {
+	public static void onReply(FragmentActivity activity,
+			HashSet<String> replyScreeName, String replyToTweetId) {
 		FragmentManager fm = activity.getSupportFragmentManager();
-		ComposeDialog reply = Util
-				.newInstance(activity);
+		ComposeDialog reply = Util.newInstance(activity);
 		reply.setReplyTo(replyScreeName, replyToTweetId);
 		Bundle args = new Bundle();
 		reply.setArguments(args);
 		reply.show(fm, "");
-		
+
 	}
-	public static  void onCompose(FragmentActivity activity) {
+
+	public static void postTweetOffline(String tweetBody, String replyToTweetId) {
+
+		Tweet offlineTweet = new Tweet();
+		offlineTweet.setBody(tweetBody);
+		offlineTweet.setOfflineTweet(true);
+
+		if (replyToTweetId != null) {
+			offlineTweet.setOfflineReplyToTweetId(replyToTweetId);
+		}
+		long saveStatus=offlineTweet.save();
+		Log.d("DEBUG","OFFLINE_SAVE_STATUS :"+saveStatus);
+	
+	}
+
+	public static void onCompose(FragmentActivity activity) {
 		FragmentManager fm = activity.getSupportFragmentManager();
-		ComposeDialog compose = Util
-				.newInstance(activity);
+		ComposeDialog compose = Util.newInstance(activity);
 		Bundle args = new Bundle();
 		compose.setArguments(args);
 		compose.show(fm, "");
-		
+
 	}
+
 	public static String fromNow(Date date) {
 		String fromNow = null;
 		Date today = new Date();
@@ -190,11 +216,11 @@ public class Util {
 	}
 
 	public static Date getTwitterDate(String date) {
-		Date dt=new Date();
+		Date dt = new Date();
 		SimpleDateFormat sf = new SimpleDateFormat(TWITTER);
 		sf.setLenient(true);
 		try {
-			dt= sf.parse(date);
+			dt = sf.parse(date);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -204,10 +230,13 @@ public class Util {
 	public static String getDuration(Date createdAt) {
 		return fromNow(createdAt);
 	}
-	
+
 	public static List<String> testExtract(String tweetBody) {
-		Extractor extractor =new Extractor();
-		List<String> screennames = extractor.extractMentionedScreennames(tweetBody);
+		Extractor extractor = new Extractor();
+		List<String> screennames = extractor
+				.extractMentionedScreennames(tweetBody);
 		return screennames;
 	}
+	
+	
 }

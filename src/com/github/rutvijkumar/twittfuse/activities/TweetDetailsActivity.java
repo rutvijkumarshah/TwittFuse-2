@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import org.apache.http.Header;
 import org.json.JSONObject;
 
 import android.content.Intent;
@@ -247,7 +248,25 @@ public class TweetDetailsActivity extends FragmentActivity implements OnNewTweet
 	
 
 	private void postTweet(String status) {
+		
+		if(!Util.isNetworkAvailable(this)) {
+			Toast.makeText(this, "Network unavailable :Tweet will be saved and posted later ", Toast.LENGTH_LONG);
+			Util.postTweetOffline(status, String.valueOf(tweet.getUid()));
+			return;
+		}
+		
 		client.postTweet(status, String.valueOf(tweet.getUid()),  new JsonHttpResponseHandler() {
+//			@Override
+//			public void onSuccess(int statusCode, Header[] headers,
+//					JSONObject response) {
+//				onSuccess(response);
+//			}
+//			@Override
+//			public void onFailure(int statusCode, Header[] headers,
+//					Throwable throwable, JSONObject errorResponse) {
+//				onFailure(throwable, errorResponse);
+//			}
+			
 			@Override
 			public void onSuccess(JSONObject body) {
 				Toast.makeText(TweetDetailsActivity.this, "Reply posted successfully", Toast.LENGTH_LONG).show();

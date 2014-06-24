@@ -59,26 +59,11 @@ public class Tweet extends Model implements Serializable {
 	@Column(name = "reTweetCount")
 	private long reTweetCount;
 
+	@Column(name = "offline")
+	private String offlineTweet="N";
 
-	public void setBody(String body) {
-		this.body = body;
-	}
-
-	public void setUid(long uid) {
-		this.uid = uid;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public void setReTweeted(Tweet reTweeted) {
-		this.reTweeted = reTweeted;
-	}
+	@Column(name = "offline_replyTo")
+	private String offlineReplyToTweetId;
 
 	@Column(name = "favouritesCount")
 	private long favouritesCount;
@@ -92,31 +77,38 @@ public class Tweet extends Model implements Serializable {
 	@Column(name = "favorited_flag")
 	private boolean favorited;
 
-	public void setFavorited(boolean favorited) {
-		this.favorited = favorited;
-	}
-
-	public void setRetweeted(boolean retweeted) {
-		this.retweeted = retweeted;
-	}
-
 	@Column(name = "retweeted_flag")
 	private boolean retweeted;
 
+	/***
+	 * convenient method to save Tweet Object
+	 * 
+	 */
+	public long persist() {
+		if (reTweeted != null) {
+			reTweeted.persist();
+		}
+		user.save();
+		return this.save();
+	}
+
+	public static List<Tweet> findAll() {
+		return new Select().from(Tweet.class).execute();
+	}
+
+	public static void deleteAll() {
+		new Delete().from(Tweet.class).execute();
+	}
+
+	public static List<Tweet> getAllOfflineTweets(int limit) {
+
+		return new Select().from(Tweet.class)
+				.where("offline = ?", "Y")
+				.orderBy("createdAt ASC")
+				.limit(limit)
+				.execute();
+	}
 	
-
-	public boolean isFavorited() {
-		return favorited;
-	}
-
-	public boolean isRetweeted() {
-		return retweeted;
-	}
-
-	public Tweet getReTweeted() {
-		return reTweeted;
-	}
-
 	public static ArrayList<Tweet> fromJSONArray(JSONArray jsonArray) {
 		final int size = jsonArray.length();
 		ArrayList<Tweet> list = new ArrayList<Tweet>(size);
@@ -165,6 +157,20 @@ public class Tweet extends Model implements Serializable {
 		return tweet;
 	}
 
+
+
+	public boolean isFavorited() {
+		return favorited;
+	}
+
+	public boolean isRetweeted() {
+		return retweeted;
+	}
+
+	public Tweet getReTweeted() {
+		return reTweeted;
+	}
+
 	public String getBody() {
 		return body;
 	}
@@ -192,28 +198,57 @@ public class Tweet extends Model implements Serializable {
 	public void setFavouritesCount(long favouritesCount) {
 		this.favouritesCount = favouritesCount;
 	}
+
 	public long getFavouritesCount() {
 		return favouritesCount;
 	}
 
-	/***
-	 * convieient method to save Tweet Object
-	 * 
-	 */
-	public long persist() {
-		if (reTweeted != null) {
-			reTweeted.persist();
+	public void setFavorited(boolean favorited) {
+		this.favorited = favorited;
+	}
+
+	public void setRetweeted(boolean retweeted) {
+		this.retweeted = retweeted;
+	}
+
+	public String getOfflineReplyToTweetId() {
+		return offlineReplyToTweetId;
+	}
+
+	public void setOfflineReplyToTweetId(String offlineReplyToTweetId) {
+		this.offlineReplyToTweetId = offlineReplyToTweetId;
+	}
+
+	public boolean isOfflineTweet() {
+		return offlineTweet.equals("Y");
+	}
+
+	public void setOfflineTweet(boolean offlineTweet) {
+		if(offlineTweet) {
+			this.offlineTweet="Y";
+		}else {
+			this.offlineTweet = "N";
 		}
-		user.save();
-		return this.save();
 	}
 
-	public static List<Tweet> findAll() {
-		return new Select().from(Tweet.class).execute();
+	public void setBody(String body) {
+		this.body = body;
 	}
 
-	public static void deleteAll() {
-		new Delete().from(Tweet.class).execute();
+	public void setUid(long uid) {
+		this.uid = uid;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void setReTweeted(Tweet reTweeted) {
+		this.reTweeted = reTweeted;
 	}
 
 }

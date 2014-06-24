@@ -25,6 +25,8 @@ package com.github.rutvijkumar.twittfuse.fragments;
 import java.util.Date;
 import java.util.HashSet;
 
+import org.apache.http.Header;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -120,23 +122,38 @@ public class ComposeDialog extends DialogFragment {
 		setActionsListeners();
 	}
 
+
 	
 	private void setActionsListeners() {
 		
+		
 		tweetIt.setOnClickListener(new OnClickListener() {
+		
 			
 			@Override
 			public void onClick(View v) {
 				String tweetBody = tweetTextara.getEditableText().toString();
-				if(replyToTweetId !=null) {
-					postReply(tweetBody, replyToTweetId);
+				
+				if(!Util.isNetworkAvailable(activity)) {
+					Util.postTweetOffline(tweetBody, replyToTweetId);
+					dismiss();
+					Toast.makeText(activity, "Network unavailable :Tweet will be saved and posted later ", Toast.LENGTH_LONG).show();
 				}else {
-					postTweet(tweetBody);
+				
+					if(replyToTweetId !=null) {
+						postReply(tweetBody, replyToTweetId);
+					}else {
+						postTweet(tweetBody);
+					}
 				}
+				
+				
 				
 				
 			}
 		});
+		
+		
 		tweetTextara.addTextChangedListener(new TextWatcher() {
 			
 			@Override
@@ -177,10 +194,24 @@ public class ComposeDialog extends DialogFragment {
 
 	public void postReply(String tweetBody,String replyToTweetId){
 		client.postTweet(tweetBody,replyToTweetId, new JsonHttpResponseHandler() {
+			
+
+//			@Override
+//			public void onSuccess(int statusCode, Header[] headers,
+//					JSONObject response) {
+//				onSuccess(response);
+//			}
+//			@Override
+//			public void onFailure(int statusCode, Header[] headers,
+//					Throwable throwable, JSONObject errorResponse) {
+//				onFailure(throwable, errorResponse);
+//			}
+			
 			@Override
 			public void onSuccess(JSONObject arg0) {
 				onSuccessfullPost(Tweet.fromJSON(arg0));
 			}
+			
 			@Override
 			public void onFailure(Throwable e, JSONObject error) {
 				Log.d("DEBUG", "POST Tweet Error :" + error.toString());
@@ -190,6 +221,7 @@ public class ComposeDialog extends DialogFragment {
 	}
 	
 	private void onSuccessfullPost(Tweet tweet) {
+		tweet.save();
 		OnNewTweetListener listner=(OnNewTweetListener)getActivity();
 		listner.onNewTweet(tweet);
 		Toast.makeText(activity, "Tweet successfully posted", Toast.LENGTH_LONG).show();
@@ -199,6 +231,18 @@ public class ComposeDialog extends DialogFragment {
 	public void postTweet(String tweetBody) {
 		 
 		client.postTweet(tweetBody, new JsonHttpResponseHandler() {
+			
+//			@Override
+//			public void onSuccess(int statusCode, Header[] headers,
+//					JSONObject response) {
+//				onSuccess(response);
+//			}
+//			@Override
+//			public void onFailure(int statusCode, Header[] headers,
+//					Throwable throwable, JSONObject errorResponse) {
+//				onFailure(throwable, errorResponse);
+//			}
+			
 			@Override
 			public void onSuccess(JSONObject arg0) {
 				onSuccessfullPost(Tweet.fromJSON(arg0));
@@ -232,13 +276,24 @@ public class ComposeDialog extends DialogFragment {
 		client = new TwitterClient(this.activity);
 		client.getUserAccountDetails(new JsonHttpResponseHandler() {
 
+//			@Override
+//			public void onSuccess(int statusCode, Header[] headers,
+//					JSONObject response) {
+//				onSuccess(response);
+//			}
+//			@Override
+//			public void onFailure(int statusCode, Header[] headers,
+//					Throwable throwable, JSONObject errorResponse) {
+//				onFailure(throwable, errorResponse);
+//			}
+			
 			@Override
 			public void onSuccess(JSONObject json) {
 				currentUser = User.fromJson(json);
 				populateData();
 			}
 
-			@Override
+			//@Override
 			public void onFailure(Throwable e, JSONObject error) {
 				Log.d("DEBUG", "getAccountDetails Error :" + error.toString());
 				Log.e("ERROR", "Exception while getting user Profile", e);
