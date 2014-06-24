@@ -25,11 +25,14 @@ package com.github.rutvijkumar.twittfuse.services;
 import java.util.List;
 import java.util.Random;
 
+import org.json.JSONObject;
+
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.util.Log;
 
 import com.github.rutvijkumar.twittfuse.R;
 import com.github.rutvijkumar.twittfuse.TwitterApplication;
@@ -37,36 +40,36 @@ import com.github.rutvijkumar.twittfuse.Util;
 import com.github.rutvijkumar.twittfuse.activities.TimeLineActivity;
 import com.github.rutvijkumar.twittfuse.api.TwitterClient;
 import com.github.rutvijkumar.twittfuse.models.Tweet;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class TweetIntentService extends IntentService {
 
 	TwitterClient client;
 
-//	class SyncJsonHttpResponseHandler extends JsonHttpResponseHandler {
-//
-//		private Tweet offlineTweet;
-//
-//		public SyncJsonHttpResponseHandler(Tweet offlineTweet) {
-//			this.offlineTweet = offlineTweet;
-//			setUseSynchronousMode(true);
-//
-//		}
-//		
-//		@Override
-//		public void onSuccess(int statusCode, Header[] headers,
-//				JSONObject jsonObj) {
-//			Tweet newTweet = Tweet.fromJSON(jsonObj);
-//			onSuccessfulPost(newTweet, offlineTweet);
-//		
-//		}
-//
-//		@Override
-//		public void onFailure(int statusCode, Header[] headers,
-//				Throwable throwable, JSONArray error) {
-//			Log.d("DEBUG", "POST Tweet Error :" + error.toString());
-//		}
-//	
-//	};
+	class SyncJsonHttpResponseHandler extends JsonHttpResponseHandler {
+
+		private Tweet offlineTweet;
+
+	
+		public SyncJsonHttpResponseHandler(Tweet offlineTweet) {
+			this.offlineTweet = offlineTweet;
+		}
+		
+		@Override
+		public void onSuccess(JSONObject jsonObj) {
+			Tweet newTweet = Tweet.fromJSON(jsonObj);
+			onSuccessfulPost(newTweet, offlineTweet);
+		}
+		
+		@Override
+		public void onFailure(Throwable e, JSONObject error) {
+			Log.d("DEBUG", "POST Tweet Error :" + error.toString());
+			Log.e("ERROR", "Exception while posting tweet", e);	
+		}
+		
+	
+	};
 
 	public TweetIntentService() {
 		this("");
@@ -99,7 +102,7 @@ public class TweetIntentService extends IntentService {
 		// build notification
 		// the addAction re-use the same intent to keep the example short
 		Notification n = new Notification.Builder(this)
-				.setContentTitle("Tweet successfully posted")
+				.setContentTitle("Tweet posted successfully")
 				.setContentText(newTweet.getBody())
 				.setSmallIcon(R.drawable.ic_launcher)
 				.setContentIntent(pIntent)
@@ -114,7 +117,7 @@ public class TweetIntentService extends IntentService {
 
 
 	protected void onHandleIntent(Intent intent) {
-
+		
 		client = TwitterApplication.getRestClient();
 
 		/***
@@ -128,11 +131,24 @@ public class TweetIntentService extends IntentService {
 		List<Tweet> offlineTweets = Tweet.getAllOfflineTweets(1);
 		if(offlineTweets.size() >0) {
 		
-		final Tweet tw = offlineTweets.get(0);
-		//AsyncHttpResponseHandler handler = new SyncJsonHttpResponseHandler(tw);
-		
-		//client.postTweet(tw.getBody(), tw.getOfflineReplyToTweetId(),handler);
+			final Tweet tw = offlineTweets.get(0);
+			AsyncHttpResponseHandler handler = new SyncJsonHttpResponseHandler(tw);
+			client.postTweet(tw.getBody(), tw.getOfflineReplyToTweetId(),handler);
+			waitForResponse();
 		}
 	}
 
+	/*****
+	 * Hack not a good way of taking thread in hand.
+	 * OAUTH library wrapper is not working with latest Android-Async client ( which supports synchronous mode)
+	 * 
+	 */
+	private void waitForResponse() {
+		try {
+			Thread.sleep(5*1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
