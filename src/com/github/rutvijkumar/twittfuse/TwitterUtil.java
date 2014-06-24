@@ -51,6 +51,9 @@ public class TwitterUtil {
 	}
 
 	public void markFavorite(final Tweet tweet, final ImageButton favAction,final TextView countView) {
+		if(!Util.isNetworkAvailable(activity)) {
+			Util.showNetworkUnavailable(activity);
+		}
 		client.markTweetFavorite(tweet.isFavorited(),
 				String.valueOf(tweet.getUid()), new JsonHttpResponseHandler() {
 					@Override
@@ -117,6 +120,7 @@ public class TwitterUtil {
 	}
 
 	public void confirmRetweet(final Tweet tweet, final ImageButton rtAction, final TextView rtCount) {
+		
 		if (!tweet.isRetweeted()) {
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -126,6 +130,9 @@ public class TwitterUtil {
 						@Override
 						public void onClick(DialogInterface dialog,
 								int whichButton) {
+							if(!Util.isNetworkAvailable(activity)) {
+								Util.showNetworkUnavailable(activity);
+							}
 							doReTweet(tweet, rtAction,rtCount);
 
 						}
