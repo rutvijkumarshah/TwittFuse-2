@@ -43,6 +43,15 @@ public class TimeLineActivity extends FragmentActivity implements OnNewTweetList
 	private TweetArrayAdapter adapter;
 	private eu.erikw.PullToRefreshListView tweetsListView;
 	private boolean isAlarmScheduled=false;
+	private String KEY_IS_DATA_AVAILABLE="IS_DATA_AVAILABLE";
+
+	@Override
+	protected void onSaveInstanceState(Bundle bundle) {
+		super.onSaveInstanceState(bundle);
+		boolean isDataAvailable=Tweet.findAll().size() > 0;
+		bundle.putBoolean(KEY_IS_DATA_AVAILABLE, isDataAvailable);
+		
+	}
 	
 	@Override
 	public void onNewTweet(Tweet tweet) {
@@ -77,11 +86,22 @@ public class TimeLineActivity extends FragmentActivity implements OnNewTweetList
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setContentView(R.layout.activity_time_line);
+	    setContentView(R.layout.activity_time_line);
+	    boolean isDataAvailable=false;
 		client=TwitterApplication.getRestClient();
 		setupIintialViews();//Setting up listeners,paginations,adapters
-		populateTimeLine();
 		
+		/****
+		 * If screen is just rotated no need to make network call load data from DB
+		 */
+		if(savedInstanceState!=null) {
+			isDataAvailable = savedInstanceState.getBoolean(KEY_IS_DATA_AVAILABLE);
+		}
+		if(isDataAvailable) {
+			populateFromDb();
+		}else {
+			populateTimeLine();
+		}
 	  }
 
 	  public void scheduleAlarm() {
@@ -103,8 +123,21 @@ public class TimeLineActivity extends FragmentActivity implements OnNewTweetList
 		populateTimeLine(-1);
 	}
 	
+	private void populateFromDb() {
+		
+		//When Network is not available load all tweets from DB
+		adapter.clear();
+		
+		adapter.notifyDataSetInvalidated();
+		List<Tweet> dbTweeets = Tweet.findAll();
+		adapter.addAll(dbTweeets);
+		tweetsListView.onRefreshComplete();
+		setProgressBarIndeterminate(false);
+		
+	}
 	private void populateTimeLine(int totalItemsCount) {
-		Util.showProgressBar(this);
+		//Util.showProgressBar(this);
+		setProgressBarIndeterminate(true);
 		if(Util.isNetworkAvailable(this) ) {
 			
 			if(totalItemsCount >0) {
@@ -112,7 +145,6 @@ public class TimeLineActivity extends FragmentActivity implements OnNewTweetList
 				if(oldestTweet!=null) {
 					//When getting older tweets
 					client.getHomeTimeline(new ResponseHandler(),oldestTweet.getUid()-1);
-					
 				}
 				
 			}else {
@@ -124,13 +156,7 @@ public class TimeLineActivity extends FragmentActivity implements OnNewTweetList
 			}
 		}else {
 			Util.showNetworkUnavailable(this);
-			//When Network is not available load all tweets from DB
-			adapter.clear();
-			adapter.notifyDataSetInvalidated();
-			List<Tweet> dbTweeets = Tweet.findAll();
-			adapter.addAll(dbTweeets);
-			tweetsListView.onRefreshComplete();
-			Util.hideProgressBar(this);
+			populateFromDb();
 		}
 		
 		
@@ -172,7 +198,8 @@ public class TimeLineActivity extends FragmentActivity implements OnNewTweetList
 				adapter.add(tweet);
 			}
 			tweetsListView.onRefreshComplete();
-			Util.hideProgressBar(TimeLineActivity.this);
+			//Util.hideProgressBar(TimeLineActivity.this);
+			setProgressBarIndeterminate(false);
 			
 			/****
 			 * Scheduling Alarm only after getting first fetch from network
