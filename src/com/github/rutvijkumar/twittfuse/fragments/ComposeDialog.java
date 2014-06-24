@@ -22,11 +22,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.github.rutvijkumar.twittfuse.fragments;
 
-import java.util.Date;
 import java.util.HashSet;
 
-import org.apache.http.Header;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -259,7 +256,8 @@ public class ComposeDialog extends DialogFragment {
 		imageLoader.displayImage(currentUser.getProfileImageUrl(), currentUserProfilePic);
 		StringBuilder mentions=new StringBuilder();
 		username.setText(currentUser.getName());
-		userScreenName.setText(currentUser.getScreenName());
+		userScreenName.setText("@"+currentUser.getScreenName());
+		userScreenName.setTextColor(tweetTextara.getHintTextColors());
 		if(replyToScreenNames!=null && replyToScreenNames.size() > 0) {
 			for(String screenName:replyToScreenNames) {
 				mentions.append("@"+screenName);
