@@ -2,12 +2,10 @@ package com.github.rutvijkumar.twittfuse.activities;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.HashSet;
 import java.util.List;
 
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -17,6 +15,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.webkit.WebSettings;
+import android.webkit.WebSettings.PluginState;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -31,6 +33,7 @@ import com.github.rutvijkumar.twittfuse.models.Tweet;
 import com.github.rutvijkumar.twittfuse.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.twitter.Extractor;
 
 public class TweetDetailsActivity extends FragmentActivity {
 
@@ -52,7 +55,8 @@ public class TweetDetailsActivity extends FragmentActivity {
 	EditText replyEditText;
 	TextView charLimit;
 	TextView tweetIt;
-
+	WebView webView;
+	
 	private Tweet tweet;
 	private TwitterClient client;
 	private TwitterUtil twUtil;
@@ -79,6 +83,8 @@ public class TweetDetailsActivity extends FragmentActivity {
 
 		charLimit = (TextView) findViewById(R.id.tv_charlimit);
 		tweetIt = (TextView) findViewById(R.id.tv_tweetAction);
+		
+		webView=(WebView)findViewById(R.id.embdView);
 	}
 
 	@Override
@@ -127,8 +133,28 @@ public class TweetDetailsActivity extends FragmentActivity {
 		twUtil=new TwitterUtil(this, client);
 		twUtil.setFavView(tweet.isFavorited(),favAction);
 		twUtil.setRTView(tweet.isRetweeted(),rtAction);
+		
+		Extractor extractor=new Extractor();
+		List<String> urls = extractor.extractURLs(tweet.getBody());
+		if(urls.size() > 0) {
+			showUrlInWebView(urls.get(0));
+		}
+		
 	}
 
+	private void showUrlInWebView(String url) {
+		webView.setVisibility(View.VISIBLE);
+		WebViewClient webViewClient = new WebViewClient();
+		
+		WebSettings webSettings = webView.getSettings();
+	    webSettings.setJavaScriptEnabled(true);
+	    webSettings.setDomStorageEnabled(true);
+	    webView.getSettings().setJavaScriptEnabled(true);
+	    webView.getSettings().setDomStorageEnabled(true);
+		webView.setWebViewClient(webViewClient);
+		webView.loadUrl(url);
+	}
+	
 	public void doAction(View view) {
 		final String action_code=view.getTag().toString();
 		if("FAV".equals(action_code)) {

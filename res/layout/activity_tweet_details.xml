@@ -171,6 +171,18 @@
         android:layout_marginTop="8dp"
         android:background="@android:color/darker_gray" />
 
+    <WebView
+        android:id="@+id/embdView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/actionsDevider"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_above="@+id/replyTweetSectionDevider"
+        android:focusable="false"
+        android:visibility="invisible" />
+          
+     />
     <View
         android:id="@+id/replyTweetSectionDevider"
         android:layout_width="match_parent"

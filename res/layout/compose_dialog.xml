@@ -52,7 +52,8 @@
         android:layout_height="wrap_content"
         android:text="TWEET"
         android:textSize="10sp"
-        android:background="@color/TwitterBlue"
+        android:enabled="false"
+        android:background="@color/TwitterBlue_disabled"
         android:textColor="@android:color/white"
         android:layout_alignBottom="@+id/currentUserProfilePic"
        />
