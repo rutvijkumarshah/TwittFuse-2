@@ -45,6 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/img_profilepic"
             android:layout_marginTop="8dp"
+            android:autoLink="all"
             android:text="Hey its a nice day out and you know this will be cool "
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -213,7 +214,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="4.0"
             android:inputType="textCapSentences|textMultiLine"
-            android:maxLength="140"
             android:maxLines="4" >
         </EditText>
 
@@ -238,6 +238,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
+            android:background="@color/TwitterBlue_disabled"
+        	android:textColor="@android:color/white"
+        	android:enabled="false"
             android:text="TWEET"
             android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>

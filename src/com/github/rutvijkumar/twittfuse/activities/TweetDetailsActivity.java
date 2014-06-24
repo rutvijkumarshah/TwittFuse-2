@@ -183,31 +183,71 @@ public class TweetDetailsActivity extends FragmentActivity {
 				postTweet(replyEditText.getEditableText().toString());
 			}
 		});
+		
+//		replyEditText.addTextChangedListener(new TextWatcher() {
+//
+//			@Override
+//			public void onTextChanged(CharSequence s, int start, int before,
+//					int count) {
+//				String typedTweetText = replyEditText.getEditableText()
+//						.toString().trim();
+//				String remainingCharacters = String
+//						.valueOf((CHARS_LIMIT - typedTweetText.length()));
+//				charLimit.setText(remainingCharacters);
+//			}
+//
+//			@Override
+//			public void beforeTextChanged(CharSequence s, int start, int count,
+//					int after) {
+//				// TODO Auto-generated method stub
+//
+//			}
+//
+//			@Override
+//			public void afterTextChanged(Editable s) {
+//				// TODO Auto-generated method stub
+//
+//			}
+//		});
+		
+		
 		replyEditText.addTextChangedListener(new TextWatcher() {
-
+			
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				int availableChar=0;
 				String typedTweetText = replyEditText.getEditableText()
 						.toString().trim();
-				String remainingCharacters = String
+				availableChar=CHARS_LIMIT - typedTweetText.length();
+				String updatedRemainingChars = String
 						.valueOf((CHARS_LIMIT - typedTweetText.length()));
-				charLimit.setText(remainingCharacters);
-			}
+				charLimit.setText(updatedRemainingChars);
+				if(availableChar < 0) {
+					tweetIt.setEnabled(false);
+					tweetIt.setBackgroundColor(getResources().getColor(R.color.TwitterBlue_disabled));
+					charLimit.setTextColor(getResources().getColor(R.color.Red));
+				}else {
+					tweetIt.setEnabled(true);
+					tweetIt.setBackgroundColor(getResources().getColor(R.color.TwitterBlue));
+					charLimit.setTextColor(getResources().getColor(android.R.color.black));
 
+				}
+			}
+			
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
 				// TODO Auto-generated method stub
-
+				
 			}
-
+			
 			@Override
 			public void afterTextChanged(Editable s) {
 				// TODO Auto-generated method stub
-
+				
 			}
 		});
+		
 		replyEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
 
 			@Override
