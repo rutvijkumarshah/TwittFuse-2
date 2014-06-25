@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:textSize="13sp"
             android:textColor="@color/Hint_color"
-            android:text="Rutvijkumar Shah retweeted" />
+            android:text="" />
         <!-- Tweet Header (RT Info ???,TweetUser Info ) -->
 
         <RelativeLayout
@@ -65,7 +65,7 @@
                 android:layout_marginRight="4dp"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:text="Meteor" />
+                android:text="" />
 
             <TextView
                 android:id="@+id/tweetUserScreenName"
@@ -75,7 +75,7 @@
                 android:layout_toRightOf="@+id/tweetUserName"
                 android:textSize="13sp"
                 android:textColor="@color/Hint_color"
-                android:text="\@meteor" />
+                android:text="" />
 
             <TextView
                 android:id="@+id/tweetTimeStampTxt"
@@ -101,7 +101,7 @@
             android:linksClickable="true"
             android:layout_below="@+id/tweetBodyHeader"
             android:layout_marginBottom="8dp"
-            android:text="afasdf fdf s adsdfasddfsdfsdaf d safsadfsdafsdfsdafsdafdsf" />
+            android:text="" />
         <!-- Tweet Footer (RT Info,TweetUser Info, Tweetbody ) -->
 
         <ImageButton
