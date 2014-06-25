@@ -33,7 +33,8 @@ public class OfflineTweetAlarmReceiver extends BroadcastReceiver {
 	  
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Intent i = new Intent(context, TweetIntentService.class);
+		//Intent i = new Intent(context, TweetIntentService.class);
+		Intent i = new Intent(context, OfflinePostedTweetProcessingService.class);
 		context.startService(i);
 	}
 }

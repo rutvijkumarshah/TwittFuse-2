@@ -27,11 +27,12 @@ import java.util.Random;
 
 import org.json.JSONObject;
 
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Intent;
+import android.os.IBinder;
 import android.util.Log;
 
 import com.github.rutvijkumar.twittfuse.R;
@@ -43,9 +44,37 @@ import com.github.rutvijkumar.twittfuse.models.Tweet;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-public class TweetIntentService extends IntentService {
+public class OfflinePostedTweetProcessingService extends Service {
 
 	TwitterClient client;
+
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		processOfflineTweets();
+		return Service.START_NOT_STICKY;
+	}
+
+
+
+	protected void processOfflineTweets() {
+		
+		client = TwitterApplication.getRestClient();
+
+		/***
+		 * It is important to check network connectivity before hand
+		 * 
+		 */
+		if (!Util.isNetworkAvailable(this)) {
+			return;
+		}
+
+		List<Tweet> offlineTweets = Tweet.getAllOfflineTweets(1);
+		if(offlineTweets.size() >0) {
+		
+			final Tweet tw = offlineTweets.get(0);
+			AsyncHttpResponseHandler handler = new SyncJsonHttpResponseHandler(tw);
+			client.postTweet(tw.getBody(), tw.getOfflineReplyToTweetId(),handler);
+		}
+	}
 
 	class SyncJsonHttpResponseHandler extends JsonHttpResponseHandler {
 
@@ -71,15 +100,6 @@ public class TweetIntentService extends IntentService {
 	
 	};
 
-	public TweetIntentService() {
-		this("");
-	}
-
-	public TweetIntentService(String name) {
-		super(name);
-
-	}
-
 	private void onSuccessfulPost(Tweet newTweet, Tweet offLineTweet) {
 		// remove offline tweet from db
 		try {
@@ -91,6 +111,7 @@ public class TweetIntentService extends IntentService {
 			e.printStackTrace();
 		}
 	}
+
 
 	private void sendNotification(Tweet newTweet) {
 		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -113,42 +134,15 @@ public class TweetIntentService extends IntentService {
 
 		notificationManager.notify(random_int, n);
 	}
+	
 
-
-
-	protected void onHandleIntent(Intent intent) {
-		
-		client = TwitterApplication.getRestClient();
-
-		/***
-		 * It is important to check network connectivity before hand
-		 * 
-		 */
-		if (!Util.isNetworkAvailable(this)) {
-			return;
-		}
-
-		List<Tweet> offlineTweets = Tweet.getAllOfflineTweets(1);
-		if(offlineTweets.size() >0) {
-		
-			final Tweet tw = offlineTweets.get(0);
-			AsyncHttpResponseHandler handler = new SyncJsonHttpResponseHandler(tw);
-			client.postTweet(tw.getBody(), tw.getOfflineReplyToTweetId(),handler);
-			waitForResponse();
-		}
+	
+	@Override
+	public IBinder onBind(Intent intent) {
+		// TODO Auto-generated method stub
+		return null;
 	}
+	
 
-	/*****
-	 * Hack not a good way of taking thread in hand.
-	 * OAUTH library wrapper is not working with latest Android-Async client ( which supports synchronous mode)
-	 * 
-	 */
-	private void waitForResponse() {
-		try {
-			Thread.sleep(5*1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+
 }
