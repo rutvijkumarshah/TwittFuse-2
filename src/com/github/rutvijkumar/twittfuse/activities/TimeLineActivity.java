@@ -77,8 +77,6 @@ public class TimeLineActivity extends FragmentActivity implements OnNewTweetList
 	                populateTimeLine();
 	            }
 	        });
-		
-		
 
 	}
 	
@@ -145,7 +143,7 @@ public class TimeLineActivity extends FragmentActivity implements OnNewTweetList
 				Tweet oldestTweet = (Tweet) tweetsListView.getItemAtPosition(totalItemsCount-1);
 				if(oldestTweet!=null) {
 					//When getting older tweets
-					client.getHomeTimeline(new ResponseHandler(),oldestTweet.getUid()-1);
+					client.getHomeTimeline(new ResponseHandler(false),oldestTweet.getUid()-1);
 				}
 				
 			}else {
@@ -153,7 +151,7 @@ public class TimeLineActivity extends FragmentActivity implements OnNewTweetList
 				Tweet.deleteAll();
 				adapter.clear();
 				adapter.notifyDataSetInvalidated();
-				client.getHomeTimeline(new ResponseHandler());
+				client.getHomeTimeline(new ResponseHandler(true));
 			}
 		}else {
 			Util.showNetworkUnavailable(this);
@@ -169,22 +167,10 @@ public class TimeLineActivity extends FragmentActivity implements OnNewTweetList
 	 *
 	 */
 	class ResponseHandler extends JsonHttpResponseHandler {
-		ResponseHandler(){
-			
+		private boolean onRefresh=false;
+		ResponseHandler(boolean onRefresh){
+			this.onRefresh=onRefresh;
 		}
-		
-//		@Override
-//		public void onSuccess(int statusCode, Header[] headers,
-//				JSONArray response) {
-//			onSuccess(response);
-//		}
-//		
-//		@Override
-//		public void onFailure(int statusCode, Header[] headers,
-//				String responseString, Throwable throwable) {
-//			// TODO Auto-generated method stub
-//			onFailure(throwable, responseString);
-//		}
 		
 		@Override
 		public void onFailure(Throwable e, String s) {
@@ -194,7 +180,9 @@ public class TimeLineActivity extends FragmentActivity implements OnNewTweetList
 		@Override
 		public void onFinish() {
 			// TODO Auto-generated method stub
-			tweetsListView.onRefreshComplete();
+			if(onRefresh) {
+				tweetsListView.onRefreshComplete();
+			}
 			super.onFinish();
 		}
 		@Override
@@ -204,8 +192,6 @@ public class TimeLineActivity extends FragmentActivity implements OnNewTweetList
 				tweet.persist();
 				adapter.add(tweet);
 			}
-			tweetsListView.onRefreshComplete();
-			//Util.hideProgressBar(TimeLineActivity.this);
 			setProgressBarIndeterminate(false);
 			
 			/****
