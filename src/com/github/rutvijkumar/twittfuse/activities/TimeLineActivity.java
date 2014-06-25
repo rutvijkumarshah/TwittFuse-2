@@ -45,13 +45,13 @@ public class TimeLineActivity extends FragmentActivity implements OnNewTweetList
 	private boolean isAlarmScheduled=false;
 	private String KEY_IS_DATA_AVAILABLE="IS_DATA_AVAILABLE";
 
-	@Override
-	protected void onSaveInstanceState(Bundle bundle) {
-		super.onSaveInstanceState(bundle);
-		boolean isDataAvailable=Tweet.findAll().size() > 0;
-		bundle.putBoolean(KEY_IS_DATA_AVAILABLE, isDataAvailable);
-		
-	}
+//	@Override
+//	protected void onSaveInstanceState(Bundle bundle) {
+//		super.onSaveInstanceState(bundle);
+//		boolean isDataAvailable=Tweet.findAll().size() > 0;
+//		bundle.putBoolean(KEY_IS_DATA_AVAILABLE, isDataAvailable);
+//		
+//	}
 	
 	@Override
 	public void onNewTweet(Tweet tweet) {
@@ -90,11 +90,9 @@ public class TimeLineActivity extends FragmentActivity implements OnNewTweetList
 		setupIintialViews();//Setting up listeners,paginations,adapters
 		
 		/****
-		 * If screen is just rotated no need to make network call load data from DB
+		 * Data is already there no need to fire network call
 		 */
-		if(savedInstanceState!=null) {
-			isDataAvailable = savedInstanceState.getBoolean(KEY_IS_DATA_AVAILABLE);
-		}
+		isDataAvailable=Tweet.findAll().size() > 0;
 		if(isDataAvailable) {
 			populateFromDb();
 		}else {

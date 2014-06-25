@@ -29,7 +29,7 @@
             android:layout_alignTop="@+id/img_profilepic"
             android:layout_marginLeft="16dp"
             android:layout_toRightOf="@+id/img_profilepic"
-            android:text="Rutvijkumar Shah"
+            android:text=""
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -40,7 +40,7 @@
             android:layout_below="@+id/tv_username"
             android:textSize="13sp"
             android:textColor="@color/Hint_color"
-            android:text="\@rutvijashah"
+            android:text=""
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
@@ -51,7 +51,7 @@
             android:layout_marginTop="8dp"
             android:textSize="17sp"
             android:autoLink="all"
-            android:text="Hey its a nice day out and you know this will be cool "
+            android:text=""
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -61,7 +61,7 @@
             android:layout_below="@+id/tv_tweetbody"
             android:layout_marginTop="8dp"
             android:textColor="@color/Hint_color"
-            android:text="2.48 pm . 19 Jun 14"
+            android:text=""
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <View
@@ -91,7 +91,7 @@
             android:layout_marginRight="16dp"
             android:textColor="@color/Hint_color"
             android:layout_toRightOf="@+id/tv_RTcount"
-            android:text="RETWEET"
+            android:text="@string/retweet"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
@@ -112,7 +112,7 @@
             android:textColor="@color/Hint_color"
             android:layout_below="@+id/timestampDevider"
             android:layout_toRightOf="@+id/tv_FVcount"
-            android:text="FAVORITES"
+            android:text="@string/favorites"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <View
@@ -231,7 +231,7 @@
             android:id="@+id/tv_charlimit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="140"
+            android:text="@string/_140"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <View
@@ -251,7 +251,7 @@
             android:background="@color/TwitterBlue_disabled"
         	android:textColor="@android:color/white"
         	android:enabled="false"
-            android:text="TWEET"
+            android:text="@string/tweet"
             android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 
