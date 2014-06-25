@@ -25,7 +25,6 @@ package com.github.rutvijkumar.twittfuse;
 import java.util.HashSet;
 import java.util.List;
 
-import org.apache.http.Header;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
@@ -82,7 +81,7 @@ public class TwitterUtil {
 						tweet.setFavouritesCount(newFavCount);
 						tweet.save();
 						
-						countView.setText(String.valueOf(tweet.getFavouritesCount()));
+						countView.setText(String.valueOf(newFavCount));
 						setFavView(tweet.isFavorited(), favAction);
 					}
 
@@ -129,7 +128,7 @@ public class TwitterUtil {
 						final long newRTCount=tweet.getReTweetCount()+1;
 						
 						tweet.setRetweeted(true);
-						tweet.setReTweetCount(tweet.getReTweetCount()+1);
+						tweet.setReTweetCount(newRTCount);
 						tweet.save();
 						setRTView(true, rtAction);
 						rtCount.setText(String.valueOf(newRTCount));
