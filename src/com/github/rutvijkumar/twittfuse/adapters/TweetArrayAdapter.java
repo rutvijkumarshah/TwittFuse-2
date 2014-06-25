@@ -206,7 +206,7 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 				Tweet tw=(Tweet)v.getTag();
 				//FLIP FAV
 				tweet.setFavorited(!tw.isFavorited());
-				twUtil.markFavorite(tw, favImage,fCount);
+				twUtil.markFavorite(tw, favImage,fCount,true);
 			}
 		});
 		
@@ -218,7 +218,7 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Tweet tw=(Tweet)v.getTag();
-				twUtil.confirmRetweet(tw, reTweetImage,rtCountView);
+				twUtil.confirmRetweet(tw, reTweetImage,rtCountView,true);
 				
 			}
 		});

@@ -44,7 +44,7 @@ public class TwitterClient extends OAuthBaseClient {
 																			// and
 																			// in
 																			// manifest)
-	private static final int MAX_RECORD_COUNT = 20;
+	private static final int MAX_RECORD_COUNT = 30;
 
 	public TwitterClient(Context context) {
 		super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY,

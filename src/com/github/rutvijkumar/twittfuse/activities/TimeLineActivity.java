@@ -192,6 +192,12 @@ public class TimeLineActivity extends FragmentActivity implements OnNewTweetList
 		}
 		
 		@Override
+		public void onFinish() {
+			// TODO Auto-generated method stub
+			tweetsListView.onRefreshComplete();
+			super.onFinish();
+		}
+		@Override
 		public void onSuccess(JSONArray jsArray) {
 			ArrayList<Tweet> tweets =Tweet.fromJSONArray(jsArray);
 			for (Tweet tweet : tweets) {

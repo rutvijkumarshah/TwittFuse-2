@@ -150,8 +150,9 @@ public class TweetDetailsActivity extends FragmentActivity implements OnNewTweet
 		WebSettings webSettings = webView.getSettings();
 	    webSettings.setJavaScriptEnabled(true);
 	    webSettings.setDomStorageEnabled(true);
-	    webView.getSettings().setJavaScriptEnabled(true);
-	    webView.getSettings().setDomStorageEnabled(true);
+	    
+//	    webView.getSettings().setJavaScriptEnabled(true);
+//	    webView.getSettings().setDomStorageEnabled(true);
 		webView.setWebViewClient(webViewClient);
 		webView.loadUrl(url);
 	}
@@ -160,13 +161,13 @@ public class TweetDetailsActivity extends FragmentActivity implements OnNewTweet
 		final String action_code=view.getTag().toString();
 		if("FAV".equals(action_code)) {
 			tweet.setFavorited(!tweet.isFavorited());
-			twUtil.markFavorite(tweet, favAction,favCount);
+			twUtil.markFavorite(tweet, favAction,favCount,false);
 		}
 		else if("SHARE".equals(action_code)) {
 			startShareIntent();
 		}
 		else if("RT".equals(action_code)) {
-			twUtil.confirmRetweet(tweet,rtAction,rtCount);
+			twUtil.confirmRetweet(tweet,rtAction,rtCount,false);
 		}else if ("REPLY".equals(action_code)) {
 			twUtil.postReply(tweet);
 		}

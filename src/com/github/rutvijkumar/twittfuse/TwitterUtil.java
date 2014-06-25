@@ -32,6 +32,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -50,7 +51,7 @@ public class TwitterUtil {
 		this.client = client;
 	}
 
-	public void markFavorite(final Tweet tweet, final ImageButton favAction,final TextView countView) {
+	public void markFavorite(final Tweet tweet, final ImageButton favAction,final TextView countView,final boolean hideZero) {
 		if(!Util.isNetworkAvailable(activity)) {
 			Util.showNetworkUnavailable(activity);
 		}
@@ -72,12 +73,20 @@ public class TwitterUtil {
 					public void onSuccess(JSONObject body) {
 						boolean isFav = tweet.isFavorited();
 						long newFavCount=tweet.getFavouritesCount();
-						tweet.save();
+						
 						if(isFav) {
 							newFavCount++;
 						}else {
 							newFavCount--;
 						}
+						if(hideZero) {
+							if(newFavCount == 0) {
+								countView.setVisibility(View.INVISIBLE);
+							}else {
+								countView.setVisibility(View.VISIBLE);
+							}
+						}
+						
 						tweet.setFavouritesCount(newFavCount);
 						tweet.save();
 						
@@ -108,7 +117,7 @@ public class TwitterUtil {
 		}
 	}
 
-	private void doReTweet(final Tweet tweet, final ImageButton rtAction,final TextView rtCount) {
+	private void doReTweet(final Tweet tweet, final ImageButton rtAction,final TextView rtCount,final boolean hideZero) {
 		
 		client.postRT(String.valueOf(tweet.getUid()),
 				new JsonHttpResponseHandler() {
@@ -132,6 +141,13 @@ public class TwitterUtil {
 						tweet.save();
 						setRTView(true, rtAction);
 						rtCount.setText(String.valueOf(newRTCount));
+						if(hideZero) {
+							if(newRTCount ==0) {
+								rtCount.setVisibility(View.INVISIBLE);
+							}else {
+								rtCount.setVisibility(View.VISIBLE);
+							}
+						}
 					}
 
 					public void onFailure(Throwable e, JSONObject error) {
@@ -142,7 +158,7 @@ public class TwitterUtil {
 
 	}
 
-	public void confirmRetweet(final Tweet tweet, final ImageButton rtAction, final TextView rtCount) {
+	public void confirmRetweet(final Tweet tweet, final ImageButton rtAction, final TextView rtCount,final boolean hideZero) {
 		
 		if (!tweet.isRetweeted()) {
 
@@ -156,7 +172,7 @@ public class TwitterUtil {
 							if(!Util.isNetworkAvailable(activity)) {
 								Util.showNetworkUnavailable(activity);
 							}
-							doReTweet(tweet, rtAction,rtCount);
+							doReTweet(tweet, rtAction,rtCount,hideZero);
 
 						}
 
