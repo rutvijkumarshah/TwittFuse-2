@@ -24,6 +24,8 @@
             android:id="@+id/tv_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:textStyle="bold"
             android:layout_alignTop="@+id/img_profilepic"
             android:layout_marginLeft="16dp"
             android:layout_toRightOf="@+id/img_profilepic"
@@ -36,6 +38,8 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/tv_username"
             android:layout_below="@+id/tv_username"
+            android:textSize="13sp"
+            android:textColor="@color/Hint_color"
             android:text="\@rutvijashah"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -45,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/img_profilepic"
             android:layout_marginTop="8dp"
+            android:textSize="17sp"
             android:autoLink="all"
             android:text="Hey its a nice day out and you know this will be cool "
             android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -55,6 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_tweetbody"
             android:layout_marginTop="8dp"
+            android:textColor="@color/Hint_color"
             android:text="2.48 pm . 19 Jun 14"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -72,6 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/timestampDevider"
+            android:textStyle="bold"
             android:layout_marginRight="8dp"
             android:text="1"
             android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -82,6 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/timestampDevider"
             android:layout_marginRight="16dp"
+            android:textColor="@color/Hint_color"
             android:layout_toRightOf="@+id/tv_RTcount"
             android:text="RETWEET"
             android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -92,6 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/timestampDevider"
             android:layout_marginRight="8dp"
+            android:textStyle="bold"
             android:layout_toRightOf="@+id/tv_RTLable"
             android:text="4"
             android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -100,6 +109,7 @@
             android:id="@+id/tv_FVLable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/Hint_color"
             android:layout_below="@+id/timestampDevider"
             android:layout_toRightOf="@+id/tv_FVcount"
             android:text="FAVORITES"
