@@ -184,27 +184,27 @@ public class Util {
 
 		long diff = (now - then) / 1000;
 		if (diff < 1) {
-			fromNow = "0 s";
+			fromNow = "0s";
 		} else {
 			if (diff > 60) {
 				diff = diff / 60;
 				if (diff <= 0) {
-					fromNow = "1 m";
+					fromNow = "1m";
 				} else if (diff < 60) {
-					fromNow = diff + " m";
+					fromNow = diff + "m";
 				} else {
 					diff = (diff / 60);
 					if (diff <= 0) {
-						fromNow = "1 h";
+						fromNow = "1h";
 					} else if (diff < 24) {
-						fromNow = diff + " h";
+						fromNow = diff + "h";
 					} else {
 						diff = (diff / 24);
-						fromNow = diff + " d";
+						fromNow = diff + "d";
 					}
 				}
 			} else {
-				fromNow = diff + " s";
+				fromNow = diff + "s";
 			}
 		}
 		return fromNow;

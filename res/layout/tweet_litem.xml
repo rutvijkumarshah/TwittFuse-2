@@ -47,6 +47,8 @@
             android:id="@+id/retweetedTweetUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/Hint_color"
             android:text="Rutvijkumar Shah retweeted" />
         <!-- Tweet Header (RT Info ???,TweetUser Info ) -->
 
@@ -61,20 +63,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="4dp"
+                android:textSize="15sp"
+                android:textStyle="bold"
                 android:text="Meteor" />
 
             <TextView
                 android:id="@+id/tweetUserScreenName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tweetUserName"
+                android:layout_alignBottom="@+id/tweetUserName"
                 android:layout_toRightOf="@+id/tweetUserName"
+                android:textSize="13sp"
+                android:textColor="@color/Hint_color"
                 android:text="\@meteor" />
 
             <TextView
                 android:id="@+id/tweetTimeStampTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/Hint_color"
                 android:layout_alignParentRight="true"
                 android:layout_alignTop="@+id/tweetUserName"
                 android:layout_marginRight="8dp"
@@ -89,6 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:autoLink="all"
+            android:textSize="17sp"
             android:linksClickable="true"
             android:layout_below="@+id/tweetBodyHeader"
             android:layout_marginBottom="8dp"
@@ -117,6 +126,8 @@
 		<TextView
             android:id="@+id/retweetCountTv"
             android:layout_width="32dp"
+            android:textSize="13sp"
+            android:layout_alignBottom="@+id/retweetIv"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tweetBodyTxt"
             android:layout_toRightOf="@+id/retweetIv"
@@ -137,8 +148,10 @@
             android:id="@+id/favCountTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/favIv"
             android:layout_below="@+id/tweetBodyTxt"
             android:layout_toRightOf="@+id/favIv"
+            android:textSize="13sp"
             android:layout_marginRight="48dp"
             android:text="" />
     </RelativeLayout>
