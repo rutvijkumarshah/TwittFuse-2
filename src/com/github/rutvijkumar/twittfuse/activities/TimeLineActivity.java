@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 
@@ -94,6 +95,8 @@ public class TimeLineActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_time_line);
 		ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
+		PagerTabStrip tabStrip = (PagerTabStrip) findViewById(R.id.pager_header);
+		
 		adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
 		vpPager.setAdapter(adapterViewPager);
 

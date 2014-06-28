@@ -26,7 +26,10 @@
     	<item name="android:actionMenuTextColor">@android:color/white</item>
     </style>
     <style name="tfActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
-    <item name="android:textColor">@android:color/white</item>
-  </style>
-    
+    	<item name="android:textColor">@android:color/white</item>
+  	</style>
+    <style name="Pager">
+    	<item name="android:textColor">@color/TwitterBlue_disabled</item>
+    	<item name="android:textSize">20sp</item>
+	</style>
 </resources>
