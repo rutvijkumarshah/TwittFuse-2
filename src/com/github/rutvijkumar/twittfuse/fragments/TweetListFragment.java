@@ -44,6 +44,8 @@ public abstract class TweetListFragment extends Fragment {
 	private TweetArrayAdapter adapter;
 	private eu.erikw.PullToRefreshListView tweetsListView;
 
+	
+	 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub

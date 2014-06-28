@@ -117,4 +117,12 @@ public class HomeTimeLineFragment extends TweetListFragment {
 		}
 	}
 
+	 public static HomeTimeLineFragment newInstance(int page, String title) {
+		 HomeTimeLineFragment fragment = new HomeTimeLineFragment();
+	        Bundle args = new Bundle();
+	        args.putInt("page", page);
+	        args.putString("title", title);
+	        fragment.setArguments(args);
+	        return fragment;
+	}
 }

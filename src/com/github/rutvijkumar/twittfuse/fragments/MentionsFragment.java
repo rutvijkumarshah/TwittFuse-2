@@ -80,4 +80,12 @@ public class MentionsFragment extends TweetListFragment{
 		populateTweets(-1);
 	}
 
+	 public static MentionsFragment newInstance(int page, String title) {
+		 MentionsFragment fragment = new MentionsFragment();
+	        Bundle args = new Bundle();
+	        args.putInt("page", page);
+	        args.putString("title", title);
+	        fragment.setArguments(args);
+	        return fragment;
+	}
 }
