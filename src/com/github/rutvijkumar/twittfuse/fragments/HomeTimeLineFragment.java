@@ -55,6 +55,8 @@ public class HomeTimeLineFragment extends TweetListFragment {
 		super.onActivityCreated(savedInstanceState);
 		if (Tweet.findAll().size() > 0) {
 			populateFromDb();
+		}else {
+			populateAllTweets();
 		}
 
 	}
