@@ -22,10 +22,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.github.rutvijkumar.twittfuse.fragments;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import org.json.JSONArray;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -36,7 +33,6 @@ import com.github.rutvijkumar.twittfuse.TwitterApplication;
 import com.github.rutvijkumar.twittfuse.Util;
 import com.github.rutvijkumar.twittfuse.api.TwitterClient;
 import com.github.rutvijkumar.twittfuse.models.Tweet;
-import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class HomeTimeLineFragment extends TweetListFragment {
 

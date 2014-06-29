@@ -13,6 +13,7 @@ import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.github.rutvijkumar.twittfuse.R;
 import com.github.rutvijkumar.twittfuse.Util;
 import com.github.rutvijkumar.twittfuse.fragments.HomeTimeLineFragment;
@@ -35,6 +36,7 @@ public class TimeLineActivity extends FragmentActivity implements
 
 	private TweetListFragment tweetListFragment;
 	private MyPagerAdapter adapterViewPager;
+	private PagerSlidingTabStrip tabs;
 	private static final int POSITION_OF_HOMETIMELINE = 0;
 	private static final int POSITION_OF_MENTIONS = 1;
 
@@ -94,11 +96,16 @@ public class TimeLineActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_time_line);
-		ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
-		PagerTabStrip tabStrip = (PagerTabStrip) findViewById(R.id.pager_header);
+		ViewPager vpPager = (ViewPager) findViewById(R.id.viewPager);
+		//PagerTabStrip tabStrip = (PagerTabStrip) findViewById(R.id.pager_header);
 		
 		adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
 		vpPager.setAdapter(adapterViewPager);
+		
+		tabs = (PagerSlidingTabStrip) findViewById(R.id.slidingTabStrip);
+        tabs.setViewPager(vpPager);
+        tabs.setTextColor(getResources().getColor(R.color.TwitterBlue));
+
 
 		scheduleAlarm();
 	}

@@ -5,12 +5,28 @@
     android:background="@android:color/white"
     tools:context="${packageName}.${activityClass}" >
 
-    <android.support.v4.view.ViewPager
-   android:id="@+id/vpPager"
+	<com.astuetz.PagerSlidingTabStrip
+        android:id="@+id/slidingTabStrip"
+        android:layout_width="match_parent"
+        android:layout_height="48dip"
+     />
+
+	<android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/slidingTabStrip"
+    />
+	
+        
+    <!--
+    
+<android.support.v4.view.ViewPager
+   android:id="@+id/viewPager"
    android:layout_width="match_parent"
    android:layout_height="wrap_content">
 
-   <android.support.v4.view.PagerTabStrip
+  <android.support.v4.view.PagerTabStrip
         android:id="@+id/pager_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,6 +35,8 @@
         android:paddingBottom="10dp"
         style="@style/Pager"
         android:paddingTop="10dp" />
-
+   
 </android.support.v4.view.ViewPager>
+    -->
+    
 </RelativeLayout>
