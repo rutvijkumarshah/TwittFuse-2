@@ -11,5 +11,7 @@
     <string name="retweet">RETWEET</string>
     <string name="favorites">FAVORITES</string>
     <string name="what_s_happening_">What\'s happening?</string>
+    <string name="title_activity_profile_view">ProfileViewActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

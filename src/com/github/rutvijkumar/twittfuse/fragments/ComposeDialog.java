@@ -274,7 +274,7 @@ public class ComposeDialog extends DialogFragment {
 	}
 	private void getUserAccountDetails() {
 		client = new TwitterClient(this.activity);
-		client.getUserAccountDetails(new JsonHttpResponseHandler() {
+		client.getMyAccountInfo(new JsonHttpResponseHandler() {
 			
 			@Override
 			public void onSuccess(JSONObject json) {

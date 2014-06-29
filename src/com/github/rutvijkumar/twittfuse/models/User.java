@@ -51,8 +51,47 @@ public class User extends Model implements Serializable{
 	@Column(name = "screenName")
 	private String screenName;
 
+	@Column(name="profileBackgroundImageUrl")
+	private String profileBackgroundImageUrl;
+	
+	@Column(name="favCount")
+	private long favCount;
+	
+	@Column(name="followersCount")
+	private long followersCount;
+	
+	@Column(name="followingCount")
+	private long followingCount;
+	
+	@Column(name="following")
+	private String following;
+
+	@Column(name="tweetsCount")
+	private long tweetsCount;
+	
+	
 	public String getName() {
 		return name;
+	}
+
+	public long getFavCount() {
+		return favCount;
+	}
+
+	public long getFollowersCount() {
+		return followersCount;
+	}
+
+	public long getFollowingCount() {
+		return followingCount;
+	}
+
+	public boolean isFollowing() {
+		return following.equals("Y");
+	}
+
+	public long getTweetsCount() {
+		return tweetsCount;
 	}
 
 	public long getUid() {
@@ -75,10 +114,34 @@ public class User extends Model implements Serializable{
 			user.uid=jsonObject.getLong("id");;
 			user.profileImageUrl=jsonObject.getString("profile_image_url");
 			user.screenName=jsonObject.getString("screen_name");
+			if(jsonObject.has("profile_background_image_url")) {
+				user.profileBackgroundImageUrl=jsonObject.getString("profile_background_image_url");
+			}
+			if(jsonObject.has("following")) {
+				user.following = jsonObject.getBoolean("following") ? "Y" :"N";
+			}
+			if(jsonObject.has("favourites_count")) {
+				user.favCount = jsonObject.getLong("favourites_count");
+			}
+			if(jsonObject.has("friends_count")) {
+				user.followingCount = jsonObject.getLong("friends_count");
+			}
+			if(jsonObject.has("followers_count")) {
+				user.followersCount = jsonObject.getLong("followers_count");
+			}
+			if(jsonObject.has("statuses_count")) {
+				user.tweetsCount=jsonObject.getLong("statuses_count");
+			}
+			
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return user;
+	}
+
+
+	public String getProfileBackgroundImageUrl() {
+		return profileBackgroundImageUrl;
 	}
 	
 }

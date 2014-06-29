@@ -23,6 +23,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 package com.github.rutvijkumar.twittfuse;
 
 import java.text.ParseException;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,7 +31,10 @@ import java.util.HashSet;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -44,14 +48,36 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.github.rutvijkumar.twittfuse.activities.ProfileViewActivity;
 import com.github.rutvijkumar.twittfuse.fragments.ComposeDialog;
 import com.github.rutvijkumar.twittfuse.models.Tweet;
+import com.github.rutvijkumar.twittfuse.services.OfflineTweetAlarmReceiver;
 import com.twitter.Extractor;
 
 public class Util {
 
 	private static final String TWITTER = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
 
+	public static final void scheduleAlarm(Activity activity) {
+		// Construct an intent that will execute the AlarmReceiver
+		Intent intent = new Intent(activity.getApplicationContext(),
+				OfflineTweetAlarmReceiver.class);
+
+		// Create a PendingIntent to be triggered when the alarm goes off
+		final PendingIntent pIntent = PendingIntent.getBroadcast(activity,
+				OfflineTweetAlarmReceiver.REQUEST_CODE, intent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+
+		// Setup periodic alarm every 10 seconds
+		long firstMillis = System.currentTimeMillis(); // first run of alarm is
+														// immediate
+		int intervalMillis = 10000; // 10 seconds
+		AlarmManager alarm = (AlarmManager) activity
+				.getSystemService(Context.ALARM_SERVICE);
+		alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+				intervalMillis, pIntent);
+	}
+	
 	public static ComposeDialog newInstance(Activity activity) {
 		ComposeDialog dlg = new ComposeDialog();
 		dlg.setActivity(activity);
@@ -236,6 +262,12 @@ public class Util {
 		List<String> screennames = extractor
 				.extractMentionedScreennames(tweetBody);
 		return screennames;
+	}
+
+	public static void onProfileView(Activity activity) {
+		Intent profileViewIntent=new Intent(activity,ProfileViewActivity.class);
+		activity.startActivity(profileViewIntent);
+		
 	}
 	
 	

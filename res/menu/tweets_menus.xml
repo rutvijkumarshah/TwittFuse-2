@@ -7,4 +7,9 @@
           android:showAsAction="always"
  />
 
+<item android:id="@+id/action_profileView"
+          android:title="Profile"
+          android:icon="@drawable/ic_action_compose"
+          android:showAsAction="always"
+ />
 </menu>

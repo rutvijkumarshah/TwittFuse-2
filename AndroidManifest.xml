@@ -57,12 +57,15 @@
             android:name="com.github.rutvijkumar.twittfuse.services.OfflineTweetAlarmReceiver"
             android:process=":remote" >
         </receiver>
-        
+
         <service
             android:name="com.github.rutvijkumar.twittfuse.services.OfflinePostedTweetProcessingService"
             android:exported="false" />
-        
-        
+
+        <activity
+            android:name="com.github.rutvijkumar.twittfuse.activities.ProfileViewActivity"
+            android:label="@string/title_activity_profile_view" >
+        </activity>
     </application>
 
 </manifest>
