@@ -16,6 +16,12 @@
 
     </eu.erikw.PullToRefreshListView>
 
-    
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="invisible"
+        android:layout_gravity="center_vertical|center_horizontal"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

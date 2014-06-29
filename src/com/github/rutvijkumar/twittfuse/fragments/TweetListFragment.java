@@ -30,6 +30,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.github.rutvijkumar.twittfuse.R;
 import com.github.rutvijkumar.twittfuse.adapters.TweetArrayAdapter;
@@ -43,7 +44,7 @@ public abstract class TweetListFragment extends Fragment {
 	private ArrayList<Tweet> tweets = new ArrayList<Tweet>();
 	private TweetArrayAdapter adapter;
 	private eu.erikw.PullToRefreshListView tweetsListView;
-
+	private ProgressBar progressBar;
 	
 	 
 	@Override
@@ -61,6 +62,9 @@ public abstract class TweetListFragment extends Fragment {
 				false);
 		tweetsListView = (eu.erikw.PullToRefreshListView) v
 				.findViewById(R.id.lvTweets);
+		
+		progressBar=(ProgressBar)v.findViewById(R.id.progressBar);
+		
 		tweetsListView.setAdapter(adapter);
 
 		return v;
@@ -132,6 +136,16 @@ public abstract class TweetListFragment extends Fragment {
 	public void clearAll() {
 		this.adapter.clear();
 		this.adapter.notifyDataSetInvalidated();
+	}
+
+	public void showWaiting() {
+		// TODO Auto-generated method stub
+		progressBar.setVisibility(View.VISIBLE);
+		
+	}
+
+	public void doneWaiting() {
+		progressBar.setVisibility(View.INVISIBLE);
 	}
 
 }

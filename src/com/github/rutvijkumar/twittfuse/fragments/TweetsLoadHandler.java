@@ -42,6 +42,8 @@ public class TweetsLoadHandler extends JsonHttpResponseHandler{
 	public TweetsLoadHandler(boolean onRefresh,TweetListFragment tweetListFragment) {
 		this.onRefresh = onRefresh;
 		this.tweetListFragment=tweetListFragment;
+		this.tweetListFragment.showWaiting();
+		
 	}
 
 	@Override
@@ -49,12 +51,14 @@ public class TweetsLoadHandler extends JsonHttpResponseHandler{
 	
 	}
 
+	
 	@Override
 	public void onFinish() {
 		// TODO Auto-generated method stub
 		if (onRefresh) {
 			tweetListFragment.dataRefreshFinished();
 		}
+		this.tweetListFragment.doneWaiting();
 		super.onFinish();
 	}
 
