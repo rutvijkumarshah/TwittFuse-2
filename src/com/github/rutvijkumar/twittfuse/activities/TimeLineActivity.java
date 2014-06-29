@@ -9,13 +9,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.github.rutvijkumar.twittfuse.R;
 import com.github.rutvijkumar.twittfuse.Util;
+import com.github.rutvijkumar.twittfuse.fragments.DirectMessagesFragments;
 import com.github.rutvijkumar.twittfuse.fragments.HomeTimeLineFragment;
 import com.github.rutvijkumar.twittfuse.fragments.MentionsFragment;
 import com.github.rutvijkumar.twittfuse.fragments.TweetListFragment;
@@ -39,7 +41,7 @@ public class TimeLineActivity extends FragmentActivity implements
 	private PagerSlidingTabStrip tabs;
 	private static final int POSITION_OF_HOMETIMELINE = 0;
 	private static final int POSITION_OF_MENTIONS = 1;
-
+	private static final int POSITION_OF_DIRECTMSGS = 2;
 	public static class MyPagerAdapter extends FragmentPagerAdapter {
 		private static int NUM_ITEMS = 2;
 
@@ -59,11 +61,14 @@ public class TimeLineActivity extends FragmentActivity implements
 			switch (position) {
 			case POSITION_OF_HOMETIMELINE: // Fragment # 0 - This will show
 											// FirstFragment
-				return HomeTimeLineFragment.newInstance(position, "Timeline");
+				return HomeTimeLineFragment.newInstance(position, "Home");
 			case POSITION_OF_MENTIONS: // Fragment # 0 - This will show
 										// FirstFragment different title
-				return MentionsFragment.newInstance(position, "Mention");
+				return MentionsFragment.newInstance(position, "Mentions");
 
+			case POSITION_OF_DIRECTMSGS:
+				return DirectMessagesFragments.newInstance(position, "Mentions");
+				
 			default:
 				return null;
 			}
@@ -73,9 +78,11 @@ public class TimeLineActivity extends FragmentActivity implements
 		@Override
 		public CharSequence getPageTitle(int position) {
 			if (position == POSITION_OF_HOMETIMELINE) {
-				return "Timeline";
-			} else {
+				return "Home";
+			} else if (position == POSITION_OF_MENTIONS) { 
 				return "Mentions";
+			}else{
+				return "Direct Messages";
 			}
 		}
 
@@ -102,14 +109,20 @@ public class TimeLineActivity extends FragmentActivity implements
 		adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
 		vpPager.setAdapter(adapterViewPager);
 		
+		setupSlidingTabs(vpPager);
+		scheduleAlarm();
+	}
+
+	private void setupSlidingTabs(ViewPager vpPager) {
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.slidingTabStrip);
         tabs.setViewPager(vpPager);
         tabs.setTextColor(getResources().getColor(R.color.TwitterBlue));
 
-
-		scheduleAlarm();
+        tabs.setIndicatorColor(getResources().getColor(R.color.TwitterBlue));
+        tabs.setDividerColor(getResources().getColor(android.R.color.white));
+        tabs.setShouldExpand(true);
+        tabs.setAllCaps(true); 
 	}
-
 	public void scheduleAlarm() {
 		// Construct an intent that will execute the AlarmReceiver
 		Intent intent = new Intent(getApplicationContext(),
@@ -137,4 +150,15 @@ public class TimeLineActivity extends FragmentActivity implements
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.tweets_menus, menu);
+		MenuItem composeItem = menu.findItem(R.id.action_compose);
+		return true;
+	}
+
 }

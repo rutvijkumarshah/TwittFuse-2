@@ -51,6 +51,21 @@ public class TwitterClient extends OAuthBaseClient {
 				REST_CONSUMER_SECRET, REST_CALLBACK_URL);
 	}
 
+	public void getDirectMessages(AsyncHttpResponseHandler handler) {
+		getDirectMessages(handler, -1);
+	}
+
+	public void getDirectMessages(AsyncHttpResponseHandler handler, long maxId) {
+		String apiUrl = getApiUrl("direct_messages.json");
+		RequestParams params = new RequestParams();
+		if (maxId > 0) {
+			params.put("max_id", String.valueOf(maxId));
+		}
+		params.put("count", String.valueOf(MAX_RECORD_COUNT));
+		client.get(apiUrl, params, handler);
+	}
+
+	
 	public void getHomeTimeline(AsyncHttpResponseHandler handler) {
 		getHomeTimeline(handler, -1);
 	}

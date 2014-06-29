@@ -38,9 +38,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 public class TweetsLoadHandler extends JsonHttpResponseHandler{
 	private boolean onRefresh = false;
 	private TweetListFragment tweetListFragment;
-	public TweetsLoadHandler() {
-		
-	}
+	
 	public TweetsLoadHandler(boolean onRefresh,TweetListFragment tweetListFragment) {
 		this.onRefresh = onRefresh;
 		this.tweetListFragment=tweetListFragment;

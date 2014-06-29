@@ -62,7 +62,7 @@ public class MentionsFragment extends TweetListFragment{
 		if (Util.isNetworkAvailable(getActivity())) {
 
 			if (maxId > 0) {
-				client.getMentions(new TweetsLoadHandler(), maxId);
+				client.getMentions(new TweetsLoadHandler(false,this), maxId);
 			} else {
 				// When refresh to Pull or Getting metions first time after
 				// launch of app

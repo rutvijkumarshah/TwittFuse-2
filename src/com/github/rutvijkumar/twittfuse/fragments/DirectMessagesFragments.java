@@ -18,11 +18,9 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
- ***/
+***/
 
 package com.github.rutvijkumar.twittfuse.fragments;
-
-import java.util.List;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -32,9 +30,8 @@ import android.view.ViewGroup;
 import com.github.rutvijkumar.twittfuse.TwitterApplication;
 import com.github.rutvijkumar.twittfuse.Util;
 import com.github.rutvijkumar.twittfuse.api.TwitterClient;
-import com.github.rutvijkumar.twittfuse.models.Tweet;
 
-public class HomeTimeLineFragment extends TweetListFragment {
+public class DirectMessagesFragments extends TweetListFragment{
 
 	private TwitterClient client;
 
@@ -46,49 +43,34 @@ public class HomeTimeLineFragment extends TweetListFragment {
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onActivityCreated(savedInstanceState);
-		if (Tweet.findAll().size() > 0) {
-			populateFromDb();
-		}else {
-			populateAllTweets();
-		}
-
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		client = TwitterApplication.getRestClient();
 	}
 
-	private void populateFromDb() {
-
-		// When Network is not available load all tweets from DB
-		clearAll();
-		List<Tweet> dbTweeets = Tweet.findAll();
-		addAll(dbTweeets);
-		dataRefreshFinished();
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onActivityCreated(savedInstanceState);
+		populateAllTweets();
 	}
+
 
 	public void populateTweets(long maxId) {
 		// Util.showProgressBar(this);
 		if (Util.isNetworkAvailable(getActivity())) {
 
 			if (maxId > 0) {
-				client.getHomeTimeline(new HomeTimeLoadHandler(false,this), maxId);
+				client.getDirectMessages(new TweetsLoadHandler(false,this), maxId);
 			} else {
-				// When refresh to Pull or Getting Tweets first time after
+				// When refresh to Pull or Getting metions first time after
 				// launch of app
-				Tweet.deleteAll();
 				clearAll();
-				client.getHomeTimeline(new HomeTimeLoadHandler(true, this));
+				client.getDirectMessages(new TweetsLoadHandler(true,this));
 			}
 		} else {
 			Util.showNetworkUnavailable(getActivity());
-			populateFromDb();
 		}
 	}
 
@@ -98,22 +80,8 @@ public class HomeTimeLineFragment extends TweetListFragment {
 		populateTweets(-1);
 	}
 
-	class HomeTimeLoadHandler extends TweetsLoadHandler {
-
-
-		public HomeTimeLoadHandler(boolean onRefresh,
-				TweetListFragment tweetListFragment) {
-			super(onRefresh, tweetListFragment);
-		}
-
-		@Override
-		protected void onTweetLoaded(Tweet tweet) {
-			tweet.persist();
-		}
-	}
-
-	 public static HomeTimeLineFragment newInstance(int page, String title) {
-		 HomeTimeLineFragment fragment = new HomeTimeLineFragment();
+	 public static DirectMessagesFragments newInstance(int page, String title) {
+		 DirectMessagesFragments fragment = new DirectMessagesFragments();
 	        Bundle args = new Bundle();
 	        args.putInt("page", page);
 	        args.putString("title", title);
