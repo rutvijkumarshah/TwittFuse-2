@@ -51,7 +51,7 @@ public class TweetsLoadHandler extends JsonHttpResponseHandler{
 	
 	}
 
-	
+
 	@Override
 	public void onFinish() {
 		// TODO Auto-generated method stub

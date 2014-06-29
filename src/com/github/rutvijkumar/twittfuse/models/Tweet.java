@@ -32,6 +32,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -148,9 +150,24 @@ public class Tweet extends Model implements Serializable {
 				tweet.reTweeted = Tweet.fromJSON(jsonObject
 						.getJSONObject("retweeted_status"));
 			}
-			tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
-			tweet.favorited = jsonObject.getBoolean("favorited");
-			tweet.retweeted = jsonObject.getBoolean("retweeted");
+			if(jsonObject.has("user")) {
+				tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
+				
+			}
+			if(jsonObject.has("sender")) {
+				tweet.user = User.fromJson(jsonObject.getJSONObject("sender"));
+			}
+			if(jsonObject.has("favorited")) {
+				tweet.favorited = jsonObject.getBoolean("favorited");
+				
+			}
+			if(jsonObject.has("retweeted")) {
+				tweet.retweeted = jsonObject.getBoolean("retweeted");
+			}
+			if(tweet.user == null) {
+				Log.d("USER_NOT_PRESENT_*************************",jsonObject.toString());
+			}
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

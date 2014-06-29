@@ -22,7 +22,10 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.github.rutvijkumar.twittfuse.fragments;
 
+import org.json.JSONException;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +33,7 @@ import android.view.ViewGroup;
 import com.github.rutvijkumar.twittfuse.TwitterApplication;
 import com.github.rutvijkumar.twittfuse.Util;
 import com.github.rutvijkumar.twittfuse.api.TwitterClient;
+import com.github.rutvijkumar.twittfuse.models.Tweet;
 
 public class DirectMessagesFragments extends TweetListFragment{
 
@@ -62,12 +66,12 @@ public class DirectMessagesFragments extends TweetListFragment{
 		if (Util.isNetworkAvailable(getActivity())) {
 
 			if (maxId > 0) {
-				client.getDirectMessages(new TweetsLoadHandler(false,this), maxId);
+				client.getDirectMessages(new DMessagesLoadHandler(false,this), maxId);
 			} else {
 				// When refresh to Pull or Getting metions first time after
 				// launch of app
 				clearAll();
-				client.getDirectMessages(new TweetsLoadHandler(true,this));
+				client.getDirectMessages(new DMessagesLoadHandler(true,this));
 			}
 		} else {
 			Util.showNetworkUnavailable(getActivity());
@@ -88,4 +92,25 @@ public class DirectMessagesFragments extends TweetListFragment{
 	        fragment.setArguments(args);
 	        return fragment;
 	}
+	 class DMessagesLoadHandler extends TweetsLoadHandler {
+
+
+		 	
+			@Override
+		protected Object parseResponse(String arg0) throws JSONException {
+			Log.d("Direct Messages", arg0);
+			return super.parseResponse(arg0);
+		}
+
+			public DMessagesLoadHandler(boolean onRefresh,
+					TweetListFragment tweetListFragment) {
+				super(onRefresh, tweetListFragment);
+			}
+
+			@Override
+			protected void onTweetLoaded(Tweet tweet) {
+				tweet.persist();
+			}
+		}
+ 
 }

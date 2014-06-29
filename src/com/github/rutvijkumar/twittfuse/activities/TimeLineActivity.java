@@ -43,7 +43,7 @@ public class TimeLineActivity extends FragmentActivity implements
 	private static final int POSITION_OF_MENTIONS = 1;
 	private static final int POSITION_OF_DIRECTMSGS = 2;
 	public static class MyPagerAdapter extends FragmentPagerAdapter {
-		private static int NUM_ITEMS = 2;
+		private static int NUM_ITEMS = 3;
 
 		public MyPagerAdapter(FragmentManager fragmentManager) {
 			super(fragmentManager);
@@ -78,11 +78,11 @@ public class TimeLineActivity extends FragmentActivity implements
 		@Override
 		public CharSequence getPageTitle(int position) {
 			if (position == POSITION_OF_HOMETIMELINE) {
-				return "Home";
+				return "       Home";
 			} else if (position == POSITION_OF_MENTIONS) { 
 				return "Mentions";
 			}else{
-				return "Direct Messages";
+				return "Messages";
 			}
 		}
 
@@ -122,6 +122,7 @@ public class TimeLineActivity extends FragmentActivity implements
         tabs.setDividerColor(getResources().getColor(android.R.color.white));
         tabs.setShouldExpand(true);
         tabs.setAllCaps(true); 
+        
 	}
 	public void scheduleAlarm() {
 		// Construct an intent that will execute the AlarmReceiver
