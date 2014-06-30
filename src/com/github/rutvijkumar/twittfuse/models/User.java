@@ -68,8 +68,15 @@ public class User extends Model implements Serializable{
 
 	@Column(name="tweetsCount")
 	private long tweetsCount;
+
+	@Column(name="profileBackgroundColor")
+	private String profileBackgroundColor;
 	
 	
+	public String getProfileBackgroundColor() {
+		return profileBackgroundColor;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -132,7 +139,9 @@ public class User extends Model implements Serializable{
 			if(jsonObject.has("statuses_count")) {
 				user.tweetsCount=jsonObject.getLong("statuses_count");
 			}
-			
+			if(jsonObject.has("profile_background_color")) {
+				user.profileBackgroundColor=jsonObject.getString("profile_background_color");
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

@@ -23,7 +23,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 package com.github.rutvijkumar.twittfuse;
 
 import java.text.ParseException;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -268,6 +267,11 @@ public class Util {
 		Intent profileViewIntent=new Intent(activity,ProfileViewActivity.class);
 		activity.startActivity(profileViewIntent);
 		
+	}
+
+	public static CharSequence formatCount(long count) {
+		// TODO Auto-generated method stub
+		return String.valueOf(count);
 	}
 	
 	

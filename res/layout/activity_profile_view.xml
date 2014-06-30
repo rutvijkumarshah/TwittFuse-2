@@ -4,9 +4,191 @@
     android:layout_height="match_parent"
     tools:context="${packageName}.${activityClass}" >
 
+    <RelativeLayout 
+        android:id="@+id/profileInfo"
+    	android:layout_width="match_parent"
+    	android:layout_height="120dp"
+    	android:background="@android:color/darker_gray" 
+     >
+
+        <ImageView
+            android:id="@+id/profileImage"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+           	android:background="@android:color/white"
+            android:padding="3dp"
+            android:src="@drawable/profile_img" />
+
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profileImage"
+            android:layout_centerHorizontal="true"
+            android:text="Rutvijkumar Shah"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/userscreenName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/profileImage"
+            android:layout_below="@+id/userName"
+            android:text="/@rutvijashah"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+		
+	</RelativeLayout>
+
     <TextView
+        android:layout_marginLeft="8dp"
+        android:id="@+id/tweetCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/profileInfo"
+        android:text="12k"
+        android:layout_marginRight="70dp"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/lable_tweets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/tweetCount"
+        android:layout_below="@+id/tweetCount"
+        android:text="TWEETS" />
+
+    <View
+            android:id="@+id/tweetStatsDivider"
+            android:layout_width="1dp"
+            android:layout_toLeftOf="@+id/lable_following"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/statsDivider"
+            android:layout_below="@+id/profileInfo"
+            android:background="@android:color/darker_gray" />
+    
+    <TextView
+        android:id="@+id/followingCount"
+        android:layout_toRightOf="@+id/tweetCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tweetCount"
+        android:text="457" />
+
+    <TextView
+        android:id="@+id/lable_following"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/followingCount"
+        android:layout_alignBaseline="@+id/lable_tweets"
+        android:layout_below="@+id/followingCount"
+        android:text="FOLLOWING" />
+
+        <View
+            android:id="@+id/followingStatsDivider"
+            android:layout_width="1dp"
+            android:layout_toLeftOf="@+id/lable_followers"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/statsDivider"
+            android:layout_below="@+id/profileInfo"
+            android:background="@android:color/darker_gray" />
+    <TextView
+        android:id="@+id/followers_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/followingCount"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:layout_alignStart="@+id/lable_followers"
+        android:text="238" />
+
+    <TextView
+        android:id="@+id/lable_followers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignBaseline="@+id/lable_following"
+        android:layout_below="@+id/followers_count"
+        android:text="FOLLOWERS" />
+
+       <View
+            android:id="@+id/statsDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/lable_tweets"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:background="@android:color/darker_gray" />
+
+       <TextView
+           android:padding="8dp"
+           android:background="@drawable/rounded_border"
+           android:id="@+id/followORFollowing"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignStart="@+id/lable_followers"
+           android:layout_below="@+id/statsDivider"
+           android:text="Following"
+           android:drawableLeft="@drawable/ic_following_user"
+           android:layout_marginTop="8dp"
+           android:textSize="9sp"
+           android:textAppearance="?android:attr/textAppearanceSmall" 
+         />
+    
+       <View
+            android:id="@+id/userTweetListDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/followORFollowing"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:background="@android:color/darker_gray" />
+       
+       <!-- 
+           
+       <ScrollView
+           android:layout_below="@+id/userTweetListDivider"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:id="@+id/scrollView">
+		
+           <FrameLayout
+               android:id="@+id/tweetListFragment"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" >
+           </FrameLayout>
+			
+           <fragment
+               android:id="@+id/fragment1"
+               android:name="com.github.rutvijkumar.twittfuse.fragments.HomeTimeLineFragment"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" />
+           
+           <fragment
+           	android:layout_below="@+id/userTweetListDivider"
+               android:id="@+id/tweetListFragment"
+               android:name="com.github.rutvijkumar.twittfuse.fragments.HomeTimeLineFragment"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" />
+       
+       </ScrollView>
+		 -->
+		 
+		  <FrameLayout
+		      android:layout_below="@+id/userTweetListDivider"
+               android:id="@+id/tweetListFragment"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" >
+           </FrameLayout>
+			
+           
+    </RelativeLayout>
