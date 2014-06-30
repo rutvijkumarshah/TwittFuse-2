@@ -1,19 +1,10 @@
 package com.github.rutvijkumar.twittfuse.activities;
 
-import android.app.SearchManager;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.SearchView;
-import android.widget.SearchView.OnQueryTextListener;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.github.rutvijkumar.twittfuse.R;
@@ -33,12 +24,12 @@ import com.github.rutvijkumar.twittfuse.models.Tweet;
  * @author Rutvijkumar Shah
  * 
  */
-public class TimeLineActivity extends FragmentActivity implements
+public class TimeLineActivity extends BaseFragmentActivity implements
 		OnNewTweetListener {
 
 	private MyPagerAdapter adapterViewPager;
 	private PagerSlidingTabStrip tabs;
-	private SearchView searchView;
+	
 	private static final int POSITION_OF_HOMETIMELINE = 0;
 	private static final int POSITION_OF_MENTIONS = 1;
 	private static final int POSITION_OF_DIRECTMSGS = 2;
@@ -77,20 +68,20 @@ public class TimeLineActivity extends FragmentActivity implements
         tabs.setAllCaps(true); 
         
 	}
-
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		final int menuItemId=item.getItemId();
-		if (menuItemId == R.id.action_compose) {
-			Util.onCompose(this);
-		}
-		if( menuItemId == R.id.action_profileView) {
-			Util.onProfileView(this);
-		}
-		return super.onOptionsItemSelected(item);
-	}
-	
+//
+//
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		final int menuItemId=item.getItemId();
+//		if (menuItemId == R.id.action_compose) {
+//			Util.onCompose(this);
+//		}
+//		if( menuItemId == R.id.action_profileView) {
+//			Util.onProfileView(this);
+//		}
+//		return super.onOptionsItemSelected(item);
+//	}
+//	
 	
 
 		
@@ -140,49 +131,23 @@ public class TimeLineActivity extends FragmentActivity implements
 
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.tweets_menus, menu);
-		
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		searchView = (SearchView) searchItem.getActionView();
-		setupSearchView(searchView);
-		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		searchView.setSearchableInfo(searchManager
-				.getSearchableInfo(getComponentName()));
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		super.onCreateOptionsMenu(menu);
+//
+//		MenuInflater inflater = getMenuInflater();
+//		inflater.inflate(R.menu.tweets_menus, menu);
+//		
+//		MenuItem searchItem = menu.findItem(R.id.action_search);
+//		searchView = (SearchView) searchItem.getActionView();
+//		Util.setupSearchView(this,searchView);
+//		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//		searchView.setSearchableInfo(searchManager
+//				.getSearchableInfo(getComponentName()));
+//		return true;
+//	}
 	
-		return true;
-	}
 	
-	private void search(String query) {
-		Intent searchIntent=new Intent(this,SearchActivity.class);
-		searchIntent.putExtra("SEARCH_QUERY", query);
-		startActivity(searchIntent);
-	}
-	private void setupSearchView(final SearchView searchView) {
-
-		searchView.setOnQueryTextListener(new OnQueryTextListener() {
-
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				boolean isValidSubmit = false;
-				if (query != null && !query.isEmpty()) {
-					search(query);
-					isValidSubmit = true;
-				}
-
-				return isValidSubmit;
-			}
-
-			@Override
-			public boolean onQueryTextChange(String newText) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-		});
-	}
+	
 
 }

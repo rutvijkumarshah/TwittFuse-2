@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import com.github.rutvijkumar.twittfuse.R;
 import com.github.rutvijkumar.twittfuse.fragments.SearchTweetsFragment;
 
-public class SearchActivity extends FragmentActivity {
+public class SearchActivity extends BaseFragmentActivity {
 
 	private String searchKeyword;
 

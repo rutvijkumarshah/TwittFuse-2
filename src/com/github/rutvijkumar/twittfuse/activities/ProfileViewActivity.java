@@ -30,7 +30,7 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 
 //Network Call
-public class ProfileViewActivity extends FragmentActivity {
+public class ProfileViewActivity extends BaseFragmentActivity {
 
 	private boolean isMyProfile=false;
 	private User _user=null;

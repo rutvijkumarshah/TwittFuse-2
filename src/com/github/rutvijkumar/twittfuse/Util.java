@@ -48,9 +48,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.SearchView;
 import android.widget.Toast;
+import android.widget.SearchView.OnQueryTextListener;
 
 import com.github.rutvijkumar.twittfuse.activities.ProfileViewActivity;
+import com.github.rutvijkumar.twittfuse.activities.SearchActivity;
 import com.github.rutvijkumar.twittfuse.fragments.ComposeDialog;
 import com.github.rutvijkumar.twittfuse.models.Tweet;
 import com.github.rutvijkumar.twittfuse.services.OfflineTweetAlarmReceiver;
@@ -295,6 +298,34 @@ public class Util {
 			return result;
 		}
 		
+	}
+	private static  void search(Activity activity,String query) {
+		Intent searchIntent=new Intent(activity,SearchActivity.class);
+		searchIntent.putExtra("SEARCH_QUERY", query);
+		activity.startActivity(searchIntent);
+	}
+	
+	public static void setupSearchView(final Activity activity,final SearchView searchView) {
+
+		searchView.setOnQueryTextListener(new OnQueryTextListener() {
+
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				boolean isValidSubmit = false;
+				if (query != null && !query.isEmpty()) {
+					search(activity,query);
+					isValidSubmit = true;
+				}
+
+				return isValidSubmit;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		});
 	}
 	
 	
