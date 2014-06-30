@@ -2,6 +2,8 @@ package com.github.rutvijkumar.twittfuse.activities;
 
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -10,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -30,7 +33,7 @@ import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 public class ProfileViewActivity extends FragmentActivity {
 
 	private boolean isMyProfile=false;
-	//private User user=null;
+	private User _user=null;
 	private TwitterClient client;
 	private ImageView profileImg;
 	private TextView userName;
@@ -40,7 +43,10 @@ public class ProfileViewActivity extends FragmentActivity {
 	private TextView followersCount;
 	private TextView followingTv;
 	private TextView followTv;
-	private FrameLayout tweetListFragment;
+	
+	
+	private static final String ACTION_FOLLOW="ACTION_FOLLOW";
+	private static final String ACTION_UNFOLLOW="ACTION_UNFOLLOW";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +55,12 @@ public class ProfileViewActivity extends FragmentActivity {
 		Intent intent = getIntent();
 		isMyProfile=intent.getBooleanExtra("PROFILE_EXTRA_ISMYPROFILE",false);
 		User user=(User)intent.getSerializableExtra("PROFILE_EXTRA_USEROBJ");
+		client=TwitterApplication.getRestClient();
 		
 		if(isMyProfile == true || user == null) {
 			//this is my profile
 			isMyProfile=true;
-			client=TwitterApplication.getRestClient();
+			
 			loadMyInfo();
 		}else {
 			isMyProfile=false;
@@ -65,7 +72,7 @@ public class ProfileViewActivity extends FragmentActivity {
 
 	
 	private void setupUI(User user) {
-		Log.d("USER", user.toJSONString());
+		_user=user;
 		getActionBar().setTitle("@"+user.getScreenName());
 		setFragment(user);
 		profileImg=(ImageView)findViewById(R.id.profileImage);
@@ -91,11 +98,15 @@ public class ProfileViewActivity extends FragmentActivity {
 		followingCount.setText(Util.formatCount(user.getFollowingCount(),true));
 		followersCount.setText(Util.formatCount(user.getFollowersCount(),true));
 		
+		followingTv.setOnClickListener(getFollowClickListener());
+		followTv.setOnClickListener(getFollowClickListener());
+		
 		if(!isMyProfile) {
 			if(!user.isFollowing()) {
-				followingTv.setVisibility(View.GONE);
+				followingTv.setVisibility(View.INVISIBLE);
+				
 			}else {
-				followTv.setVisibility(View.GONE);
+				followTv.setVisibility(View.INVISIBLE);
 			}
 			
 		}else {
@@ -113,6 +124,64 @@ public class ProfileViewActivity extends FragmentActivity {
 		}
 	
 	}
+
+	private void confirmUnFollow() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Unfollow "+_user.getName());
+		builder.setPositiveButton("Unfollow",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog,
+							int whichButton) {
+						if(!Util.isNetworkAvailable(ProfileViewActivity.this)) {
+							Util.showNetworkUnavailable(ProfileViewActivity.this);
+						}else {
+							unFollowUser();
+						}
+
+					}
+
+				});
+		builder.setNegativeButton("Cancel", null);
+		builder.create().show();
+		
+	}
+	private void unFollowUser() {
+		client.unFollowUser(_user.getScreenName(), new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONObject arg0) {
+				followingTv.setVisibility(View.INVISIBLE);
+				followTv.setVisibility(View.VISIBLE);
+			}
+		});
+	}
+	private void followUser() {
+		client.followUser(_user.getScreenName(), new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONObject arg0) {
+				followTv.setVisibility(View.INVISIBLE);
+				followingTv.setVisibility(View.VISIBLE);
+			}
+		});
+	}
+	
+	private OnClickListener getFollowClickListener() {
+		OnClickListener followClickListener=new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				final String action=(String)v.getTag();
+				if(action.equals(ACTION_FOLLOW)) {
+					followUser();
+				}else if (action.equals(ACTION_UNFOLLOW)) {
+					confirmUnFollow();
+				}
+			}
+			
+		};
+		return followClickListener;
+	}
+	
 	private void setBackGround(User user,ImageLoader imageLoader,final RelativeLayout profileInfoLayout,String url) {
 		imageLoader.loadImage(url, new ImageLoadingListener() {
 			
@@ -144,36 +213,7 @@ public class ProfileViewActivity extends FragmentActivity {
 		});
 	
 	}
-	private void setFollowingOrFollower(TextView followingORFollow,
-			boolean following) {
-		// TODO Auto-generated method stub
-		
-		if(following) {
 
-			/**
-			 * In case of Following
-			 * 
-			 * Non clickable
-			 * Text Color White
-			 * Image white
-			 * TextView Background TwitterBlue
-			 * 
-			 */
-			
-			
-		}else {
-			/**
-			 * In case of Follower
-			 * 
-			 * clickable will add user 
-			 * Text Color TwitterBlue
-			 * Image Twitter Blue
-			 * TextView Background white
-			 * 
-			 */
-		}
-		
-	}
 
 	private void setFragment(User user) {
 		
