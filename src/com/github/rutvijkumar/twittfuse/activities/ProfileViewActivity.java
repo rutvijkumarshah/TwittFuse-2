@@ -134,9 +134,33 @@ public class ProfileViewActivity extends FragmentActivity {
 		});
 	
 	}
-	private void setFollowingOrFollower(TextView followingORFollow2,
+	private void setFollowingOrFollower(TextView followingORFollow,
 			boolean following) {
 		// TODO Auto-generated method stub
+		
+		if(following) {
+
+			/**
+			 * In case of Following
+			 * 
+			 * Non clickable
+			 * Text Color White
+			 * Image white
+			 * TextView Background TwitterBlue
+			 * 
+			 */
+			
+		}else {
+			/**
+			 * In case of Follower
+			 * 
+			 * clickable will add user 
+			 * Text Color TwitterBlue
+			 * Image Twitter Blue
+			 * TextView Background white
+			 * 
+			 */
+		}
 		
 	}
 
