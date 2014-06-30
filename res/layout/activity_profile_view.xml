@@ -148,7 +148,7 @@
            android:layout_height="32dp"
            android:layout_width="match_parent"
            android:id="@+id/followORFollowing"
-           android:layout_alignStart="@+id/lable_followers"
+           android:layout_alignStart="@+id/lable_following"
            android:layout_below="@+id/statsDivider"
            android:layout_marginTop="4dp"
            android:layout_marginBottom="4dp"
