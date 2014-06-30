@@ -38,7 +38,8 @@ public class ProfileViewActivity extends FragmentActivity {
 	private TextView tweetsCount;
 	private TextView followingCount;
 	private TextView followersCount;
-	private TextView followingORFollow;
+	private TextView followingTv;
+	private TextView followTv;
 	private FrameLayout tweetListFragment;
 	
 	@Override
@@ -76,7 +77,8 @@ public class ProfileViewActivity extends FragmentActivity {
 		followingCount=(TextView)findViewById(R.id.followingCount);
 		followersCount=(TextView)findViewById(R.id.followers_count);
 		
-		followingORFollow=(TextView)findViewById(R.id.followORFollowing);
+		followingTv=(TextView)findViewById(R.id.tvFollowing);
+		followTv=(TextView)findViewById(R.id.tvFollow);
 		
 		ImageLoader imageLoader = ImageLoader.getInstance();
 		imageLoader.displayImage(user.getProfileImageUrl(),
@@ -90,7 +92,15 @@ public class ProfileViewActivity extends FragmentActivity {
 		followersCount.setText(Util.formatCount(user.getFollowersCount(),true));
 		
 		if(!isMyProfile) {
-			setFollowingOrFollower(followingORFollow,user.isFollowing());
+			if(!user.isFollowing()) {
+				followingTv.setVisibility(View.GONE);
+			}else {
+				followTv.setVisibility(View.GONE);
+			}
+			
+		}else {
+			followingTv.setVisibility(View.GONE);
+			followTv.setVisibility(View.GONE);
 		}
 		final String bannerImageUrl=user.getProfileBannerImageUrl();
 		if(bannerImageUrl!=null) {
@@ -149,6 +159,7 @@ public class ProfileViewActivity extends FragmentActivity {
 			 * TextView Background TwitterBlue
 			 * 
 			 */
+			
 			
 		}else {
 			/**

@@ -143,23 +143,44 @@
             android:layout_marginTop="4dp"
             android:background="@android:color/darker_gray" />
 
-       <TextView
-           android:padding="8dp"
-           android:background="@drawable/rounded_border"
+       <RelativeLayout
+           android:layout_height="32dp"
+           android:layout_width="match_parent"
            android:id="@+id/followORFollowing"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
+           android:layout_alignParentRight="true" 
            android:layout_alignStart="@+id/lable_followers"
            android:layout_below="@+id/statsDivider"
+           android:layout_marginTop="4dp"
+           android:layout_marginBottom="4dp"
+           android:layout_marginRight="16dp"
+          >
+       
+          <TextView
+           android:layout_width="match_parent"
+           android:background="@drawable/following_btn_bg"
+           android:id="@+id/tvFollowing"
+           android:layout_height="wrap_content"
+           android:textSize="8sp"
+           android:textColor="@android:color/white"
            android:text="Following"
            android:drawableLeft="@drawable/ic_following_user"
-           android:layout_marginTop="4dp"
-           android:textSize="9sp"
-           android:layout_marginBottom="4dp"
            android:textAppearance="?android:attr/textAppearanceSmall" 
          />
-    
-       
+		  <TextView
+           android:layout_width="match_parent"
+           android:background="@drawable/follow_btn_bg"
+           android:id="@+id/tvFollow"
+           android:layout_height="wrap_content"
+           android:textColor="@color/TwitterBlue"
+           android:text="Follow"
+           android:drawablePadding="8dp"
+           android:gravity="center"
+           android:drawableLeft="@drawable/ic_follow_user"
+           android:textAppearance="?android:attr/textAppearanceSmall" 
+         />
+          
+       </RelativeLayout>
+   	       
        <View
             android:id="@+id/userTweetListDivider"
             android:layout_width="match_parent"

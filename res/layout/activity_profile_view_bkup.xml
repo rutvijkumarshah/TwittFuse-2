@@ -132,7 +132,7 @@
 
        <TextView
            android:padding="8dp"
-           android:background="@drawable/rounded_border"
+           android:background="@drawable/following_btn_bg"
            android:id="@+id/followORFollowing"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
