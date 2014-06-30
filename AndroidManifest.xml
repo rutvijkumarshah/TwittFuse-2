@@ -66,6 +66,10 @@
             android:name="com.github.rutvijkumar.twittfuse.activities.ProfileViewActivity"
             android:label="@string/title_activity_profile_view" >
         </activity>
+        <activity
+            android:name="com.github.rutvijkumar.twittfuse.activities.SearchActivity"
+            android:label="@string/title_activity_search" >
+        </activity>
     </application>
 
 </manifest>

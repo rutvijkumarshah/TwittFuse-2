@@ -26,6 +26,8 @@ import java.util.ArrayList;
 
 import org.json.JSONArray;
 
+import android.util.Log;
+
 import com.github.rutvijkumar.twittfuse.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -48,7 +50,8 @@ public class TweetsLoadHandler extends JsonHttpResponseHandler{
 
 	@Override
 	public void onFailure(Throwable e, String s) {
-	
+		Log.e("TwittFuse", "Error :"+s);
+		e.printStackTrace();
 	}
 
 

@@ -189,6 +189,10 @@ public class TwitterClient extends OAuthBaseClient {
 		getClient().post(apiUrl, params, handler);
 	}
 	
+	public void searchTweets(String query, AsyncHttpResponseHandler handler){
+    	searchTweets(query, -1, handler);
+    }
+	
 	public void searchTweets(String query, long maxId, AsyncHttpResponseHandler handler){
     	String apiUrl = getApiUrl("search/tweets.json");
    	  RequestParams params = new RequestParams();

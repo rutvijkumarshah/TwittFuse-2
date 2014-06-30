@@ -1,5 +1,8 @@
 package com.github.rutvijkumar.twittfuse.activities;
 
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -9,6 +12,8 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.github.rutvijkumar.twittfuse.R;
@@ -33,6 +38,7 @@ public class TimeLineActivity extends FragmentActivity implements
 
 	private MyPagerAdapter adapterViewPager;
 	private PagerSlidingTabStrip tabs;
+	private SearchView searchView;
 	private static final int POSITION_OF_HOMETIMELINE = 0;
 	private static final int POSITION_OF_MENTIONS = 1;
 	private static final int POSITION_OF_DIRECTMSGS = 2;
@@ -140,8 +146,43 @@ public class TimeLineActivity extends FragmentActivity implements
 
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.tweets_menus, menu);
+		
+		MenuItem searchItem = menu.findItem(R.id.action_search);
+		searchView = (SearchView) searchItem.getActionView();
+		setupSearchView(searchView);
+		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		searchView.setSearchableInfo(searchManager
+				.getSearchableInfo(getComponentName()));
 	
 		return true;
+	}
+	
+	private void search(String query) {
+		Intent searchIntent=new Intent(this,SearchActivity.class);
+		searchIntent.putExtra("SEARCH_QUERY", query);
+		startActivity(searchIntent);
+	}
+	private void setupSearchView(final SearchView searchView) {
+
+		searchView.setOnQueryTextListener(new OnQueryTextListener() {
+
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				boolean isValidSubmit = false;
+				if (query != null && !query.isEmpty()) {
+					search(query);
+					isValidSubmit = true;
+				}
+
+				return isValidSubmit;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		});
 	}
 
 }

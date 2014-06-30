@@ -22,76 +22,63 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.github.rutvijkumar.twittfuse.fragments;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.github.rutvijkumar.twittfuse.TwitterApplication;
-import com.github.rutvijkumar.twittfuse.Util;
 import com.github.rutvijkumar.twittfuse.api.TwitterClient;
 
-public class MentionsFragment extends TweetListFragment{
+public class SearchTweetsFragment extends MentionsFragment{
 
+	private String searchQuery;
 	private TwitterClient client;
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		return super.onCreateView(inflater, container, savedInstanceState);
-	}
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		client = TwitterApplication.getRestClient();
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onActivityCreated(savedInstanceState);
-		populateAllTweets();
-	}
-
-	protected void doTwitterAPICall() {
-		client.getMentions(new TweetsLoadHandler(true,this));
-	}
-
-	protected void doTwitterAPICall(long maxId) {
-		client.getMentions(new TweetsLoadHandler(false,this), maxId);	
+		searchQuery = getArguments().getString("query");
+		client=TwitterApplication.getRestClient();
 	}
 	
-	public void populateTweets(long maxId) {
-		// Util.showProgressBar(this);
-		if (Util.isNetworkAvailable(getActivity())) {
+	private class TweetSearchResponseHandler extends TweetsLoadHandler {
 
-			if (maxId > 0) {
-				doTwitterAPICall(maxId);
-			} else {
-				// When refresh to Pull or Getting metions first time after
-				// launch of app
-				clearAll();
-				doTwitterAPICall();
-			}
-		} else {
-			Util.showNetworkUnavailable(getActivity());
+		public TweetSearchResponseHandler(boolean onRefresh,
+				TweetListFragment tweetListFragment) {
+			super(onRefresh, tweetListFragment);
+			// TODO Auto-generated constructor stub
 		}
+		@Override
+		public void onSuccess(JSONObject response) {
+			try {
+				onSuccess(response.getJSONArray("statuses"));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 	}
-
+	
 	@Override
-	protected void populateAllTweets() {
-		// TODO Auto-generated method stub
-		populateTweets(-1);
+	protected void doTwitterAPICall() {
+		
+		client.searchTweets(searchQuery,new TweetSearchResponseHandler(true,this));
 	}
-
-	 public static MentionsFragment newInstance(int page, String title) {
-		 MentionsFragment fragment = new MentionsFragment();
+	@Override
+	protected void doTwitterAPICall(long maxId) {
+		
+		client.searchTweets(searchQuery, maxId, new TweetSearchResponseHandler(false,this));
+	}
+	
+	public static SearchTweetsFragment newInstance(int page, String title,String query) {
+		 SearchTweetsFragment fragment = new SearchTweetsFragment();
 	        Bundle args = new Bundle();
 	        args.putInt("page", page);
 	        args.putString("title", title);
+	        args.putString("query", query);
 	        fragment.setArguments(args);
 	        return fragment;
 	}
