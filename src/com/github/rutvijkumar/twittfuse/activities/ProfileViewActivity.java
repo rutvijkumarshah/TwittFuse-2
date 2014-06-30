@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -63,6 +64,7 @@ public class ProfileViewActivity extends FragmentActivity {
 
 	
 	private void setupUI(User user) {
+		Log.d("USER", user.toJSONString());
 		getActionBar().setTitle("@"+user.getScreenName());
 		setFragment(user);
 		profileImg=(ImageView)findViewById(R.id.profileImage);
@@ -83,23 +85,26 @@ public class ProfileViewActivity extends FragmentActivity {
 		userName.setText(user.getName());
 		userScreenName.setText("@"+user.getScreenName());
 		
-		tweetsCount.setText(Util.formatCount(user.getTweetsCount()));
-		followingCount.setText(Util.formatCount(user.getFollowingCount()));
-		followersCount.setText(Util.formatCount(user.getFollowersCount()));
+		tweetsCount.setText(Util.formatCount(user.getTweetsCount(),false));
+		followingCount.setText(Util.formatCount(user.getFollowingCount(),true));
+		followersCount.setText(Util.formatCount(user.getFollowersCount(),true));
 		
 		if(!isMyProfile) {
 			setFollowingOrFollower(followingORFollow,user.isFollowing());
 		}
-		final String backgroundColor=user.getProfileBackgroundColor();
-		
-		final String backGroundImageUrl=user.getProfileBackgroundImageUrl();
-		
-		if(backGroundImageUrl!=null) {
-			setBackGround(user,imageLoader, profileInfoLayout);
+		final String bannerImageUrl=user.getProfileBannerImageUrl();
+		if(bannerImageUrl!=null) {
+			setBackGround(user, imageLoader, profileInfoLayout,bannerImageUrl);
+		}else {
+			final String backGroundImageUrl=user.getProfileBackgroundImageUrl();
+			if(backGroundImageUrl!=null) {
+				setBackGround(user,imageLoader, profileInfoLayout,backGroundImageUrl);
+			}
 		}
+	
 	}
-	private void setBackGround(User user,ImageLoader imageLoader,final RelativeLayout profileInfoLayout) {
-		imageLoader.loadImage(user.getProfileBackgroundImageUrl(), new ImageLoadingListener() {
+	private void setBackGround(User user,ImageLoader imageLoader,final RelativeLayout profileInfoLayout,String url) {
+		imageLoader.loadImage(url, new ImageLoadingListener() {
 			
 			@Override
 			public void onLoadingStarted(String arg0, View arg1) {

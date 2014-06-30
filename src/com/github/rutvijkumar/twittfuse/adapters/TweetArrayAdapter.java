@@ -41,6 +41,7 @@ import android.widget.TextView;
 import com.github.rutvijkumar.twittfuse.R;
 import com.github.rutvijkumar.twittfuse.TwitterUtil;
 import com.github.rutvijkumar.twittfuse.Util;
+import com.github.rutvijkumar.twittfuse.activities.ProfileViewActivity;
 import com.github.rutvijkumar.twittfuse.activities.TweetDetailsActivity;
 import com.github.rutvijkumar.twittfuse.api.TwitterClient;
 import com.github.rutvijkumar.twittfuse.models.Tweet;
@@ -164,7 +165,7 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 		viewHolder.favImage.setTag(tweet);
 		viewHolder.rtImage.setTag(tweet);
 		viewHolder.replyImage.setTag(tweet);
-		
+		viewHolder.userProfilePic.setTag(user);
 		
 		if(reTweetCount == 0) {
 			viewHolder.retweetCountTv.setVisibility(View.INVISIBLE);
@@ -231,6 +232,19 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 				// TODO Auto-generated method stub
 				Tweet tw=(Tweet)v.getTag();
 				twUtil.postReply(tw);
+				
+			}
+		});
+		
+		viewHolder.userProfilePic.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				User user=(User)v.getTag();
+				Intent profileActivityIntent=new Intent(context,ProfileViewActivity.class);
+				profileActivityIntent.putExtra("PROFILE_EXTRA_USEROBJ", user);
+				context.startActivity(profileActivityIntent);
 				
 			}
 		});

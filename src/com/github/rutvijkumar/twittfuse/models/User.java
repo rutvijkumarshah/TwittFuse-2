@@ -54,6 +54,25 @@ public class User extends Model implements Serializable{
 	@Column(name="profileBackgroundImageUrl")
 	private String profileBackgroundImageUrl;
 	
+	@Column(name="profileBannerImageUrl")
+	private String profileBannerImageUrl;
+	
+	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public String getProfileBannerImageUrl() {
+		return profileBannerImageUrl;
+	}
+
+	public String getFollowing() {
+		return following;
+	}
+
+	public String getJsonObj() {
+		return jsonObj;
+	}
 	@Column(name="favCount")
 	private long favCount;
 	
@@ -72,6 +91,8 @@ public class User extends Model implements Serializable{
 	@Column(name="profileBackgroundColor")
 	private String profileBackgroundColor;
 	
+	@Column(name="json_obj")
+	private String jsonObj;
 	
 	public String getProfileBackgroundColor() {
 		return profileBackgroundColor;
@@ -117,6 +138,7 @@ public class User extends Model implements Serializable{
 		User user=new User();
 		
 		try {
+			user.jsonObj=jsonObject.toString();
 			user.name=jsonObject.getString("name");
 			user.uid=jsonObject.getLong("id");;
 			user.profileImageUrl=jsonObject.getString("profile_image_url");
@@ -142,6 +164,11 @@ public class User extends Model implements Serializable{
 			if(jsonObject.has("profile_background_color")) {
 				user.profileBackgroundColor=jsonObject.getString("profile_background_color");
 			}
+			if(jsonObject.has("profile_banner_url")) {
+				user.profileBannerImageUrl=jsonObject.getString("profile_banner_url");
+			}
+			
+			
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -149,6 +176,9 @@ public class User extends Model implements Serializable{
 	}
 
 
+	public String toJSONString() {
+		return jsonObj;
+	}
 	public String getProfileBackgroundImageUrl() {
 		return profileBackgroundImageUrl;
 	}

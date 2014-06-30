@@ -22,6 +22,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 package com.github.rutvijkumar.twittfuse;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -269,9 +272,29 @@ public class Util {
 		
 	}
 
-	public static CharSequence formatCount(long count) {
+	public static CharSequence formatCount(long count,boolean isUserCount) {
 		// TODO Auto-generated method stub
-		return String.valueOf(count);
+		if(count < 1000) {
+			return String.valueOf(count);	
+		}else {
+			String result=null;
+			
+			NumberFormat df = DecimalFormat.getInstance();
+			df.setRoundingMode(RoundingMode.DOWN);
+			
+			double countWithK=count/1000.0;
+			if(isUserCount) {
+				df.setMinimumFractionDigits(0);
+				df.setMaximumFractionDigits(0);
+			}else {
+				df.setMinimumFractionDigits(1);
+				df.setMaximumFractionDigits(1);
+			}
+			result = df.format(countWithK);
+			result=result+"K";
+			return result;
+		}
+		
 	}
 	
 	
