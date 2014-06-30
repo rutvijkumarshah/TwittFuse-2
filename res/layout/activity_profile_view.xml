@@ -66,7 +66,7 @@
         android:textColor="@color/Hint_color"
         android:text="TWEETS" />
 
-    <View
+        <View
             android:id="@+id/tweetStatsDivider"
             android:layout_width="1dp"
             android:layout_toLeftOf="@+id/lable_following"
@@ -77,7 +77,8 @@
             android:layout_above="@+id/statsDivider"
             android:layout_below="@+id/profileInfo"
             android:background="@android:color/darker_gray" />
-    
+        
+        
     <TextView
         android:id="@+id/followingCount"
         android:layout_toRightOf="@+id/tweetCount"
@@ -92,11 +93,11 @@
         android:id="@+id/lable_following"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/followingCount"
         android:layout_alignStart="@+id/followingCount"
         android:layout_alignBaseline="@+id/lable_tweets"
         android:textSize="13sp"
         android:textColor="@color/Hint_color"
-        android:layout_below="@+id/followingCount"
         android:text="FOLLOWING" />
 
         <View
