@@ -53,6 +53,7 @@
         android:layout_below="@+id/profileInfo"
         android:text="12k"
         android:layout_marginRight="70dp"
+        android:textStyle="bold"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
@@ -61,6 +62,8 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/tweetCount"
         android:layout_below="@+id/tweetCount"
+       	android:textSize="13sp"
+        android:textColor="@color/Hint_color"
         android:text="TWEETS" />
 
     <View
@@ -79,8 +82,10 @@
         android:id="@+id/followingCount"
         android:layout_toRightOf="@+id/tweetCount"
         android:layout_width="wrap_content"
+        android:textSize="13sp"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/tweetCount"
+        android:textStyle="bold"
         android:text="457" />
 
     <TextView
@@ -89,6 +94,8 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/followingCount"
         android:layout_alignBaseline="@+id/lable_tweets"
+        android:textSize="13sp"
+        android:textColor="@color/Hint_color"
         android:layout_below="@+id/followingCount"
         android:text="FOLLOWING" />
 
@@ -105,21 +112,25 @@
             android:background="@android:color/darker_gray" />
     <TextView
         android:id="@+id/followers_count"
+        android:textSize="13sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/followingCount"
         android:layout_alignParentRight="true"
         android:layout_marginRight="8dp"
+        android:textStyle="bold"
         android:layout_alignStart="@+id/lable_followers"
         android:text="238" />
 
     <TextView
         android:id="@+id/lable_followers"
         android:layout_width="wrap_content"
+        android:textSize="13sp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignBaseline="@+id/lable_following"
         android:layout_below="@+id/followers_count"
+        android:textColor="@color/Hint_color"
         android:text="FOLLOWERS" />
 
        <View
