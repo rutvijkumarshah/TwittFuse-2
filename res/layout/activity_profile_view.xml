@@ -147,7 +147,6 @@
            android:layout_height="32dp"
            android:layout_width="match_parent"
            android:id="@+id/followORFollowing"
-           android:layout_alignParentRight="true" 
            android:layout_alignStart="@+id/lable_followers"
            android:layout_below="@+id/statsDivider"
            android:layout_marginTop="4dp"
@@ -156,25 +155,33 @@
           >
        
           <TextView
-           android:layout_width="match_parent"
+           android:layout_width="wrap_content"
            android:background="@drawable/following_btn_bg"
            android:id="@+id/tvFollowing"
            android:layout_height="wrap_content"
-           android:textSize="8sp"
            android:textColor="@android:color/white"
+           android:layout_alignParentRight="true" 
            android:text="Following"
+           android:paddingRight="8dp"
+           android:textSize="11sp"
+           android:textStyle="bold"
+           android:gravity="center"    
            android:drawableLeft="@drawable/ic_following_user"
            android:textAppearance="?android:attr/textAppearanceSmall" 
          />
+          
 		  <TextView
-           android:layout_width="match_parent"
+           android:layout_width="wrap_content"
            android:background="@drawable/follow_btn_bg"
            android:id="@+id/tvFollow"
            android:layout_height="wrap_content"
            android:textColor="@color/TwitterBlue"
+           android:layout_alignParentRight="true" 
            android:text="Follow"
-           android:drawablePadding="8dp"
-           android:gravity="center"
+           android:paddingRight="8dp"
+           android:textSize="11sp"
+           android:textStyle="bold"
+           android:gravity="center"    
            android:drawableLeft="@drawable/ic_follow_user"
            android:textAppearance="?android:attr/textAppearanceSmall" 
          />
