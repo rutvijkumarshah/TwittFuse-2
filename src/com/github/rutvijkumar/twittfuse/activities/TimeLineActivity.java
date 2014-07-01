@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.github.rutvijkumar.twittfuse.R;
@@ -48,8 +49,6 @@ public class TimeLineActivity extends BaseFragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_time_line);
 		ViewPager vpPager = (ViewPager) findViewById(R.id.viewPager);
-		//PagerTabStrip tabStrip = (PagerTabStrip) findViewById(R.id.pager_header);
-		
 		adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
 		vpPager.setAdapter(adapterViewPager);
 		
@@ -68,23 +67,7 @@ public class TimeLineActivity extends BaseFragmentActivity implements
         tabs.setAllCaps(true); 
         
 	}
-//
-//
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		final int menuItemId=item.getItemId();
-//		if (menuItemId == R.id.action_compose) {
-//			Util.onCompose(this);
-//		}
-//		if( menuItemId == R.id.action_profileView) {
-//			Util.onProfileView(this);
-//		}
-//		return super.onOptionsItemSelected(item);
-//	}
-//	
-	
 
-		
 	public static class MyPagerAdapter extends FragmentPagerAdapter {
 		private static int NUM_ITEMS = 3;
 
@@ -92,32 +75,25 @@ public class TimeLineActivity extends BaseFragmentActivity implements
 			super(fragmentManager);
 		}
 
-		// Returns total number of pages
 		@Override
 		public int getCount() {
 			return NUM_ITEMS;
 		}
 
-		// Returns the fragment to display for that page
 		@Override
 		public Fragment getItem(int position) {
 			switch (position) {
-			case POSITION_OF_HOMETIMELINE: // Fragment # 0 - This will show
-											// FirstFragment
+			case POSITION_OF_HOMETIMELINE: 
 				return HomeTimeLineFragment.newInstance(position, "Home");
-			case POSITION_OF_MENTIONS: // Fragment # 0 - This will show
-										// FirstFragment different title
+			case POSITION_OF_MENTIONS: 
 				return MentionsFragment.newInstance(position, "Mentions");
-
 			case POSITION_OF_DIRECTMSGS:
 				return DirectMessagesFragments.newInstance(position, "Mentions");
-				
 			default:
 				return null;
 			}
 		}
 
-		// Returns the page title for the top i;ndicator
 		@Override
 		public CharSequence getPageTitle(int position) {
 			if (position == POSITION_OF_HOMETIMELINE) {
@@ -130,24 +106,11 @@ public class TimeLineActivity extends BaseFragmentActivity implements
 		}
 
 	}
-
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		super.onCreateOptionsMenu(menu);
-//
-//		MenuInflater inflater = getMenuInflater();
-//		inflater.inflate(R.menu.tweets_menus, menu);
-//		
-//		MenuItem searchItem = menu.findItem(R.id.action_search);
-//		searchView = (SearchView) searchItem.getActionView();
-//		Util.setupSearchView(this,searchView);
-//		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-//		searchView.setSearchableInfo(searchManager
-//				.getSearchableInfo(getComponentName()));
-//		return true;
-//	}
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		composeActionVisibility(true);
+		return true;
+	}
 	
-	
-	
-
 }

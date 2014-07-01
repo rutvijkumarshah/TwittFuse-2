@@ -35,8 +35,8 @@ import android.widget.SearchView;
 
 public class BaseFragmentActivity extends FragmentActivity {
 
-	private SearchView searchView;
-
+	protected SearchView searchView;
+	protected MenuItem composeActionMenu;
 
 
 	@Override
@@ -52,15 +52,21 @@ public class BaseFragmentActivity extends FragmentActivity {
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 		searchView.setSearchableInfo(searchManager
 				.getSearchableInfo(getComponentName()));
+		composeActionMenu = menu.findItem(R.id.action_compose);
+		composeActionVisibility(false);
 		return true;
 	}
 	
 
 
+	protected void composeActionVisibility(boolean isVisible) {
+		composeActionMenu.setVisible(isVisible);
+	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		final int menuItemId=item.getItemId();
-		if (menuItemId == R.id.action_compose) {
+		if (menuItemId == R.id.action_compose && composeActionMenu.isVisible()) {
 			Util.onCompose(this);
 		}
 		if( menuItemId == R.id.action_profileView) {

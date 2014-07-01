@@ -86,6 +86,7 @@ public class TweetDetailsActivity extends FragmentActivity implements OnNewTweet
 		tweetIt = (TextView) findViewById(R.id.tv_tweetAction);
 		
 		webView=(WebView)findViewById(R.id.embdView);
+		profileImage.setClickable(true);
 	}
 
 	@Override
@@ -177,6 +178,17 @@ public class TweetDetailsActivity extends FragmentActivity implements OnNewTweet
 	
 	
 	private void setupListnersForUI() {
+		
+	profileImage.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent profileActivityIntent=new Intent(TweetDetailsActivity.this, ProfileViewActivity.class);
+				profileActivityIntent.putExtra("PROFILE_EXTRA_USEROBJ", tweet.getUser());
+				TweetDetailsActivity.this.startActivity(profileActivityIntent);
+
+			}
+		});
 
 		tweetIt.setOnClickListener(new OnClickListener() {
 			
@@ -257,17 +269,7 @@ public class TweetDetailsActivity extends FragmentActivity implements OnNewTweet
 		}
 		
 		client.postTweet(status, String.valueOf(tweet.getUid()),  new JsonHttpResponseHandler() {
-//			@Override
-//			public void onSuccess(int statusCode, Header[] headers,
-//					JSONObject response) {
-//				onSuccess(response);
-//			}
-//			@Override
-//			public void onFailure(int statusCode, Header[] headers,
-//					Throwable throwable, JSONObject errorResponse) {
-//				onFailure(throwable, errorResponse);
-//			}
-			
+
 			@Override
 			public void onSuccess(JSONObject body) {
 				Toast.makeText(TweetDetailsActivity.this, "Reply posted successfully", Toast.LENGTH_LONG).show();
