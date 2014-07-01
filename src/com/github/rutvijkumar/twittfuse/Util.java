@@ -48,9 +48,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.SearchView;
-import android.widget.Toast;
 import android.widget.SearchView.OnQueryTextListener;
+import android.widget.Toast;
 
 import com.github.rutvijkumar.twittfuse.activities.ProfileViewActivity;
 import com.github.rutvijkumar.twittfuse.activities.SearchActivity;
@@ -322,6 +323,10 @@ public class Util {
 	
 	public static void setupSearchView(final Activity activity,final SearchView searchView) {
 
+		
+		int searchPlateId = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        EditText searchPlate = (EditText) searchView.findViewById(searchPlateId);
+        searchPlate.setTextColor(activity.getResources().getColor(android.R.color.white));
 		searchView.setOnQueryTextListener(new OnQueryTextListener() {
 
 			@Override
