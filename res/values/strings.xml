@@ -15,5 +15,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="title_activity_user_list">UserListActivity</string>
+    <string name="title_activity_profile_temp">ProfileTempActivity</string>
 
 </resources>

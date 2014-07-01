@@ -74,6 +74,10 @@
             android:name="com.github.rutvijkumar.twittfuse.UserListActivity"
             android:label="@string/title_activity_user_list" >
         </activity>
+        <activity
+            android:name="com.github.rutvijkumar.twittfuse.ProfileTempActivity"
+            android:label="@string/title_activity_profile_temp" >
+        </activity>
     </application>
 
 </manifest>

@@ -38,6 +38,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.rutvijkumar.twittfuse.ProfileTempActivity;
 import com.github.rutvijkumar.twittfuse.R;
 import com.github.rutvijkumar.twittfuse.TwitterUtil;
 import com.github.rutvijkumar.twittfuse.Util;
@@ -242,7 +243,8 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				User user=(User)v.getTag();
-				Intent profileActivityIntent=new Intent(context,ProfileViewActivity.class);
+				//Intent profileActivityIntent=new Intent(context,ProfileViewActivity.class);
+				Intent profileActivityIntent=new Intent(context,ProfileTempActivity.class);
 				profileActivityIntent.putExtra("PROFILE_EXTRA_USEROBJ", user);
 				context.startActivity(profileActivityIntent);
 				
