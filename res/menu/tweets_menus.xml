@@ -16,7 +16,7 @@
 
 <item android:id="@+id/action_profileView"
           android:title="My Profile"
-          android:icon="@drawable/ic_action_myprofile"
+          android:icon="@drawable/ic_action_profileview"
           android:showAsAction="ifRoom"
  />
 </menu>
