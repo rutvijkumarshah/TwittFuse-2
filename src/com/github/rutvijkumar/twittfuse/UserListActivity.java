@@ -22,6 +22,12 @@ public class UserListActivity extends FragmentActivity {
 		isFollowersList=extras.getBoolean("isFollowersList");
 		userScreenName=extras.getString("userScreenName");
 		UserListFragment fragment = UserListFragment.newInstance(0, "List",userScreenName,isFollowersList );
+		String title="Followers";
+		if(!isFollowersList) {
+			title="Following";
+		}
+		getActionBar().setTitle(title);
+		
 		setFragment(fragment);
 	}
 	

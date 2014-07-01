@@ -24,6 +24,8 @@ package com.github.rutvijkumar.twittfuse.adapters;
 
 import java.util.ArrayList;
 
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -31,6 +33,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,6 +41,7 @@ import com.github.rutvijkumar.twittfuse.R;
 import com.github.rutvijkumar.twittfuse.activities.ProfileViewActivity;
 import com.github.rutvijkumar.twittfuse.api.TwitterClient;
 import com.github.rutvijkumar.twittfuse.models.User;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class UserArrayAdapter extends ArrayAdapter<User> {
@@ -52,7 +56,7 @@ public class UserArrayAdapter extends ArrayAdapter<User> {
 		TextView screenName; // @+id/tweetUserScreenName
 		ImageView userProfilePic;// @+id/profileImg
 		TextView userBio; // @+id/tweetBodyTxt
-		TextView followAction;	
+		ImageButton followAction;	
 	}
 //
 	public UserArrayAdapter(Context context, ArrayList<User> tweets) {
@@ -73,19 +77,19 @@ public class UserArrayAdapter extends ArrayAdapter<User> {
 		if (convertView == null) {
 			viewHolder = new ViewHolder();
 			LayoutInflater inflater = LayoutInflater.from(getContext());
-			convertView = inflater.inflate(R.layout.tweet_litem, parent, false);
+			convertView = inflater.inflate(R.layout.user_item, parent, false);
 
 			viewHolder.name = (TextView) convertView
-					.findViewById(R.id.tweetUserName);
+					.findViewById(R.id.tv_username);
 			viewHolder.screenName = (TextView) convertView
-					.findViewById(R.id.tweetUserScreenName);
+					.findViewById(R.id.tv_screenname);
 			viewHolder.userBio = (TextView) convertView
 					.findViewById(R.id.tv_userBio);
 			viewHolder.userProfilePic = (ImageView) convertView
-					.findViewById(R.id.profileImg);
+					.findViewById(R.id.img_profilepic);
 			
-			viewHolder.followAction = (TextView) convertView
-					.findViewById(R.id.profileImg);
+			viewHolder.followAction = (ImageButton) convertView
+					.findViewById(R.id.tvFollow);
 			
 			convertView.setTag(viewHolder);
 		} else {
@@ -107,12 +111,28 @@ public class UserArrayAdapter extends ArrayAdapter<User> {
 		
 		if(!user.isFollowing()) {
 			viewHolder.followAction.setVisibility(View.VISIBLE);
+			final ImageButton imgBtn=viewHolder.followAction;
+			viewHolder.followAction.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					client.followUser(user.getScreenName(), new JsonHttpResponseHandler() {
+						@Override
+						public void onSuccess(JSONObject arg0) {
+							imgBtn.setVisibility(View.INVISIBLE);
+						}
+					});
+					
+				}
+			});
 		}else {
 			viewHolder.followAction.setVisibility(View.INVISIBLE);
 		}
 		
 		//pullToRefreshListView setOnItem click listerner is not working because of auto link
 		convertView.setOnClickListener(new UserOnClickListener(user));
+		viewHolder.userProfilePic.setOnClickListener(new UserOnClickListener(user));
+		
 		
 		return convertView;
 	}

@@ -73,7 +73,6 @@ public  class UserListFragment extends Fragment {
 				.findViewById(R.id.lvTweets);
 		
 		progressBar=(ProgressBar)v.findViewById(R.id.progressBar);
-		
 		userListView.setAdapter(adapter);
 
 		return v;
