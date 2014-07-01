@@ -23,7 +23,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 package com.github.rutvijkumar.twittfuse.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -93,7 +95,14 @@ public class User extends Model implements Serializable{
 	
 	@Column(name="json_obj")
 	private String jsonObj;
+
+	@Column(name="description")
+	private String description;
 	
+	public String getDescription() {
+		return description;
+	}
+
 	public String getProfileBackgroundColor() {
 		return profileBackgroundColor;
 	}
@@ -134,6 +143,25 @@ public class User extends Model implements Serializable{
 		return screenName;
 	}
 
+	public static ArrayList<User> fromJSONArray(JSONArray jsonArray) {
+		final int size = jsonArray.length();
+		ArrayList<User> list = new ArrayList<User>(size);
+		JSONObject userJson = null;
+
+		for (int i = 0; i < size; i++) {
+			try {
+				userJson = jsonArray.getJSONObject(i);
+			} catch (JSONException e) {
+				continue;
+			}
+			User user = User.fromJson(userJson);
+			if (user != null) {
+				list.add(user);
+			}
+		}
+		return list;
+	}
+	
 	public static User fromJson(JSONObject jsonObject) {
 		User user=new User();
 		
@@ -143,6 +171,7 @@ public class User extends Model implements Serializable{
 			user.uid=jsonObject.getLong("id");;
 			user.profileImageUrl=jsonObject.getString("profile_image_url");
 			user.screenName=jsonObject.getString("screen_name");
+			user.description = jsonObject.getString("description");
 			if(jsonObject.has("profile_background_image_url")) {
 				user.profileBackgroundImageUrl=jsonObject.getString("profile_background_image_url");
 			}

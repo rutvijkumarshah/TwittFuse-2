@@ -14,5 +14,6 @@
     <string name="title_activity_profile_view">ProfileViewActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_user_list">UserListActivity</string>
 
 </resources>

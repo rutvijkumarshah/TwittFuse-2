@@ -70,7 +70,13 @@ public class ProfileViewActivity extends BaseFragmentActivity {
 		
 	}
 
+	public void showFollowersListView(View v) {
+		Util.showFollowersListActivity(_user.getScreenName(), this);
+	}
 	
+	public void showFriendsListView(View v) {
+		Util.showFriendsListActivity(_user.getScreenName(), this);
+	}
 	private void setupUI(User user) {
 		_user=user;
 		getActionBar().setTitle("@"+user.getScreenName());

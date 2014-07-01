@@ -89,6 +89,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/tweetCount"
         android:textStyle="bold"
+        android:onClick="showFriendsListView"
         android:text="457" />
 
     <TextView
@@ -100,6 +101,7 @@
         android:layout_alignStart="@+id/followingCount"
         android:layout_alignBaseline="@+id/lable_tweets"
         android:textSize="13sp"
+        android:onClick="showFriendsListView"
         android:textColor="@color/Hint_color"
         android:text="FOLLOWING" />
 
@@ -124,6 +126,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="8dp"
         android:textStyle="bold"
+        android:onClick="showFollowersListView"
         android:layout_alignStart="@+id/lable_followers"
         android:text="238" />
 
@@ -137,6 +140,7 @@
         android:layout_alignBaseline="@+id/lable_following"
         android:layout_below="@+id/followers_count"
         android:textColor="@color/Hint_color"
+        android:onClick="showFollowersListView"
         android:text="FOLLOWERS" />
 
        <View

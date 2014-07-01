@@ -275,6 +275,21 @@ public class Util {
 		
 	}
 
+	public static void showFollowersListActivity(String userScreenName,Activity activity) {
+		showUsersListActivity(userScreenName, true, activity);
+	}
+
+	private static void showUsersListActivity(String userScreenName,boolean isFollowersList,Activity activity) {
+		Intent intent=new Intent(activity,UserListActivity.class);
+		intent.putExtra("isFollowersList",isFollowersList );
+		intent.putExtra("userScreenName", userScreenName);
+		activity.startActivity(intent);
+	}
+	
+	public static void showFriendsListActivity(String userScreenName,Activity activity) {
+		showUsersListActivity(userScreenName, false, activity);
+	}
+	
 	public static CharSequence formatCount(long count,boolean isUserCount) {
 		// TODO Auto-generated method stub
 		if(count < 1000) {

@@ -70,6 +70,10 @@
             android:name="com.github.rutvijkumar.twittfuse.activities.SearchActivity"
             android:label="@string/title_activity_search" >
         </activity>
+        <activity
+            android:name="com.github.rutvijkumar.twittfuse.UserListActivity"
+            android:label="@string/title_activity_user_list" >
+        </activity>
     </application>
 
 </manifest>
