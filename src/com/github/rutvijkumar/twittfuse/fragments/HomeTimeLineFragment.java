@@ -37,7 +37,8 @@ import com.github.rutvijkumar.twittfuse.models.Tweet;
 public class HomeTimeLineFragment extends TweetListFragment {
 
 	private TwitterClient client;
-
+	boolean isNewCreated=true;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

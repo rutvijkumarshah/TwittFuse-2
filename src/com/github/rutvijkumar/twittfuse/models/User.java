@@ -60,21 +60,6 @@ public class User extends Model implements Serializable{
 	private String profileBannerImageUrl;
 	
 	
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	public String getProfileBannerImageUrl() {
-		return profileBannerImageUrl;
-	}
-
-	public String getFollowing() {
-		return following;
-	}
-
-	public String getJsonObj() {
-		return jsonObj;
-	}
 	@Column(name="favCount")
 	private long favCount;
 	
@@ -93,12 +78,18 @@ public class User extends Model implements Serializable{
 	@Column(name="profileBackgroundColor")
 	private String profileBackgroundColor;
 	
-	@Column(name="json_obj")
-	private String jsonObj;
-
+	
 	@Column(name="description")
 	private String description;
 	
+	public String getProfileBannerImageUrl() {
+		return profileBannerImageUrl;
+	}
+
+	public String getFollowing() {
+		return following;
+	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -166,7 +157,6 @@ public class User extends Model implements Serializable{
 		User user=new User();
 		
 		try {
-			user.jsonObj=jsonObject.toString();
 			user.name=jsonObject.getString("name");
 			user.uid=jsonObject.getLong("id");;
 			user.profileImageUrl=jsonObject.getString("profile_image_url");
@@ -205,9 +195,6 @@ public class User extends Model implements Serializable{
 	}
 
 
-	public String toJSONString() {
-		return jsonObj;
-	}
 	public String getProfileBackgroundImageUrl() {
 		return profileBackgroundImageUrl;
 	}

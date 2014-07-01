@@ -30,15 +30,21 @@ public class TimeLineActivity extends BaseFragmentActivity implements
 
 	private MyPagerAdapter adapterViewPager;
 	private PagerSlidingTabStrip tabs;
+	private ViewPager vpPager;
 	
 	private static final int POSITION_OF_HOMETIMELINE = 0;
 	private static final int POSITION_OF_MENTIONS = 1;
 	private static final int POSITION_OF_DIRECTMSGS = 2;
+	private FragmentManager supportFragmentManager;
 		
 	@Override
 	public void onNewTweet(Tweet tweet) {
-		TweetListFragment fragment = (TweetListFragment) adapterViewPager
-				.getItem(POSITION_OF_HOMETIMELINE);
+		
+//		HomeTimeLineFragment fragment = (HomeTimeLineFragment) adapterViewPager
+//				.getItem(POSITION_OF_HOMETIMELINE);
+//		
+		supportFragmentManager = getSupportFragmentManager();
+		HomeTimeLineFragment fragment = (HomeTimeLineFragment) supportFragmentManager.findFragmentByTag(makeFragmentName(R.id.viewPager, POSITION_OF_HOMETIMELINE));
 		if (fragment != null) {
 			fragment.addNewTweet(tweet);
 		}
@@ -48,7 +54,7 @@ public class TimeLineActivity extends BaseFragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_time_line);
-		ViewPager vpPager = (ViewPager) findViewById(R.id.viewPager);
+		vpPager = (ViewPager) findViewById(R.id.viewPager);
 		adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
 		vpPager.setAdapter(adapterViewPager);
 		
@@ -113,4 +119,8 @@ public class TimeLineActivity extends BaseFragmentActivity implements
 		return true;
 	}
 	
+	private static String makeFragmentName(int viewId, int position)
+	{
+	     return "android:switcher:" + viewId + ":" + position;
+	}
 }
