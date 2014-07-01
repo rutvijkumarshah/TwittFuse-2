@@ -38,7 +38,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.github.rutvijkumar.twittfuse.ProfileTempActivity;
 import com.github.rutvijkumar.twittfuse.R;
 import com.github.rutvijkumar.twittfuse.TwitterUtil;
 import com.github.rutvijkumar.twittfuse.Util;
