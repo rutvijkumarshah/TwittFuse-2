@@ -4,17 +4,11 @@ Twittfuse 2
 Twittfuse is simple twitter client with additional features than TwittFuse. Allowing users to do basic twitter functionality.
 This application is developed with intent to learn android programming by making it as close to real twitter app as possbile in time frame.
 
-Time spent: 30 hours spent in total.
+Time spent: 25 hours spent in total.
 
 Completed user stories:
 
  * [x] Required: All user stories from TwittFuse/Week 3 (Required,Optional,Advanced,Bonus)
- * [x] Required: User can sign in to Twitter using OAuth login.
- * [x] Required: User can view the tweets from their home timeline.
- * [x] Required: User should be able to see the username, name, body and timestamp for each tweet
- * [x] Required: User should be displayed the relative timestamp for a tweet "8m", "7h"
- * [x] Required:User can view more tweets as they scroll with infinite pagination
- * [x] Optional: Links in tweets are clickable and will launch the web browser (see autolink)
  * [x] Required: User can switch between Timeline and Mention views using tabs.
  * [x] Required: User can view their home timeline tweets. 
  * [x] Required: User can view the recent mentions of their username.
@@ -39,6 +33,16 @@ Completed user stories:
 
 Other Additional goodies :
 
+ *  User profile shows profile image and description in slider like twitter app.
+ *  User can see if opened user profile he is following or not.
+ *  User can follow/Unfollow user from his user profile view
+ *  User can see list of Followers/Following users from visited users profile and can add them if he is not following.
+ *  Pager Sliding Tabs to display Home,Mentions,Messages information in sliding tabs just like google play store.
+ *  Custom Stlyed Search View in Action bar.
+ *  Show and hide action bar menu items based on context ( activity).
+
+Other Additional goodies from first version of TwittFuse:   
+   
  *  Allow user to post Tweet when network is not available (offline) tweet.
  *  App posts offline Tweet  when network is available and shows notification to User.
  *  Reply to multiple handles: App parse tweet content and find all handles from tweet and making sure no duplicate handles in reply.
@@ -56,9 +60,6 @@ Other Additional goodies :
 Know issue with Fling/Fast Scroll with PullToRefreshListView:
 https://github.com/erikwt/PullToRefresh-ListView/issues/42 
 
-Bonus: User can view their direct messages (or send new ones)
-
-
 
 
 Third Party Utilities/source used for building this app:
@@ -69,3 +70,5 @@ Third Party Utilities/source used for building this app:
  4. Twitter-Text 
  5. Twitter blue color : http://www.colourlovers.com/color/4099FF/Twitter_Blue
  6. How to drow spearators : http://stackoverflow.com/questions/5049852/android-drawing-separator-divider-line-in-layout
+ 7. Pager Sliding Tabs https://github.com/astuetz/PagerSlidingTabStrip
+ 8. ViewPager Indicator http://viewpagerindicator.com/
