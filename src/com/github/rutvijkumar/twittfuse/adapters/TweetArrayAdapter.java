@@ -243,8 +243,8 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				User user=(User)v.getTag();
-				//Intent profileActivityIntent=new Intent(context,ProfileViewActivity.class);
-				Intent profileActivityIntent=new Intent(context,ProfileTempActivity.class);
+				Intent profileActivityIntent=new Intent(context,ProfileViewActivity.class);
+				//Intent profileActivityIntent=new Intent(context,ProfileTempActivity.class);
 				profileActivityIntent.putExtra("PROFILE_EXTRA_USEROBJ", user);
 				context.startActivity(profileActivityIntent);
 				

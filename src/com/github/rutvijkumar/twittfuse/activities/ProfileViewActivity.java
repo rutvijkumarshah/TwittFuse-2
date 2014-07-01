@@ -5,29 +5,27 @@ import org.json.JSONObject;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.rutvijkumar.twittfuse.R;
 import com.github.rutvijkumar.twittfuse.TwitterApplication;
 import com.github.rutvijkumar.twittfuse.Util;
 import com.github.rutvijkumar.twittfuse.api.TwitterClient;
+import com.github.rutvijkumar.twittfuse.fragments.ProfileDesciptionFragment;
+import com.github.rutvijkumar.twittfuse.fragments.ProfileImageViewFragment;
 import com.github.rutvijkumar.twittfuse.fragments.UserTimeLineFragment;
 import com.github.rutvijkumar.twittfuse.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.viewpagerindicator.CirclePageIndicator;
+import com.viewpagerindicator.IconPagerAdapter;
 
 //Network Call
 public class ProfileViewActivity extends BaseFragmentActivity {
@@ -35,15 +33,17 @@ public class ProfileViewActivity extends BaseFragmentActivity {
 	private boolean isMyProfile=false;
 	private User _user=null;
 	private TwitterClient client;
-	private ImageView profileImg;
-	private TextView userName;
-	private TextView userScreenName;
+	
 	private TextView tweetsCount;
 	private TextView followingCount;
 	private TextView followersCount;
 	private TextView followingTv;
 	private TextView followTv;
 	
+	private TestFragmentAdapter mAdapter;
+	private ViewPager mPager;
+	private CirclePageIndicator mIndicator;
+
 	
 	private static final String ACTION_FOLLOW="ACTION_FOLLOW";
 	private static final String ACTION_UNFOLLOW="ACTION_UNFOLLOW";
@@ -81,11 +81,15 @@ public class ProfileViewActivity extends BaseFragmentActivity {
 		_user=user;
 		getActionBar().setTitle("@"+user.getScreenName());
 		setFragment(user);
-		profileImg=(ImageView)findViewById(R.id.profileImage);
-		userName=(TextView)findViewById(R.id.userName);
-		userScreenName=(TextView)findViewById(R.id.userscreenName);
-		final RelativeLayout profileInfoLayout=(RelativeLayout)findViewById(R.id.profileInfo);
 		
+		mAdapter = new TestFragmentAdapter(getSupportFragmentManager());
+
+		mPager = (ViewPager) findViewById(R.id.pager);
+		mPager.setAdapter(mAdapter);
+
+		mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
+		mIndicator.setViewPager(mPager);
+
 		tweetsCount=(TextView)findViewById(R.id.tweetCount);
 		followingCount=(TextView)findViewById(R.id.followingCount);
 		followersCount=(TextView)findViewById(R.id.followers_count);
@@ -93,12 +97,6 @@ public class ProfileViewActivity extends BaseFragmentActivity {
 		followingTv=(TextView)findViewById(R.id.tvFollowing);
 		followTv=(TextView)findViewById(R.id.tvFollow);
 		
-		ImageLoader imageLoader = ImageLoader.getInstance();
-		imageLoader.displayImage(user.getProfileImageUrl(),
-				profileImg);
-		
-		userName.setText(user.getName());
-		userScreenName.setText("@"+user.getScreenName());
 		
 		tweetsCount.setText(Util.formatCount(user.getTweetsCount(),false));
 		followingCount.setText(Util.formatCount(user.getFollowingCount(),true));
@@ -119,15 +117,7 @@ public class ProfileViewActivity extends BaseFragmentActivity {
 			followingTv.setVisibility(View.GONE);
 			followTv.setVisibility(View.GONE);
 		}
-		final String bannerImageUrl=user.getProfileBannerImageUrl();
-		if(bannerImageUrl!=null) {
-			setBackGround(user, imageLoader, profileInfoLayout,bannerImageUrl);
-		}else {
-			final String backGroundImageUrl=user.getProfileBackgroundImageUrl();
-			if(backGroundImageUrl!=null) {
-				setBackGround(user,imageLoader, profileInfoLayout,backGroundImageUrl);
-			}
-		}
+		
 	
 	}
 
@@ -188,40 +178,7 @@ public class ProfileViewActivity extends BaseFragmentActivity {
 		return followClickListener;
 	}
 	
-	private void setBackGround(User user,ImageLoader imageLoader,final RelativeLayout profileInfoLayout,String url) {
-		imageLoader.loadImage(url, new ImageLoadingListener() {
-			
-			@Override
-			public void onLoadingStarted(String arg0, View arg1) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onLoadingComplete(String arg0, View arg1, Bitmap bitmap) {
-				// TODO Auto-generated method stub
-				BitmapDrawable bg=new BitmapDrawable(getResources(), bitmap);
-				profileInfoLayout.setBackground(bg);
-				
-			}
-			
-			@Override
-			public void onLoadingCancelled(String arg0, View arg1) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-	
-	}
-
-
-	private void setFragment(User user) {
+  private void setFragment(User user) {
 		
 		// Begin the transaction
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -241,6 +198,40 @@ public class ProfileViewActivity extends BaseFragmentActivity {
 			}
 		});
 		
+	}
+
+	class TestFragmentAdapter extends FragmentPagerAdapter  implements IconPagerAdapter{
+
+		public TestFragmentAdapter(FragmentManager fm) {
+			super(fm);
+		}
+
+		@Override
+		public Fragment getItem(int position) {
+			if (position == 0) {
+				return ProfileImageViewFragment.newInstance(_user);
+			} else {
+				return ProfileDesciptionFragment.newInstance(_user);
+			}
+		}
+
+		@Override
+		public int getCount() {
+			return 2;
+		}
+
+		@Override
+		public CharSequence getPageTitle(int position) {
+			return "";
+		}
+
+		@Override
+		public int getIconResId(int index) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+
 	}
 
 }
