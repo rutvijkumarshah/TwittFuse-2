@@ -31,7 +31,7 @@ Completed user stories:
  * [x] Advanced: User can search for tweets matching a particular query and see results
  * [x] Bonus: User can view their direct messages (or send new ones)
 
-Other Additional goodies :
+# Other Additional goodies :
 
  *  User profile shows profile image and description in slider like twitter app.
  *  User can see if opened user profile he is following or not.
@@ -42,7 +42,7 @@ Other Additional goodies :
  *  Show and hide action bar menu items based on context ( activity).
  *  Logout
 
-Other Additional goodies from first version of TwittFuse:   
+# Other Additional goodies from first version of TwittFuse:   
    
  *  Allow user to post Tweet when network is not available (offline) tweet.
  *  App posts offline Tweet  when network is available and shows notification to User.
