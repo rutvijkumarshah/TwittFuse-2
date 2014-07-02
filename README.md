@@ -73,3 +73,7 @@ Third Party Utilities/source used for building this app:
  6. How to drow spearators : http://stackoverflow.com/questions/5049852/android-drawing-separator-divider-line-in-layout
  7. Pager Sliding Tabs https://github.com/astuetz/PagerSlidingTabStrip
  8. ViewPager Indicator http://viewpagerindicator.com/
+ 
+ 
+#### Video walkthrough of all user stories:
+* Please see [video]()
