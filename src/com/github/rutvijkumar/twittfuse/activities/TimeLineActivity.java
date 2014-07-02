@@ -9,6 +9,7 @@ import android.view.Menu;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.github.rutvijkumar.twittfuse.R;
+import com.github.rutvijkumar.twittfuse.TwitterApplication;
 import com.github.rutvijkumar.twittfuse.Util;
 import com.github.rutvijkumar.twittfuse.fragments.DirectMessagesFragments;
 import com.github.rutvijkumar.twittfuse.fragments.HomeTimeLineFragment;

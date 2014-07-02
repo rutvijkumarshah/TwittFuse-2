@@ -19,4 +19,11 @@
           android:icon="@drawable/ic_action_profileview"
           android:showAsAction="ifRoom"
  />
+
+
+<item android:id="@+id/action_logout"
+          android:title="Logout"
+          android:icon="@drawable/ic_action_logout"
+          android:showAsAction="ifRoom"
+ />
 </menu>

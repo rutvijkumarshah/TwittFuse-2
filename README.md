@@ -40,6 +40,7 @@ Other Additional goodies :
  *  Pager Sliding Tabs to display Home,Mentions,Messages information in sliding tabs just like google play store.
  *  Custom Stlyed Search View in Action bar.
  *  Show and hide action bar menu items based on context ( activity).
+ *  Logout
 
 Other Additional goodies from first version of TwittFuse:   
    

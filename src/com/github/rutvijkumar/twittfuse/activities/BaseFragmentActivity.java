@@ -23,10 +23,14 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 package com.github.rutvijkumar.twittfuse.activities;
 
 import com.github.rutvijkumar.twittfuse.R;
+import com.github.rutvijkumar.twittfuse.TwitterApplication;
 import com.github.rutvijkumar.twittfuse.Util;
+import com.github.rutvijkumar.twittfuse.api.TwitterClient;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,7 +41,8 @@ public class BaseFragmentActivity extends FragmentActivity {
 
 	protected SearchView searchView;
 	protected MenuItem composeActionMenu;
-
+	protected TwitterClient client;
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -58,6 +63,13 @@ public class BaseFragmentActivity extends FragmentActivity {
 	}
 	
 
+	@Override
+	protected void onCreate(Bundle arg0) {
+		// TODO Auto-generated method stub
+		super.onCreate(arg0);
+		client=TwitterApplication.getRestClient();
+		
+	}
 
 	protected void composeActionVisibility(boolean isVisible) {
 		composeActionMenu.setVisible(isVisible);
@@ -71,6 +83,11 @@ public class BaseFragmentActivity extends FragmentActivity {
 		}
 		if( menuItemId == R.id.action_profileView) {
 			Util.onProfileView(this);
+		}
+		if(menuItemId == R.id.action_logout) {
+			client.clearAccessToken();
+			Intent intent=new Intent(this,LoginActivity.class);
+			startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);
 	}

@@ -32,7 +32,6 @@ public class ProfileViewActivity extends BaseFragmentActivity {
 
 	private boolean isMyProfile=false;
 	private User _user=null;
-	private TwitterClient client;
 	
 	private TextView tweetsCount;
 	private TextView followingCount;
@@ -55,7 +54,6 @@ public class ProfileViewActivity extends BaseFragmentActivity {
 		Intent intent = getIntent();
 		isMyProfile=intent.getBooleanExtra("PROFILE_EXTRA_ISMYPROFILE",false);
 		User user=(User)intent.getSerializableExtra("PROFILE_EXTRA_USEROBJ");
-		client=TwitterApplication.getRestClient();
 		
 		if(isMyProfile == true || user == null) {
 			//this is my profile
