@@ -29,7 +29,7 @@ Completed user stories:
  * [x] Advanced: User can take favorite (and unfavorite) or reweet actions on a tweet
  * [x] Advanced: Improve the user interface and theme the app to feel twitter branded
  * [x] Advanced: User can search for tweets matching a particular query and see results
- * [x] Bonus: User can view their direct messages (or send new ones)
+ * [x] Bonus: User can view their direct messages (or send new ones) :Implemented "MESSAGES" tab to view direct messages.
 
 ### Other Additional goodies :
 
