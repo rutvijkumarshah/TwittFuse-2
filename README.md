@@ -76,4 +76,4 @@ Third Party Utilities/source used for building this app:
  
  
 #### Video walkthrough of all user stories:
-* Please see [video]()
+* Please see [video](https://vimeo.com/99787186)
